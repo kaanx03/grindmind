@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ders Notları - GRINDMIND</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f7f6f3;
+        --bg-sidebar: #fbfbfa;
+        --text-primary: #37352f;
+        --text-secondary: #6f6e69;
+        --text-muted: #9b9a97;
+        --border-light: #e9e9e7;
+        --border-medium: #d3d1cb;
+        --accent-orange: #d9730d;
+        --accent-orange-light: #fdf2e9;
+        --hover-bg: #f1f1ef;
+        --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.12);
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+          Arial, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.5;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 280px;
+        background: var(--bg-sidebar);
+        border-right: 1px solid var(--border-light);
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+      }
+
+      .sidebar-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border-light);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+        cursor: pointer;
+      }
+
+      .header-buttons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .back-btn {
+        width: 28px;
+        height: 28px;
+        background: var(--accent-orange);
+        border: none;
+        border-radius: 4px;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .back-btn:hover {
+        background: #bf6900;
+      }
+
+      .new-note-btn {
+        width: 28px;
+        height: 28px;
+        background: transparent;
+        border: 1px solid var(--border-medium);
+        border-radius: 4px;
+        color: var(--text-secondary);
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .new-note-btn:hover {
+        background: var(--hover-bg);
+        border-color: var(--accent-orange);
+        color: var(--accent-orange);
+      }
+
+      .sidebar-content {
+        flex: 1;
+        padding: 8px 0;
+        overflow-y: auto;
+      }
+
+      .notes-list {
+        padding: 0 12px;
+      }
+
+      .note-item {
+        padding: 8px 12px;
+        margin: 2px 0;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        border-left: 3px solid transparent;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--bg-primary);
+      }
+
+      .note-item:hover {
+        background: var(--hover-bg);
+      }
+
+      .note-item.active {
+        background: var(--accent-orange-light);
+        border-left-color: var(--accent-orange);
+      }
+
+      .note-item-content {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .note-item-title {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .note-item-date {
+        font-size: 10px;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+
+      .note-item-delete {
+        opacity: 0;
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 3px;
+        font-size: 12px;
+        transition: all 0.2s ease;
+        margin-left: 8px;
+      }
+
+      .note-item:hover .note-item-delete {
+        opacity: 1;
+      }
+
+      .note-item-delete:hover {
+        background: var(--accent-orange);
+        color: white;
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* Empty State */
+      .empty-state {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-primary);
+      }
+
+      .empty-content {
+        text-align: center;
+        max-width: 400px;
+        padding: 0 20px;
+      }
+
+      .empty-icon {
+        font-size: 64px;
+        margin-bottom: 24px;
+        opacity: 0.6;
+      }
+
+      .empty-content h2 {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+      }
+
+      .empty-content p {
+        color: var(--text-secondary);
+        margin-bottom: 32px;
+        font-size: 16px;
+      }
+
+      .create-note-btn {
+        background: var(--accent-orange);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .create-note-btn:hover {
+        background: #bf6900;
+      }
+
+      /* Note Editor */
+      .note-editor {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg-primary);
+      }
+
+      .note-content {
+        flex: 1;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 24px;
+        overflow-y: auto;
+        width: 100%;
+      }
+
+      .note-title {
+        width: 100%;
+        border: none;
+        outline: none;
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text-primary);
+        background: transparent;
+        margin-bottom: 24px;
+        line-height: 1.2;
+        resize: none;
+        font-family: inherit;
+      }
+
+      .note-title::placeholder {
+        color: var(--text-muted);
+      }
+
+      .note-body {
+        width: 100%;
+        min-height: 500px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background: transparent;
+        resize: none;
+        font-family: inherit;
+      }
+
+      .note-body::placeholder {
+        color: var(--text-muted);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        body {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          height: 200px;
+        }
+
+        .note-content {
+          padding: 20px 16px;
+        }
+
+        .note-title {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">📚 Notlarım</div>
+        <div class="header-buttons">
+          <button class="back-btn" onclick="goBack()" title="Dashboard'a Dön">
+            ←
+          </button>
+          <button class="new-note-btn" onclick="createNewNote()">+</button>
+        </div>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="notes-list" id="notesList">
+          <!-- Notlar buraya gelecek -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-content">
+          <div class="empty-icon">📝</div>
+          <h2>Ders notlarını organize et</h2>
+          <p>Sol taraftan bir not seç veya yeni not oluştur</p>
+          <button class="create-note-btn" onclick="createNewNote()">
+            Yeni Not Oluştur
+          </button>
+        </div>
+      </div>
+
+      <!-- Note Editor -->
+      <div class="note-editor" id="noteEditor" style="display: none">
+        <div class="note-content">
+          <input
+            type="text"
+            class="note-title"
+            id="noteTitle"
+            placeholder="Başlıksız not"
+          />
+
+          <textarea
+            class="note-body"
+            id="noteBody"
+            placeholder="Notunuzu buraya yazın..."
+          ></textarea>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      let currentNote = null;
+      let allNotes = [];
+
+      // Sayfa yüklendiğinde
+      document.addEventListener("DOMContentLoaded", function () {
+        loadNotes();
+        setupEventListeners();
+      });
+
+      // Event listeners
+      function setupEventListeners() {
+        const noteTitle = document.getElementById("noteTitle");
+        const noteBody = document.getElementById("noteBody");
+
+        // Auto-save
+        noteTitle.addEventListener("input", scheduleAutoSave);
+        noteBody.addEventListener("input", scheduleAutoSave);
+
+        // Title'da Enter basınca body'e geç
+        noteTitle.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            noteBody.focus();
+          }
+        });
+      }
+
+      // Dashboard'a dön
+      function goBack() {
+        window.location.href = "dashboard.html";
+      }
+
+      // Yeni not oluştur
+      function createNewNote() {
+        const note = {
+          id: Date.now(),
+          title: "",
+          content: "",
+          createdAt: new Date().toISOString(),
+        };
+
+        allNotes.unshift(note);
+        currentNote = note;
+
+        showNoteEditor();
+        clearEditor();
+        renderNotesList();
+
+        // Title'a focus
+        setTimeout(() => {
+          document.getElementById("noteTitle").focus();
+        }, 100);
+
+        saveNotes();
+      }
+
+      // Not editörünü göster
+      function showNoteEditor() {
+        document.getElementById("emptyState").style.display = "none";
+        document.getElementById("noteEditor").style.display = "flex";
+      }
+
+      // Editörü temizle
+      function clearEditor() {
+        document.getElementById("noteTitle").value = "";
+        document.getElementById("noteBody").value = "";
+      }
+
+      // Notları listele
+      function renderNotesList() {
+        const notesList = document.getElementById("notesList");
+
+        if (allNotes.length === 0) {
+          notesList.innerHTML =
+            '<div style="padding: 16px; color: var(--text-muted); font-size: 12px;">Henüz not yok</div>';
+          return;
+        }
+
+        notesList.innerHTML = "";
+
+        allNotes.forEach((note) => {
+          const noteItem = document.createElement("div");
+          noteItem.className = "note-item";
+          if (currentNote && currentNote.id === note.id) {
+            noteItem.classList.add("active");
+          }
+
+          noteItem.innerHTML = `
+                    <div class="note-item-content" onclick="openNote(${
+                      note.id
+                    })">
+                        <div class="note-item-title">${
+                          note.title || "Başlıksız not"
+                        }</div>
+                        <div class="note-item-date">${formatDate(
+                          note.createdAt
+                        )}</div>
+                    </div>
+                    <button class="note-item-delete" onclick="deleteNote(${
+                      note.id
+                    })" title="Notu sil">🗑️</button>
+                `;
+
+          notesList.appendChild(noteItem);
+        });
+      }
+
+      // Not sil
+      function deleteNote(noteId) {
+        if (!confirm("Bu notu silmek istediğiniz emin misiniz?")) {
+          return;
+        }
+
+        // Notu listeden çıkar
+        allNotes = allNotes.filter((note) => note.id !== noteId);
+
+        // Eğer silinen not aktif notsa, editörü temizle
+        if (currentNote && currentNote.id === noteId) {
+          currentNote = null;
+          document.getElementById("emptyState").style.display = "flex";
+          document.getElementById("noteEditor").style.display = "none";
+        }
+
+        // Listeyi güncelle ve kaydet
+        renderNotesList();
+        saveNotes();
+      }
+
+      // Not aç
+      function openNote(noteId) {
+        const note = allNotes.find((n) => n.id === noteId);
+        if (!note) return;
+
+        currentNote = note;
+        showNoteEditor();
+
+        document.getElementById("noteTitle").value = note.title || "";
+        document.getElementById("noteBody").value = note.content || "";
+
+        renderNotesList();
+      }
+
+      // Notları kaydet
+      function saveNotes() {
+        try {
+          // currentNote güncelle
+          if (currentNote) {
+            const title = document.getElementById("noteTitle").value;
+            const content = document.getElementById("noteBody").value;
+
+            currentNote.title = title;
+            currentNote.content = content;
+            currentNote.updatedAt = new Date().toISOString();
+          }
+
+          localStorage.setItem("grindmind_notes", JSON.stringify(allNotes));
+          renderNotesList();
+        } catch (e) {
+          console.warn("Local storage not available");
+        }
+      }
+
+      // Notları yükle
+      function loadNotes() {
+        try {
+          const saved = localStorage.getItem("grindmind_notes");
+          if (saved) {
+            allNotes = JSON.parse(saved);
+            renderNotesList();
+          }
+        } catch (e) {
+          console.warn("Could not load notes");
+          allNotes = [];
+        }
+      }
+
+      // Auto-save
+      let saveTimeout;
+      function scheduleAutoSave() {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(saveNotes, 1000);
+      }
+
+      // Tarih formatla
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+
+        if (diffInSeconds < 60) {
+          return "Şimdi";
+        } else if (diffInSeconds < 3600) {
+          const minutes = Math.floor(diffInSeconds / 60);
+          return `${minutes} dk önce`;
+        } else if (diffInSeconds < 86400) {
+          const hours = Math.floor(diffInSeconds / 3600);
+          return `${hours} sa önce`;
+        } else {
+          return date.toLocaleDateString("tr-TR", {
+            day: "numeric",
+            month: "short",
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

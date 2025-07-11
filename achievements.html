@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GRINDMIND - Başarılar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="css/achievements.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="nav">
+        <div class="logo" onclick="window.location.href='dashboard.html'">
+          GRINDMIND
+        </div>
+        <div class="nav-menu">
+          <a href="dashboard.html" class="nav-item">Ana Sayfa</a>
+          <a href="activities.html" class="nav-item">Aktiviteler</a>
+          <a href="statistics.html" class="nav-item">İstatistikler</a>
+          <a href="achievements.html" class="nav-item active">Başarılar</a>
+        </div>
+        <div class="user-section">
+          <button class="notification-btn" id="notificationBtn">
+            🔔
+            <span class="notification-badge" id="notificationBadge">3</span>
+          </button>
+          <div class="user-avatar" id="userAvatar">T</div>
+          <!-- Profile Dropdown -->
+          <div class="profile-dropdown" id="profileDropdown">
+            <a href="#" class="dropdown-item" id="settingsBtn">
+              <span class="dropdown-icon">⚙️</span>
+              <span>Ayarlar</span>
+            </a>
+            <a href="#" class="dropdown-item" id="logoutBtn">
+              <span class="dropdown-icon">🚪</span>
+              <span>Çıkış Yap</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1 class="page-title">🏆 Başarılar & Karakter Gelişimi</h1>
+          <p class="page-subtitle">
+            Seviye atla, yeni başarılar kazan ve karakterini geliştir!
+          </p>
+        </div>
+
+        <!-- Character Evolution Section -->
+        <section class="character-section">
+          <div class="character-container">
+            <div class="character-info">
+              <h2>Karakterin</h2>
+              <div class="character-level">
+                <span class="level-badge" id="characterLevel">Level 1</span>
+                <span class="character-title" id="characterTitle"
+                  >Yeni Başlayan</span
+                >
+              </div>
+            </div>
+
+            <!-- Character Visual -->
+            <div class="character-visual">
+              <div class="character-avatar" id="characterAvatar">
+                <div class="character-face">😊</div>
+                <div class="character-equipment" id="characterEquipment">
+                  <!-- Equipment will be added based on level -->
+                </div>
+              </div>
+
+              <!-- Evolution Path -->
+              <div class="evolution-path">
+                <div class="evolution-steps">
+                  <div class="evolution-step active" data-level="1">
+                    <div class="step-avatar">😊</div>
+                    <span>Lvl 1</span>
+                  </div>
+                  <div class="evolution-line"></div>
+                  <div class="evolution-step" data-level="2">
+                    <div class="step-avatar">😎</div>
+                    <span>Lvl 2</span>
+                  </div>
+                  <div class="evolution-line"></div>
+                  <div class="evolution-step" data-level="3">
+                    <div class="step-avatar">🤓</div>
+                    <span>Lvl 3</span>
+                  </div>
+                  <div class="evolution-line"></div>
+                  <div class="evolution-step" data-level="4">
+                    <div class="step-avatar">🧠</div>
+                    <span>Lvl 4</span>
+                  </div>
+                  <div class="evolution-line"></div>
+                  <div class="evolution-step" data-level="5">
+                    <div class="step-avatar">🚀</div>
+                    <span>Lvl 5</span>
+                  </div>
+                  <div class="evolution-line"></div>
+                  <div class="evolution-step" data-level="6">
+                    <div class="step-avatar">⚡</div>
+                    <span>Lvl 6</span>
+                  </div>
+                  <div class="evolution-line"></div>
+                  <div class="evolution-step" data-level="7">
+                    <div class="step-avatar">🔥</div>
+                    <span>Lvl 7</span>
+                  </div>
+                  <div class="evolution-line"></div>
+                  <div class="evolution-step" data-level="8">
+                    <div class="step-avatar">👑</div>
+                    <span>Lvl 8</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Level Progress -->
+            <div class="level-progress-section">
+              <div class="xp-info">
+                <span class="current-xp" id="currentXP">0</span>
+                <span class="xp-separator">/</span>
+                <span class="next-level-xp" id="nextLevelXP">500</span>
+                <span class="xp-label">XP</span>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar">
+                  <div
+                    class="progress-fill"
+                    id="levelProgressFill"
+                    style="width: 0%"
+                  ></div>
+                  <div class="progress-text" id="progressText">0%</div>
+                </div>
+              </div>
+              <div class="next-reward">
+                <span>Sonraki ödül:</span>
+                <span class="reward-text" id="nextReward"
+                  >Yeni karakter görünümü</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Character Evolution Details -->
+        <section class="evolution-details">
+          <h2>🚀 Karakter Gelişim Aşamaları</h2>
+          <div class="evolution-grid">
+            <div class="evolution-card">
+              <div class="evolution-icon">😊</div>
+              <div class="evolution-info">
+                <h3>Level 1: Yeni Başlayan</h3>
+                <p>Yolculuğun başında! İlk adımlarını atıyorsun.</p>
+                <div class="evolution-features">
+                  <span class="feature">• Temel avatar</span>
+                  <span class="feature">• İlk başarılar</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="evolution-card">
+              <div class="evolution-icon">😎</div>
+              <div class="evolution-info">
+                <h3>Level 2: Gelişen Öğrenci</h3>
+                <p>Alışkanlıkların oluşmaya başladı. Harika gidiyorsun!</p>
+                <div class="evolution-features">
+                  <span class="feature">• Güneş gözlüğü</span>
+                  <span class="feature">• Özgüven artışı</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="evolution-card">
+              <div class="evolution-icon">🤓</div>
+              <div class="evolution-info">
+                <h3>Level 3: Bilgi Avcısı</h3>
+                <p>Sürekli öğreniyorsun ve kendini geliştiriyorsun.</p>
+                <div class="evolution-features">
+                  <span class="feature">• Akıllı gözlük</span>
+                  <span class="feature">• Bilgi birikimi</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="evolution-card">
+              <div class="evolution-icon">🧠</div>
+              <div class="evolution-info">
+                <h3>Level 4: Usta Zihin</h3>
+                <p>Zihinsel gücün dorukta! Hedeflerin net.</p>
+                <div class="evolution-features">
+                  <span class="feature">• Beyin gücü</span>
+                  <span class="feature">• Stratejik düşünce</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="evolution-card">
+              <div class="evolution-icon">🚀</div>
+              <div class="evolution-info">
+                <h3>Level 5: Uzay Kâşifi</h3>
+                <p>Sınırları zorluyorsun! Hedeflerin gökyüzü.</p>
+                <div class="evolution-features">
+                  <span class="feature">• Roket gücü</span>
+                  <span class="feature">• Sınırsız potansiyel</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="evolution-card">
+              <div class="evolution-icon">⚡</div>
+              <div class="evolution-info">
+                <h3>Level 6: Şimşek Ustası</h3>
+                <p>Hızın ve enerjin efsanevi! Hiçbir şey seni durduramaz.</p>
+                <div class="evolution-features">
+                  <span class="feature">• Elektrik gücü</span>
+                  <span class="feature">• Süper hız</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="evolution-card">
+              <div class="evolution-icon">🔥</div>
+              <div class="evolution-info">
+                <h3>Level 7: Ateş Efendisi</h3>
+                <p>Tutkun ve kararlılığın yanıyor! Sen bir güç kaynağısın.</p>
+                <div class="evolution-features">
+                  <span class="feature">• Ateş gücü</span>
+                  <span class="feature">• Yanıcı motivasyon</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="evolution-card legendary">
+              <div class="evolution-icon">👑</div>
+              <div class="evolution-info">
+                <h3>Level 8: Efsanevi Kral</h3>
+                <p>Zirveye ulaştın! Artık sen bir efsanesin.</p>
+                <div class="evolution-features">
+                  <span class="feature">• Altın taç</span>
+                  <span class="feature">• Efsanevi güç</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Achievements Grid -->
+        <section class="achievements-section">
+          <div class="section-header">
+            <h2>🎯 Tüm Başarılar</h2>
+            <div class="achievement-stats">
+              <div class="stat-item">
+                <span class="stat-number" id="unlockedCount">0</span>
+                <span class="stat-label">Kazanılan</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="totalCount">0</span>
+                <span class="stat-label">Toplam</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="completionRate">0%</span>
+                <span class="stat-label">Tamamlama</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Filters -->
+          <div class="category-filters">
+            <button class="filter-btn active" data-category="all">
+              🌟 Tümü
+            </button>
+            <button class="filter-btn" data-category="pomodoro">
+              🍅 Pomodoro
+            </button>
+            <button class="filter-btn" data-category="habits">
+              ✨ Alışkanlıklar
+            </button>
+            <button class="filter-btn" data-category="addiction">
+              🌱 Temizlik
+            </button>
+            <button class="filter-btn" data-category="tasks">
+              ✅ Görevler
+            </button>
+            <button class="filter-btn" data-category="general">📊 Genel</button>
+          </div>
+
+          <!-- Achievements Grid -->
+          <div class="achievements-grid" id="achievementsGrid">
+            <!-- Achievements will be dynamically loaded here -->
+            <div class="loading-message">
+              <div class="loading-spinner"></div>
+              <p>Başarılar yükleniyor...</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/achievements.js"></script>
+    <script src="js/achievements-page.js"></script>
+    <script>
+      // Profile dropdown functionality
+      const userAvatar = document.getElementById("userAvatar");
+      const profileDropdown = document.getElementById("profileDropdown");
+
+      userAvatar.addEventListener("click", (e) => {
+        e.stopPropagation();
+        profileDropdown.classList.toggle("show");
+      });
+
+      document.addEventListener("click", () => {
+        profileDropdown.classList.remove("show");
+      });
+
+      profileDropdown.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    </script>
+  </body>
+</html>

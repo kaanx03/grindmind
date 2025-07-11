@@ -1,0 +1,945 @@
+{
+  "ACHIEVEMENT_DATABASE": {
+    "pomodoro": [
+      {
+        "id": "first_pomodoro",
+        "title": "İlk Adım",
+        "description": "İlk Pomodoro seansını tamamla",
+        "icon": "🍅",
+        "points": 10,
+        "rarity": "common",
+        "condition": { "type": "pomodoro_total", "value": 1 }
+      },
+      {
+        "id": "pomodoro_5",
+        "title": "Başlangıç",
+        "description": "5 Pomodoro seansı tamamla",
+        "icon": "🔥",
+        "points": 25,
+        "rarity": "common",
+        "condition": { "type": "pomodoro_total", "value": 5 }
+      },
+      {
+        "id": "pomodoro_10",
+        "title": "Odak Ustası",
+        "description": "10 Pomodoro seansı tamamla",
+        "icon": "🎯",
+        "points": 50,
+        "rarity": "uncommon",
+        "condition": { "type": "pomodoro_total", "value": 10 }
+      },
+      {
+        "id": "pomodoro_25",
+        "title": "Çeyrek Yüzyıl",
+        "description": "25 Pomodoro seansı tamamla",
+        "icon": "🏅",
+        "points": 75,
+        "rarity": "rare",
+        "condition": { "type": "pomodoro_total", "value": 25 }
+      },
+      {
+        "id": "pomodoro_50",
+        "title": "Yarım Yüzyıl",
+        "description": "50 Pomodoro seansı tamamla",
+        "icon": "👑",
+        "points": 100,
+        "rarity": "epic",
+        "condition": { "type": "pomodoro_total", "value": 50 }
+      },
+      {
+        "id": "pomodoro_100",
+        "title": "Pomodoro Efsanesi",
+        "description": "100 Pomodoro seansı tamamla",
+        "icon": "🌟",
+        "points": 200,
+        "rarity": "legendary",
+        "condition": { "type": "pomodoro_total", "value": 100 }
+      },
+      {
+        "id": "pomodoro_250",
+        "title": "Odak Tanrısı",
+        "description": "250 Pomodoro seansı tamamla",
+        "icon": "⚡",
+        "points": 500,
+        "rarity": "mythic",
+        "condition": { "type": "pomodoro_total", "value": 250 }
+      },
+      {
+        "id": "pomodoro_500",
+        "title": "Konsantrasyon Kralı",
+        "description": "500 Pomodoro seansı tamamla",
+        "icon": "👑",
+        "points": 1000,
+        "rarity": "divine",
+        "condition": { "type": "pomodoro_total", "value": 500 }
+      },
+      {
+        "id": "pomodoro_daily_3",
+        "title": "Günlük Rituel",
+        "description": "Bir günde 3 Pomodoro yap",
+        "icon": "📅",
+        "points": 30,
+        "rarity": "common",
+        "condition": { "type": "pomodoro_daily", "value": 3 }
+      },
+      {
+        "id": "pomodoro_daily_5",
+        "title": "Verimli Gün",
+        "description": "Bir günde 5 Pomodoro yap",
+        "icon": "🚀",
+        "points": 50,
+        "rarity": "uncommon",
+        "condition": { "type": "pomodoro_daily", "value": 5 }
+      },
+      {
+        "id": "pomodoro_daily_10",
+        "title": "Süper Verimlilik",
+        "description": "Bir günde 10 Pomodoro yap",
+        "icon": "💯",
+        "points": 100,
+        "rarity": "rare",
+        "condition": { "type": "pomodoro_daily", "value": 10 }
+      },
+      {
+        "id": "pomodoro_daily_15",
+        "title": "Makine Gibi",
+        "description": "Bir günde 15 Pomodoro yap",
+        "icon": "🤖",
+        "points": 150,
+        "rarity": "epic",
+        "condition": { "type": "pomodoro_daily", "value": 15 }
+      },
+      {
+        "id": "pomodoro_streak_3",
+        "title": "Tutarlılık",
+        "description": "3 gün üst üste Pomodoro yap",
+        "icon": "🔗",
+        "points": 40,
+        "rarity": "common",
+        "condition": { "type": "pomodoro_streak", "value": 3 }
+      },
+      {
+        "id": "pomodoro_streak_7",
+        "title": "Haftalık Güç",
+        "description": "7 gün üst üste Pomodoro yap",
+        "icon": "💪",
+        "points": 80,
+        "rarity": "uncommon",
+        "condition": { "type": "pomodoro_streak", "value": 7 }
+      },
+      {
+        "id": "pomodoro_streak_14",
+        "title": "İki Hafta Güçlü",
+        "description": "14 gün üst üste Pomodoro yap",
+        "icon": "🏆",
+        "points": 160,
+        "rarity": "rare",
+        "condition": { "type": "pomodoro_streak", "value": 14 }
+      },
+      {
+        "id": "pomodoro_streak_30",
+        "title": "Aylık Kararlılık",
+        "description": "30 gün üst üste Pomodoro yap",
+        "icon": "🗓️",
+        "points": 300,
+        "rarity": "epic",
+        "condition": { "type": "pomodoro_streak", "value": 30 }
+      },
+      {
+        "id": "pomodoro_hours_10",
+        "title": "10 Saatlik Yolculuk",
+        "description": "Toplam 10 saat odaklan",
+        "icon": "⏰",
+        "points": 60,
+        "rarity": "common",
+        "condition": { "type": "pomodoro_hours", "value": 10 }
+      },
+      {
+        "id": "pomodoro_hours_25",
+        "title": "Çeyrek Gün",
+        "description": "Toplam 25 saat odaklan",
+        "icon": "🕐",
+        "points": 120,
+        "rarity": "uncommon",
+        "condition": { "type": "pomodoro_hours", "value": 25 }
+      },
+      {
+        "id": "pomodoro_hours_50",
+        "title": "İki Günlük İş",
+        "description": "Toplam 50 saat odaklan",
+        "icon": "📊",
+        "points": 200,
+        "rarity": "rare",
+        "condition": { "type": "pomodoro_hours", "value": 50 }
+      },
+      {
+        "id": "pomodoro_hours_100",
+        "title": "Yüz Saatlik Usta",
+        "description": "Toplam 100 saat odaklan",
+        "icon": "🎓",
+        "points": 400,
+        "rarity": "epic",
+        "condition": { "type": "pomodoro_hours", "value": 100 }
+      },
+      {
+        "id": "pomodoro_hours_250",
+        "title": "Çalışma Canavarı",
+        "description": "Toplam 250 saat odaklan",
+        "icon": "👹",
+        "points": 800,
+        "rarity": "legendary",
+        "condition": { "type": "pomodoro_hours", "value": 250 }
+      },
+      {
+        "id": "early_bird",
+        "title": "Erken Kuş",
+        "description": "Sabah 6-8 arası Pomodoro yap",
+        "icon": "🐦",
+        "points": 35,
+        "rarity": "uncommon",
+        "condition": { "type": "time_range", "value": "06:00-08:00" }
+      },
+      {
+        "id": "night_owl",
+        "title": "Gece Kuşu",
+        "description": "Gece 22-24 arası Pomodoro yap",
+        "icon": "🦉",
+        "points": 35,
+        "rarity": "uncommon",
+        "condition": { "type": "time_range", "value": "22:00-24:00" }
+      },
+      {
+        "id": "weekend_warrior",
+        "title": "Hafta Sonu Savaşçısı",
+        "description": "Hafta sonu Pomodoro yap",
+        "icon": "⚔️",
+        "points": 40,
+        "rarity": "uncommon",
+        "condition": { "type": "weekend_pomodoro", "value": 1 }
+      },
+      {
+        "id": "long_session",
+        "title": "Maraton Koşucusu",
+        "description": "45+ dakikalık uzun seans yap",
+        "icon": "🏃",
+        "points": 45,
+        "rarity": "uncommon",
+        "condition": { "type": "session_duration", "value": 45 }
+      }
+    ],
+    "habits": [
+      {
+        "id": "first_habit",
+        "title": "Alışkanlık Tohumı",
+        "description": "İlk alışkanlığını ekle",
+        "icon": "🌱",
+        "points": 15,
+        "rarity": "common",
+        "condition": { "type": "habit_created", "value": 1 }
+      },
+      {
+        "id": "habit_streak_3",
+        "title": "Üç Gün Güçlü",
+        "description": "Bir alışkanlıkta 3 günlük seri yap",
+        "icon": "🔥",
+        "points": 30,
+        "rarity": "common",
+        "condition": { "type": "habit_streak", "value": 3 }
+      },
+      {
+        "id": "habit_streak_7",
+        "title": "Haftalık Alışkanlık",
+        "description": "Bir alışkanlıkta 7 günlük seri yap",
+        "icon": "📅",
+        "points": 60,
+        "rarity": "uncommon",
+        "condition": { "type": "habit_streak", "value": 7 }
+      },
+      {
+        "id": "habit_streak_21",
+        "title": "Alışkanlık Oluşumu",
+        "description": "Bir alışkanlıkta 21 günlük seri yap",
+        "icon": "🧠",
+        "points": 150,
+        "rarity": "rare",
+        "condition": { "type": "habit_streak", "value": 21 }
+      },
+      {
+        "id": "habit_streak_66",
+        "title": "Otomatik Pilot",
+        "description": "Bir alışkanlıkta 66 günlük seri yap",
+        "icon": "🤖",
+        "points": 300,
+        "rarity": "epic",
+        "condition": { "type": "habit_streak", "value": 66 }
+      },
+      {
+        "id": "habit_streak_100",
+        "title": "Alışkanlık Ustası",
+        "description": "Bir alışkanlıkta 100 günlük seri yap",
+        "icon": "👑",
+        "points": 500,
+        "rarity": "legendary",
+        "condition": { "type": "habit_streak", "value": 100 }
+      },
+      {
+        "id": "multiple_habits_3",
+        "title": "Çoklu Odak",
+        "description": "Aynı anda 3 alışkanlık takip et",
+        "icon": "🎯",
+        "points": 45,
+        "rarity": "uncommon",
+        "condition": { "type": "active_habits", "value": 3 }
+      },
+      {
+        "id": "multiple_habits_5",
+        "title": "Yaşam Tarzı Değişimi",
+        "description": "Aynı anda 5 alışkanlık takip et",
+        "icon": "🌟",
+        "points": 75,
+        "rarity": "rare",
+        "condition": { "type": "active_habits", "value": 5 }
+      },
+      {
+        "id": "perfect_week",
+        "title": "Mükemmel Hafta",
+        "description": "Bir hafta tüm alışkanlıkları tamamla",
+        "icon": "💯",
+        "points": 100,
+        "rarity": "rare",
+        "condition": { "type": "perfect_week", "value": 1 }
+      },
+      {
+        "id": "habit_completion_50",
+        "title": "Yarı Yarıya",
+        "description": "Alışkanlıklarda %50 başarı oranı",
+        "icon": "📊",
+        "points": 50,
+        "rarity": "common",
+        "condition": { "type": "habit_completion_rate", "value": 50 }
+      },
+      {
+        "id": "habit_completion_80",
+        "title": "Yüksek Performans",
+        "description": "Alışkanlıklarda %80 başarı oranı",
+        "icon": "🚀",
+        "points": 120,
+        "rarity": "uncommon",
+        "condition": { "type": "habit_completion_rate", "value": 80 }
+      },
+      {
+        "id": "habit_completion_95",
+        "title": "Neredeyse Mükemmel",
+        "description": "Alışkanlıklarda %95 başarı oranı",
+        "icon": "⭐",
+        "points": 200,
+        "rarity": "rare",
+        "condition": { "type": "habit_completion_rate", "value": 95 }
+      },
+      {
+        "id": "morning_routine",
+        "title": "Sabah Rutini",
+        "description": "Sabah alışkanlığı oluştur",
+        "icon": "🌅",
+        "points": 40,
+        "rarity": "common",
+        "condition": { "type": "morning_habit", "value": 1 }
+      },
+      {
+        "id": "evening_routine",
+        "title": "Akşam Rutini",
+        "description": "Akşam alışkanlığı oluştur",
+        "icon": "🌙",
+        "points": 40,
+        "rarity": "common",
+        "condition": { "type": "evening_habit", "value": 1 }
+      },
+      {
+        "id": "health_focused",
+        "title": "Sağlık Odaklı",
+        "description": "Sağlık alışkanlığı oluştur",
+        "icon": "💪",
+        "points": 35,
+        "rarity": "common",
+        "condition": { "type": "health_habit", "value": 1 }
+      },
+      {
+        "id": "learning_habit",
+        "title": "Öğrenme Tutku",
+        "description": "Öğrenme alışkanlığı oluştur",
+        "icon": "📚",
+        "points": 35,
+        "rarity": "common",
+        "condition": { "type": "learning_habit", "value": 1 }
+      },
+      {
+        "id": "social_habit",
+        "title": "Sosyal Gelişim",
+        "description": "Sosyal alışkanlık oluştur",
+        "icon": "🤝",
+        "points": 35,
+        "rarity": "common",
+        "condition": { "type": "social_habit", "value": 1 }
+      },
+      {
+        "id": "comeback_king",
+        "title": "Geri Dönüş Kralı",
+        "description": "Kırılan alışkanlığı tekrar başlat",
+        "icon": "🔄",
+        "points": 60,
+        "rarity": "uncommon",
+        "condition": { "type": "habit_restart", "value": 1 }
+      },
+      {
+        "id": "habit_total_100",
+        "title": "Yüzlük Alışkanlık",
+        "description": "Toplam 100 alışkanlık günü tamamla",
+        "icon": "📈",
+        "points": 150,
+        "rarity": "rare",
+        "condition": { "type": "habit_total_completions", "value": 100 }
+      },
+      {
+        "id": "habit_veteran",
+        "title": "Alışkanlık Veteranı",
+        "description": "1 yıllık alışkanlık deneyimi",
+        "icon": "🎖️",
+        "points": 365,
+        "rarity": "epic",
+        "condition": { "type": "habit_days_active", "value": 365 }
+      }
+    ],
+    "addiction": [
+      {
+        "id": "first_clean_day",
+        "title": "İlk Temiz Gün",
+        "description": "İlk temiz günü kaydet",
+        "icon": "🌱",
+        "points": 20,
+        "rarity": "common",
+        "condition": { "type": "clean_days", "value": 1 }
+      },
+      {
+        "id": "clean_week",
+        "title": "Temiz Hafta",
+        "description": "7 gün temiz kal",
+        "icon": "🗓️",
+        "points": 70,
+        "rarity": "uncommon",
+        "condition": { "type": "clean_streak", "value": 7 }
+      },
+      {
+        "id": "clean_month",
+        "title": "Temiz Ay",
+        "description": "30 gün temiz kal",
+        "icon": "📅",
+        "points": 300,
+        "rarity": "rare",
+        "condition": { "type": "clean_streak", "value": 30 }
+      },
+      {
+        "id": "clean_quarter",
+        "title": "Çeyrek Yıl Temiz",
+        "description": "90 gün temiz kal",
+        "icon": "🌟",
+        "points": 900,
+        "rarity": "epic",
+        "condition": { "type": "clean_streak", "value": 90 }
+      },
+      {
+        "id": "clean_year",
+        "title": "Yıllık Zafer",
+        "description": "365 gün temiz kal",
+        "icon": "🏆",
+        "points": 3650,
+        "rarity": "legendary",
+        "condition": { "type": "clean_streak", "value": 365 }
+      },
+      {
+        "id": "recovery_warrior",
+        "title": "İyileşme Savaşçısı",
+        "description": "Bağımlılık takibine başla",
+        "icon": "⚔️",
+        "points": 25,
+        "rarity": "common",
+        "condition": { "type": "addiction_tracking", "value": 1 }
+      },
+      {
+        "id": "honest_tracker",
+        "title": "Dürüst Takipçi",
+        "description": "10 gün üst üste check-in yap",
+        "icon": "✅",
+        "points": 50,
+        "rarity": "uncommon",
+        "condition": { "type": "checkin_streak", "value": 10 }
+      },
+      {
+        "id": "relapse_recovery",
+        "title": "Tekrar Ayağa Kalk",
+        "description": "Nükse rağmen devam et",
+        "icon": "💪",
+        "points": 40,
+        "rarity": "uncommon",
+        "condition": { "type": "relapse_recovery", "value": 1 }
+      },
+      {
+        "id": "support_seeker",
+        "title": "Destek Arayan",
+        "description": "Destek notları ekle",
+        "icon": "🤝",
+        "points": 30,
+        "rarity": "common",
+        "condition": { "type": "support_notes", "value": 5 }
+      },
+      {
+        "id": "clean_milestone_100",
+        "title": "Yüzlük Kilometre Taşı",
+        "description": "100 gün temiz kal",
+        "icon": "🎯",
+        "points": 1000,
+        "rarity": "epic",
+        "condition": { "type": "clean_streak", "value": 100 }
+      },
+      {
+        "id": "multiple_addictions",
+        "title": "Çoklu Savaş",
+        "description": "Birden fazla bağımlılık takip et",
+        "icon": "🛡️",
+        "points": 60,
+        "rarity": "uncommon",
+        "condition": { "type": "multiple_addictions", "value": 2 }
+      },
+      {
+        "id": "success_rate_70",
+        "title": "İyi Kontrol",
+        "description": "%70 başarı oranı",
+        "icon": "📊",
+        "points": 70,
+        "rarity": "uncommon",
+        "condition": { "type": "success_rate", "value": 70 }
+      },
+      {
+        "id": "success_rate_90",
+        "title": "Mükemmel Kontrol",
+        "description": "%90 başarı oranı",
+        "icon": "🎖️",
+        "points": 180,
+        "rarity": "rare",
+        "condition": { "type": "success_rate", "value": 90 }
+      },
+      {
+        "id": "trigger_master",
+        "title": "Tetik Ustası",
+        "description": "Tetik analizleri yap",
+        "icon": "🧠",
+        "points": 50,
+        "rarity": "uncommon",
+        "condition": { "type": "trigger_analysis", "value": 3 }
+      },
+      {
+        "id": "freedom_fighter",
+        "title": "Özgürlük Savaşçısı",
+        "description": "6 ay temiz kal",
+        "icon": "🕊️",
+        "points": 1800,
+        "rarity": "legendary",
+        "condition": { "type": "clean_streak", "value": 180 }
+      }
+    ],
+    "tasks": [
+      {
+        "id": "first_task",
+        "title": "İlk Görev",
+        "description": "İlk görevi tamamla",
+        "icon": "✅",
+        "points": 10,
+        "rarity": "common",
+        "condition": { "type": "task_completed", "value": 1 }
+      },
+      {
+        "id": "task_completionist",
+        "title": "Görev Tamamlayıcısı",
+        "description": "10 görev tamamla",
+        "icon": "📋",
+        "points": 50,
+        "rarity": "uncommon",
+        "condition": { "type": "task_total", "value": 10 }
+      },
+      {
+        "id": "task_master",
+        "title": "Görev Ustası",
+        "description": "50 görev tamamla",
+        "icon": "🎯",
+        "points": 150,
+        "rarity": "rare",
+        "condition": { "type": "task_total", "value": 50 }
+      },
+      {
+        "id": "daily_cleaner",
+        "title": "Günlük Temizleyici",
+        "description": "Bir günde tüm görevleri tamamla",
+        "icon": "🧹",
+        "points": 40,
+        "rarity": "uncommon",
+        "condition": { "type": "daily_completion", "value": 100 }
+      },
+      {
+        "id": "perfect_week_tasks",
+        "title": "Mükemmel Görev Haftası",
+        "description": "Bir hafta %100 görev başarısı",
+        "icon": "💯",
+        "points": 100,
+        "rarity": "rare",
+        "condition": { "type": "weekly_completion", "value": 100 }
+      },
+      {
+        "id": "early_finisher",
+        "title": "Erken Bitirici",
+        "description": "Görevleri vadesinden önce bitir",
+        "icon": "⏰",
+        "points": 35,
+        "rarity": "uncommon",
+        "condition": { "type": "early_completion", "value": 3 }
+      },
+      {
+        "id": "priority_master",
+        "title": "Öncelik Ustası",
+        "description": "Yüksek öncelikli görevleri tamamla",
+        "icon": "🔴",
+        "points": 45,
+        "rarity": "uncommon",
+        "condition": { "type": "priority_completion", "value": 5 }
+      },
+      {
+        "id": "planner",
+        "title": "Planlayıcı",
+        "description": "Gelecek için görev planla",
+        "icon": "📅",
+        "points": 25,
+        "rarity": "common",
+        "condition": { "type": "future_planning", "value": 3 }
+      },
+      {
+        "id": "category_organizer",
+        "title": "Kategori Organizatörü",
+        "description": "Farklı kategorilerde görev tamamla",
+        "icon": "🗂️",
+        "points": 40,
+        "rarity": "uncommon",
+        "condition": { "type": "category_diversity", "value": 3 }
+      },
+      {
+        "id": "recurring_master",
+        "title": "Tekrarlayan Görev Ustası",
+        "description": "Tekrarlayan görevleri düzenli yap",
+        "icon": "🔄",
+        "points": 60,
+        "rarity": "uncommon",
+        "condition": { "type": "recurring_completion", "value": 7 }
+      },
+      {
+        "id": "big_project",
+        "title": "Büyük Proje",
+        "description": "Uzun süreli proje tamamla",
+        "icon": "🏗️",
+        "points": 80,
+        "rarity": "rare",
+        "condition": { "type": "project_completion", "value": 1 }
+      },
+      {
+        "id": "multitasker",
+        "title": "Çoklu Görevci",
+        "description": "Aynı günde 5+ görev tamamla",
+        "icon": "⚡",
+        "points": 50,
+        "rarity": "uncommon",
+        "condition": { "type": "daily_task_count", "value": 5 }
+      },
+      {
+        "id": "deadline_keeper",
+        "title": "Son Tarih Bekçisi",
+        "description": "10 görevi zamanında tamamla",
+        "icon": "⏳",
+        "points": 60,
+        "rarity": "uncommon",
+        "condition": { "type": "on_time_completion", "value": 10 }
+      },
+      {
+        "id": "productivity_beast",
+        "title": "Verimlilik Canavarı",
+        "description": "100 görev tamamla",
+        "icon": "👹",
+        "points": 300,
+        "rarity": "epic",
+        "condition": { "type": "task_total", "value": 100 }
+      },
+      {
+        "id": "task_ninja",
+        "title": "Görev Ninjası",
+        "description": "Süratle görevleri bitir",
+        "icon": "🥷",
+        "points": 70,
+        "rarity": "rare",
+        "condition": { "type": "speed_completion", "value": 5 }
+      }
+    ],
+    "general": [
+      {
+        "id": "daily_user",
+        "title": "Günlük Kullanıcı",
+        "description": "3 gün üst üste GRINDMIND kullan",
+        "icon": "📱",
+        "points": 30,
+        "rarity": "common",
+        "condition": { "type": "daily_streak", "value": 3 }
+      },
+      {
+        "id": "weekly_champion",
+        "title": "Haftalık Şampiyon",
+        "description": "7 gün üst üste GRINDMIND kullan",
+        "icon": "🏆",
+        "points": 70,
+        "rarity": "uncommon",
+        "condition": { "type": "daily_streak", "value": 7 }
+      },
+      {
+        "id": "monthly_legend",
+        "title": "Aylık Efsane",
+        "description": "30 gün üst üste GRINDMIND kullan",
+        "icon": "📅",
+        "points": 300,
+        "rarity": "rare",
+        "condition": { "type": "daily_streak", "value": 30 }
+      },
+      {
+        "id": "grindmind_addict",
+        "title": "GRINDMIND Bağımlısı",
+        "description": "100 gün üst üste GRINDMIND kullan",
+        "icon": "💎",
+        "points": 1000,
+        "rarity": "epic",
+        "condition": { "type": "daily_streak", "value": 100 }
+      },
+      {
+        "id": "all_rounder",
+        "title": "Çok Yönlü",
+        "description": "Tüm modülleri kullan",
+        "icon": "🌈",
+        "points": 80,
+        "rarity": "uncommon",
+        "condition": { "type": "all_modules_used", "value": 1 }
+      },
+      {
+        "id": "level_5",
+        "title": "Beşinci Seviye",
+        "description": "Level 5'e ulaş",
+        "icon": "🔢",
+        "points": 0,
+        "rarity": "common",
+        "condition": { "type": "level_reached", "value": 5 }
+      },
+      {
+        "id": "level_10",
+        "title": "Onuncu Seviye",
+        "description": "Level 10'a ulaş",
+        "icon": "🔟",
+        "points": 0,
+        "rarity": "uncommon",
+        "condition": { "type": "level_reached", "value": 10 }
+      },
+      {
+        "id": "level_25",
+        "title": "Yirmi Beşinci Seviye",
+        "description": "Level 25'e ulaş",
+        "icon": "🎖️",
+        "points": 0,
+        "rarity": "rare",
+        "condition": { "type": "level_reached", "value": 25 }
+      },
+      {
+        "id": "level_50",
+        "title": "Ellinci Seviye",
+        "description": "Level 50'ye ulaş",
+        "icon": "👑",
+        "points": 0,
+        "rarity": "epic",
+        "condition": { "type": "level_reached", "value": 50 }
+      },
+      {
+        "id": "level_100",
+        "title": "Yüzüncü Seviye",
+        "description": "Level 100'e ulaş",
+        "icon": "⚡",
+        "points": 0,
+        "rarity": "legendary",
+        "condition": { "type": "level_reached", "value": 100 }
+      },
+      {
+        "id": "point_collector",
+        "title": "Puan Toplayıcısı",
+        "description": "1000 XP topla",
+        "icon": "💰",
+        "points": 0,
+        "rarity": "uncommon",
+        "condition": { "type": "total_points", "value": 1000 }
+      },
+      {
+        "id": "achievement_hunter",
+        "title": "Başarı Avcısı",
+        "description": "10 başarı kazanın",
+        "icon": "🏹",
+        "points": 100,
+        "rarity": "uncommon",
+        "condition": { "type": "achievement_count", "value": 10 }
+      },
+      {
+        "id": "completionist",
+        "title": "Tamamlayıcı",
+        "description": "25 başarı kazanın",
+        "icon": "📜",
+        "points": 250,
+        "rarity": "rare",
+        "condition": { "type": "achievement_count", "value": 25 }
+      },
+      {
+        "id": "perfectionist",
+        "title": "Mükemmeliyetçi",
+        "description": "50 başarı kazanın",
+        "icon": "💎",
+        "points": 500,
+        "rarity": "epic",
+        "condition": { "type": "achievement_count", "value": 50 }
+      },
+      {
+        "id": "legend",
+        "title": "Efsane",
+        "description": "75 başarı kazanın",
+        "icon": "🌟",
+        "points": 1000,
+        "rarity": "legendary",
+        "condition": { "type": "achievement_count", "value": 75 }
+      }
+    ],
+    "special": [
+      {
+        "id": "new_year_resolution",
+        "title": "Yeni Yıl Kararı",
+        "description": "Ocak ayında 15 Pomodoro yap",
+        "icon": "🎊",
+        "points": 100,
+        "rarity": "rare",
+        "condition": { "type": "monthly_pomodoro", "value": 15, "month": 1 }
+      },
+      {
+        "id": "spring_awakening",
+        "title": "Bahar Uyanışı",
+        "description": "Mart-Mayıs arasında 50 Pomodoro",
+        "icon": "🌸",
+        "points": 150,
+        "rarity": "rare",
+        "condition": {
+          "type": "seasonal_pomodoro",
+          "value": 50,
+          "season": "spring"
+        }
+      },
+      {
+        "id": "summer_grind",
+        "title": "Yaz Çalışması",
+        "description": "Haziran-Ağustos arasında 75 Pomodoro",
+        "icon": "☀️",
+        "points": 200,
+        "rarity": "epic",
+        "condition": {
+          "type": "seasonal_pomodoro",
+          "value": 75,
+          "season": "summer"
+        }
+      },
+      {
+        "id": "autumn_focus",
+        "title": "Sonbahar Odağı",
+        "description": "Eylül-Kasım arasında 60 Pomodoro",
+        "icon": "🍂",
+        "points": 180,
+        "rarity": "rare",
+        "condition": {
+          "type": "seasonal_pomodoro",
+          "value": 60,
+          "season": "autumn"
+        }
+      },
+      {
+        "id": "winter_warrior",
+        "title": "Kış Savaşçısı",
+        "description": "Aralık-Şubat arasında 40 Pomodoro",
+        "icon": "❄️",
+        "points": 120,
+        "rarity": "uncommon",
+        "condition": {
+          "type": "seasonal_pomodoro",
+          "value": 40,
+          "season": "winter"
+        }
+      },
+      {
+        "id": "birthday_gift",
+        "title": "Doğum Günü Hediyesi",
+        "description": "Doğum günümde özel başarı",
+        "icon": "🎂",
+        "points": 365,
+        "rarity": "legendary",
+        "condition": { "type": "birthday_special", "value": 1 }
+      },
+      {
+        "id": "midnight_grinder",
+        "title": "Gece Yarısı Çalışkanı",
+        "description": "Gece yarısı Pomodoro yap",
+        "icon": "🌙",
+        "points": 50,
+        "rarity": "uncommon",
+        "condition": { "type": "midnight_pomodoro", "value": 1 }
+      },
+      {
+        "id": "holiday_dedication",
+        "title": "Tatil Adanmışlığı",
+        "description": "Resmi tatilde çalış",
+        "icon": "🎈",
+        "points": 75,
+        "rarity": "rare",
+        "condition": { "type": "holiday_work", "value": 1 }
+      },
+      {
+        "id": "first_week_champion",
+        "title": "İlk Hafta Şampiyonu",
+        "description": "İlk haftada 10 Pomodoro",
+        "icon": "🚀",
+        "points": 80,
+        "rarity": "uncommon",
+        "condition": { "type": "first_week_pomodoro", "value": 10 }
+      },
+      {
+        "id": "grindmind_anniversary",
+        "title": "GRINDMIND Yıldönümü",
+        "description": "1 yıl GRINDMIND kullan",
+        "icon": "🎉",
+        "points": 1000,
+        "rarity": "legendary",
+        "condition": { "type": "user_anniversary", "value": 365 }
+      }
+    ]
+  },
+  "RARITY_CONFIG": {
+    "common": { "color": "#9E9E9E", "multiplier": 1, "name": "Sıradan" },
+    "uncommon": {
+      "color": "#4CAF50",
+      "multiplier": 1.2,
+      "name": "Yaygın Olmayan"
+    },
+    "rare": { "color": "#2196F3", "multiplier": 1.5, "name": "Nadir" },
+    "epic": { "color": "#9C27B0", "multiplier": 2, "name": "Destansı" },
+    "legendary": { "color": "#FF9800", "multiplier": 3, "name": "Efsanevi" },
+    "mythic": { "color": "#F44336", "multiplier": 4, "name": "Mitolojik" },
+    "divine": { "color": "#FFD700", "multiplier": 5, "name": "İlahi" }
+  }
+}

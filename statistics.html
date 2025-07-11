@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>İstatistikler - GRINDMIND</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="css/statistics.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="nav">
+        <div class="logo" onclick="window.location.href='dashboard.html'">
+          GRINDMIND
+        </div>
+        <div class="nav-menu">
+          <a href="dashboard.html" class="nav-item">Ana Sayfa</a>
+          <a href="activities.html" class="nav-item">Aktiviteler</a>
+          <a href="statistics.html" class="nav-item active">İstatistikler</a>
+          <a href="achievements.html" class="nav-item">Başarılar</a>
+        </div>
+        <div class="user-section">
+          <button class="notification-btn" id="notificationBtn">
+            🔔
+            <span class="notification-badge" id="notificationBadge">3</span>
+          </button>
+          <div class="user-avatar" id="userAvatar">T</div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">İstatistikler</h1>
+        <p class="page-subtitle">
+          Gelişimini analiz et, trendleri keşfet ve hedeflerine ulaşma sürecini
+          görselleştir
+        </p>
+      </div>
+
+      <!-- Time Filter -->
+      <div class="time-filter">
+        <button class="filter-btn" onclick="changeTimeFilter('today')">
+          Bugün
+        </button>
+        <button class="filter-btn active" onclick="changeTimeFilter('week')">
+          Bu Hafta
+        </button>
+        <button class="filter-btn" onclick="changeTimeFilter('month')">
+          Bu Ay
+        </button>
+        <button class="filter-btn" onclick="changeTimeFilter('year')">
+          Bu Yıl
+        </button>
+        <button class="filter-btn" onclick="changeTimeFilter('all')">
+          Tümü
+        </button>
+      </div>
+
+      <!-- Stats Overview -->
+      <div class="stats-overview" id="statsOverview">
+        <div class="overview-card pomodoro">
+          <span class="overview-icon">⏱️</span>
+          <h3 class="overview-title">Pomodoro Sessions</h3>
+          <div class="overview-value" id="pomodoroStats">24</div>
+          <span class="overview-change change-positive" id="pomodoroChange"
+            >+15% bu hafta</span
+          >
+        </div>
+
+        <div class="overview-card habits">
+          <span class="overview-icon">✨</span>
+          <h3 class="overview-title">Alışkanlık Başarısı</h3>
+          <div class="overview-value" id="habitsStats">87%</div>
+          <span class="overview-change change-positive" id="habitsChange"
+            >+5% bu hafta</span
+          >
+        </div>
+
+        <div class="overview-card tasks">
+          <span class="overview-icon">📋</span>
+          <h3 class="overview-title">Tamamlanan Görev</h3>
+          <div class="overview-value" id="tasksStats">18</div>
+          <span class="overview-change change-positive" id="tasksChange"
+            >+8% bu hafta</span
+          >
+        </div>
+
+        <div class="overview-card weight">
+          <span class="overview-icon">⚖️</span>
+          <h3 class="overview-title">Kilo Değişimi</h3>
+          <div class="overview-value" id="weightStats">-1.2kg</div>
+          <span class="overview-change change-positive" id="weightChange"
+            >Hedef yönünde</span
+          >
+        </div>
+
+        <div class="overview-card addictions">
+          <span class="overview-icon">🚫</span>
+          <h3 class="overview-title">Temiz Günler</h3>
+          <div class="overview-value" id="addictionsStats">45</div>
+          <span class="overview-change change-positive" id="addictionsChange"
+            >Devam ediyor</span
+          >
+        </div>
+
+        <div class="overview-card study">
+          <span class="overview-icon">📚</span>
+          <h3 class="overview-title">Çalışma Saati</h3>
+          <div class="overview-value" id="studyStats">12.5h</div>
+          <span class="overview-change change-positive" id="studyChange"
+            >+20% bu hafta</span
+          >
+        </div>
+      </div>
+
+      <!-- Charts Grid -->
+      <div class="charts-grid">
+        <!-- Weekly Progress Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <h3 class="chart-title">Haftalık İlerleme</h3>
+              <p class="chart-subtitle">Son 7 günün aktivite özeti</p>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="weeklyChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Activity Distribution -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <h3 class="chart-title">Aktivite Dağılımı</h3>
+              <p class="chart-subtitle">Zaman ayırdığın aktiviteler</p>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="distributionChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Monthly Trend -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <h3 class="chart-title">Aylık Trend</h3>
+              <p class="chart-subtitle">Son 30 günün performans analizi</p>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="monthlyChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Success Rate -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <h3 class="chart-title">Başarı Oranları</h3>
+              <p class="chart-subtitle">Aktivite bazında performans</p>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="successChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Details -->
+      <div class="activity-details">
+        <!-- Pomodoro Details -->
+        <div class="detail-card">
+          <div class="detail-header">
+            <div
+              class="detail-icon"
+              style="background: #ff6b6b20; color: #ff6b6b"
+            >
+              ⏱️
+            </div>
+            <div class="detail-info">
+              <h3>Pomodoro İstatistikleri</h3>
+              <p>Odaklanma ve verimlilik analizi</p>
+            </div>
+          </div>
+          <div class="detail-stats">
+            <div class="detail-stat">
+              <span class="detail-stat-value">4.2h</span>
+              <span class="detail-stat-label">Günlük Ortalama</span>
+            </div>
+            <div class="detail-stat">
+              <span class="detail-stat-value">92%</span>
+              <span class="detail-stat-label">Tamamlama Oranı</span>
+            </div>
+          </div>
+          <ul class="detail-insights">
+            <li>En verimli saatler: 09:00-11:00</li>
+            <li>Ortalama session süresi: 25 dakika</li>
+            <li>En uzun streak: 8 gün</li>
+            <li>Favori çalışma kategorisi: İş</li>
+          </ul>
+        </div>
+
+        <!-- Habits Details -->
+        <div class="detail-card">
+          <div class="detail-header">
+            <div
+              class="detail-icon"
+              style="background: #4ecdc420; color: #4ecdc4"
+            >
+              ✨
+            </div>
+            <div class="detail-info">
+              <h3>Alışkanlık İstatistikleri</h3>
+              <p>Pozitif yaşam tarzı gelişimi</p>
+            </div>
+          </div>
+          <div class="detail-stats">
+            <div class="detail-stat">
+              <span class="detail-stat-value">7</span>
+              <span class="detail-stat-label">Aktif Alışkanlık</span>
+            </div>
+            <div class="detail-stat">
+              <span class="detail-stat-value">85%</span>
+              <span class="detail-stat-label">Başarı Oranı</span>
+            </div>
+          </div>
+          <ul class="detail-insights">
+            <li>En uzun streak: Su içme (23 gün)</li>
+            <li>En başarılı kategori: Sağlık</li>
+            <li>Haftalık tutarlılık: %87</li>
+            <li>Tamamlanan hedef: 3 alışkanlık</li>
+          </ul>
+        </div>
+
+        <!-- Tasks Details -->
+        <div class="detail-card">
+          <div class="detail-header">
+            <div
+              class="detail-icon"
+              style="background: #45b7d120; color: #45b7d1"
+            >
+              📋
+            </div>
+            <div class="detail-info">
+              <h3>Görev İstatistikleri</h3>
+              <p>Planlama ve organizasyon analizi</p>
+            </div>
+          </div>
+          <div class="detail-stats">
+            <div class="detail-stat">
+              <span class="detail-stat-value">18</span>
+              <span class="detail-stat-label">Bu Hafta</span>
+            </div>
+            <div class="detail-stat">
+              <span class="detail-stat-value">94%</span>
+              <span class="detail-stat-label">Zamanında Bitirme</span>
+            </div>
+          </div>
+          <ul class="detail-insights">
+            <li>En verimli gün: Salı (6 görev)</li>
+            <li>Ortalama tamamlama süresi: 2.3 gün</li>
+            <li>En çok kullanılan kategori: İş</li>
+            <li>Yüksek öncelik başarı oranı: %96</li>
+          </ul>
+        </div>
+
+        <!-- Weight Details -->
+        <div class="detail-card">
+          <div class="detail-header">
+            <div
+              class="detail-icon"
+              style="background: #f093fb20; color: #f093fb"
+            >
+              ⚖️
+            </div>
+            <div class="detail-info">
+              <h3>Kilo İstatistikleri</h3>
+              <p>Sağlık ve fitness journey</p>
+            </div>
+          </div>
+          <div class="detail-stats">
+            <div class="detail-stat">
+              <span class="detail-stat-value">-3.2kg</span>
+              <span class="detail-stat-label">Bu Ay</span>
+            </div>
+            <div class="detail-stat">
+              <span class="detail-stat-value">22.1</span>
+              <span class="detail-stat-label">Mevcut BMI</span>
+            </div>
+          </div>
+          <ul class="detail-insights">
+            <li>Hedef ilerleme: %68 tamamlandı</li>
+            <li>Haftalık ortalama: -0.8kg</li>
+            <li>BMI kategorisi: Normal</li>
+            <li>Tutarlı kayıt: 45 gün</li>
+          </ul>
+        </div>
+
+        <!-- Addictions Details -->
+        <div class="detail-card">
+          <div class="detail-header">
+            <div
+              class="detail-icon"
+              style="background: #96ceb420; color: #96ceb4"
+            >
+              🚫
+            </div>
+            <div class="detail-info">
+              <h3>Bağımlılık İstatistikleri</h3>
+              <p>Özgürlük yolculuğu analizi</p>
+            </div>
+          </div>
+          <div class="detail-stats">
+            <div class="detail-stat">
+              <span class="detail-stat-value">45</span>
+              <span class="detail-stat-label">Temiz Gün</span>
+            </div>
+            <div class="detail-stat">
+              <span class="detail-stat-value">3</span>
+              <span class="detail-stat-label">Takip Edilen</span>
+            </div>
+          </div>
+          <ul class="detail-insights">
+            <li>En uzun seri: Sigara (45 gün)</li>
+            <li>Genel başarı oranı: %91</li>
+            <li>Risk anları: Akşam saatleri</li>
+            <li>Güçlü motivasyon günleri: Hafta sonu</li>
+          </ul>
+        </div>
+
+        <!-- Study Details -->
+        <div class="detail-card">
+          <div class="detail-header">
+            <div
+              class="detail-icon"
+              style="background: #f6b93b20; color: #f6b93b"
+            >
+              📚
+            </div>
+            <div class="detail-info">
+              <h3>Çalışma İstatistikleri</h3>
+              <p>Öğrenme ve gelişim analizi</p>
+            </div>
+          </div>
+          <div class="detail-stats">
+            <div class="detail-stat">
+              <span class="detail-stat-value">12.5h</span>
+              <span class="detail-stat-label">Bu Hafta</span>
+            </div>
+            <div class="detail-stat">
+              <span class="detail-stat-value">15</span>
+              <span class="detail-stat-label">Tamamlanan Konu</span>
+            </div>
+          </div>
+          <ul class="detail-insights">
+            <li>En verimli saat: 14:00-16:00</li>
+            <li>Favori konu: JavaScript</li>
+            <li>Ortalama session: 45 dakika</li>
+            <li>Haftalık tutarlılık: %88</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Achievements Section -->
+      <div class="achievements-section">
+        <div class="achievements-header">
+          <h2 class="achievements-title">🏆 Son Başarılar</h2>
+          <p class="achievements-subtitle">
+            Elde ettiğin rozetler ve başarılar
+          </p>
+        </div>
+        <div class="achievements-grid">
+          <div class="achievement-card unlocked">
+            <span class="achievement-icon">🔥</span>
+            <h4 class="achievement-name">Streak Master</h4>
+            <p class="achievement-description">7 gün üst üste pomodoro yap</p>
+            <div class="achievement-progress">
+              <div class="achievement-progress-fill" style="width: 100%"></div>
+            </div>
+            <p class="achievement-progress-text">Tamamlandı!</p>
+          </div>
+
+          <div class="achievement-card unlocked">
+            <span class="achievement-icon">💪</span>
+            <h4 class="achievement-name">Habit Hero</h4>
+            <p class="achievement-description">
+              5 alışkanlık aynı anda takip et
+            </p>
+            <div class="achievement-progress">
+              <div class="achievement-progress-fill" style="width: 100%"></div>
+            </div>
+            <p class="achievement-progress-text">Tamamlandı!</p>
+          </div>
+
+          <div class="achievement-card">
+            <span class="achievement-icon">⚖️</span>
+            <h4 class="achievement-name">Weight Warrior</h4>
+            <p class="achievement-description">
+              30 gün boyunca kilo takibi yap
+            </p>
+            <div class="achievement-progress">
+              <div class="achievement-progress-fill" style="width: 75%"></div>
+            </div>
+            <p class="achievement-progress-text">23/30 gün</p>
+          </div>
+
+          <div class="achievement-card">
+            <span class="achievement-icon">🎯</span>
+            <h4 class="achievement-name">Focus Champion</h4>
+            <p class="achievement-description">Günde 50 pomodoro tamamla</p>
+            <div class="achievement-progress">
+              <div class="achievement-progress-fill" style="width: 48%"></div>
+            </div>
+            <p class="achievement-progress-text">24/50 session</p>
+          </div>
+
+          <div class="achievement-card">
+            <span class="achievement-icon">📚</span>
+            <h4 class="achievement-name">Study Sage</h4>
+            <p class="achievement-description">Haftalık 20 saat çalışma</p>
+            <div class="achievement-progress">
+              <div class="achievement-progress-fill" style="width: 62%"></div>
+            </div>
+            <p class="achievement-progress-text">12.5/20 saat</p>
+          </div>
+
+          <div class="achievement-card">
+            <span class="achievement-icon">🚫</span>
+            <h4 class="achievement-name">Clean Living</h4>
+            <p class="achievement-description">60 gün temiz kalma</p>
+            <div class="achievement-progress">
+              <div class="achievement-progress-fill" style="width: 75%"></div>
+            </div>
+            <p class="achievement-progress-text">45/60 gün</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Export Section -->
+      <div class="export-section">
+        <h2 class="export-title">📤 Verilerini Dışa Aktar</h2>
+        <p class="export-description">
+          İstatistiklerini ve ilerleme raporlarını farklı formatlarda indir
+        </p>
+        <div class="export-buttons">
+          <button class="export-btn btn-primary" onclick="exportData('pdf')">
+            📄 PDF Raporu
+          </button>
+          <button
+            class="export-btn btn-secondary"
+            onclick="exportData('excel')"
+          >
+            📊 Excel Tablosu
+          </button>
+          <button class="export-btn btn-secondary" onclick="exportData('csv')">
+            📝 CSV Dosyası
+          </button>
+          <button class="export-btn btn-secondary" onclick="exportData('json')">
+            💾 JSON Verisi
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="notificationToast" class="notification" style="display: none">
+      <div id="notificationText">İstatistik güncellendi!</div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/statistics.js"></script>
+  </body>
+</html>

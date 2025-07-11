@@ -1,0 +1,524 @@
+{
+  "addictions": [
+    {
+      "id": 1,
+      "name": "Sigara",
+      "icon": "🚭",
+      "category": "substance",
+      "description": "Nikotin bağımlılığı",
+      "tips": [
+        "Her içme isteği geldiğinde 5 dakika bekle",
+        "Derin nefes alma egzersizleri yap",
+        "Ellerini meşgul edecek bir şey bul",
+        "Su iç ve sakız çiğne"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Alkol",
+      "icon": "🍷",
+      "category": "substance",
+      "description": "Alkol bağımlılığı",
+      "tips": [
+        "Sosyal içme durumlarından kaçın",
+        "Alternatif içecekler bul",
+        "Destek grubu katıl",
+        "Stresli anlarda başka aktiviteler yap"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Sosyal Medya",
+      "icon": "📱",
+      "category": "digital",
+      "description": "Sosyal medya bağımlılığı",
+      "tips": [
+        "Telefonunu başka odaya koy",
+        "Bildirimları kapat",
+        "Belirli saatlerde kontrol et",
+        "Gerçek sosyal aktivitelere katıl"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Video Oyunları",
+      "icon": "🎮",
+      "category": "digital",
+      "description": "Oyun bağımlılığı",
+      "tips": [
+        "Oyun zamanını sınırla",
+        "Başka hobiler edin",
+        "Arkadaşlarla gerçek aktiviteler yap",
+        "Oyun yerine kitap oku"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Fast Food",
+      "icon": "🍔",
+      "category": "food",
+      "description": "Hızlı yemek bağımlılığı",
+      "tips": [
+        "Evde sağlıklı yemek hazırla",
+        "Fast food restoranlarından uzak dur",
+        "Açken alışveriş yapma",
+        "Su iç, açlık hissini kontrol et"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Şeker",
+      "icon": "🍭",
+      "category": "food",
+      "description": "Şeker bağımlılığı",
+      "tips": [
+        "Şekerli atıştırmalıkları evden kaldır",
+        "Meyve ile şeker ihtiyacını karşıla",
+        "Protein ağırlıklı öğünler ye",
+        "Şeker yerine bal kullan"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Kahve",
+      "icon": "☕",
+      "category": "substance",
+      "description": "Kafein bağımlılığı",
+      "tips": [
+        "Günlük kahve miktarını azalt",
+        "Yeşil çay ile değiştir",
+        "Bol su iç",
+        "Erken saatlerde uyumaya çalış"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Online Alışveriş",
+      "icon": "🛒",
+      "category": "behavioral",
+      "description": "Kompulsif alışveriş",
+      "tips": [
+        "Alışveriş uygulamalarını sil",
+        "Bütçe yap ve ona sadık kal",
+        "24 saat kuralı uygula",
+        "Alışveriş listesi yap"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Netflix/Dizi",
+      "icon": "📺",
+      "category": "digital",
+      "description": "Aşırı dizi izleme",
+      "tips": [
+        "Günlük izleme süresini sınırla",
+        "Otomatik oynatmayı kapat",
+        "Başka aktiviteler planla",
+        "Arkadaşlarla sosyal aktiviteler yap"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Porno",
+      "icon": "🔞",
+      "category": "digital",
+      "description": "Pornografi bağımlılığı",
+      "tips": [
+        "İnternet filtresi kullan",
+        "Başka aktivitelerle meşgul ol",
+        "Profesyonel yardım al",
+        "Destek gruplarına katıl"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Kumar",
+      "icon": "🎰",
+      "category": "behavioral",
+      "description": "Kumar bağımlılığı",
+      "tips": [
+        "Kumar sitelerini blokla",
+        "Mali durumunu takip et",
+        "Profesyonel yardım al",
+        "Başka hobiler edin"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Uyuşturucu",
+      "icon": "💊",
+      "category": "substance",
+      "description": "Madde bağımlılığı",
+      "tips": [
+        "Acil durumda profesyonel yardım al",
+        "Destek gruplarına katıl",
+        "Çevrenizi değiştir",
+        "Rehabilitasyon merkezine başvur"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Tırnak Yeme",
+      "icon": "💅",
+      "category": "behavioral",
+      "description": "Kompulsif tırnak yeme",
+      "tips": [
+        "Tırnaklarını kısa kes",
+        "Acı tırnak cilası sür",
+        "Ellerini meşgul et",
+        "Stresi azaltmaya çalış"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Saç Yolma",
+      "icon": "💇‍♀️",
+      "category": "behavioral",
+      "description": "Trikotillomani",
+      "tips": [
+        "Ellerini meşgul edecek stres topu kullan",
+        "Saçlarını topla veya şapka tak",
+        "Profesyonel yardım al",
+        "Alternatif etkinlikler bul"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Deri Koparma",
+      "icon": "🤏",
+      "category": "behavioral",
+      "description": "Dermatillomani",
+      "tips": [
+        "Eldivenler giy",
+        "Tırnaklarını kısa kes",
+        "Dikkat dağıtıcı aktiviteler yap",
+        "Cilt bakımı rutini oluştur"
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Yalan Söyleme",
+      "icon": "🤥",
+      "category": "behavioral",
+      "description": "Kompulsif yalan söyleme",
+      "tips": [
+        "Konuşmadan önce düşün",
+        "Dürüstlüğün faydalarını hatırla",
+        "Küçük doğrularla başla",
+        "Profesyonel yardım al"
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Erteleme",
+      "icon": "⏰",
+      "category": "behavioral",
+      "description": "Kronik erteleme",
+      "tips": [
+        "Görevleri küçük parçalara böl",
+        "Zaman planı yap",
+        "Ödül sistemi kur",
+        "Dikkat dağıtıcıları kaldır"
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Mükemmeliyetçilik",
+      "icon": "🎯",
+      "category": "behavioral",
+      "description": "Aşırı mükemmeliyetçilik",
+      "tips": [
+        "'Yeterince iyi' konseptini kabul et",
+        "Hataları öğrenme fırsatı say",
+        "Zaman sınırları koy",
+        "İlerlemeyi kutla"
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Aşırı Çalışma",
+      "icon": "💼",
+      "category": "behavioral",
+      "description": "İş bağımlılığı",
+      "tips": [
+        "Çalışma saatleri belirle",
+        "Tatil ve molalar al",
+        "Hobiler edin",
+        "İş-yaşam dengesini kur"
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Aşırı Egzersiz",
+      "icon": "🏃‍♂️",
+      "category": "behavioral",
+      "description": "Egzersiz bağımlılığı",
+      "tips": [
+        "Dinlenme günleri planla",
+        "Vücut sinyallarını dinle",
+        "Başka aktiviteler ekle",
+        "Profesyonel rehberlik al"
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Aşırı Yeme",
+      "icon": "🍽️",
+      "category": "food",
+      "description": "Tıkınırcasına yeme",
+      "tips": [
+        "Duygusal tetikleyicileri fark et",
+        "Düzenli öğünler ye",
+        "Yavaş ye ve çiğne",
+        "Profesyonel destek al"
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Diyet/Aç Kalma",
+      "icon": "🥗",
+      "category": "food",
+      "description": "Aşırı diyet yapma",
+      "tips": [
+        "Sağlıklı yeme alışkanlıkları edin",
+        "Vücut imajını iyileştir",
+        "Profesyonel nutrisyonist consulte et",
+        "Sosyal destek al"
+      ]
+    },
+    {
+      "id": 23,
+      "name": "Telefon/SMS",
+      "icon": "📞",
+      "category": "digital",
+      "description": "Aşırı telefon kullanımı",
+      "tips": [
+        "Ekran süresini kontrol et",
+        "Sessiz mod kullan",
+        "Telefonsuz alanlar oluştur",
+        "Gerçek yüz yüze iletişim kur"
+      ]
+    },
+    {
+      "id": 24,
+      "name": "Haber Takibi",
+      "icon": "📰",
+      "category": "digital",
+      "description": "Kompulsif haber okuma",
+      "tips": [
+        "Haber okuma saatleri belirle",
+        "Güvenilir kaynak seç",
+        "Negatif haberleri sınırla",
+        "Başka aktivitelerle denge kur"
+      ]
+    },
+    {
+      "id": 25,
+      "name": "Gossip/Dedikodu",
+      "icon": "🗣️",
+      "category": "behavioral",
+      "description": "Aşırı dedikodu yapma",
+      "tips": [
+        "Konuşmadan önce düşün",
+        "Pozitif konular bul",
+        "Empati geliştir",
+        "Başka aktivitelere yönlen"
+      ]
+    },
+    {
+      "id": 26,
+      "name": "Müzik/Podcast",
+      "icon": "🎵",
+      "category": "digital",
+      "description": "Aşırı müzik dinleme",
+      "tips": [
+        "Sessizlik anları oluştur",
+        "Doğal sesler dinle",
+        "Sosyal aktivitelere katıl",
+        "Dinleme süresini sınırla"
+      ]
+    },
+    {
+      "id": 27,
+      "name": "Temizlik",
+      "icon": "🧽",
+      "category": "behavioral",
+      "description": "Kompulsif temizlik",
+      "tips": [
+        "Temizlik programı yap",
+        "Mükemmel olmayı kabul et",
+        "Profesyonel yardım al",
+        "Rahatlatıcı aktiviteler yap"
+      ]
+    },
+    {
+      "id": 28,
+      "name": "Kontrol Etme",
+      "icon": "🔍",
+      "category": "behavioral",
+      "description": "Aşırı kontrol ihtiyacı",
+      "tips": [
+        "Belirsizliği tolere etmeyi öğren",
+        "Kontrolü bırakmayı dene",
+        "Mindfulness tekniklerini uygula",
+        "Güven geliştir"
+      ]
+    },
+    {
+      "id": 29,
+      "name": "Onay Arama",
+      "icon": "👍",
+      "category": "behavioral",
+      "description": "Sürekli onay arama",
+      "tips": [
+        "Kendi değerini bilmeyi öğren",
+        "İç sesini dinle",
+        "Bağımsızlık geliştir",
+        "Özgüven aktiviteleri yap"
+      ]
+    },
+    {
+      "id": 30,
+      "name": "Flört/Dating",
+      "icon": "💕",
+      "category": "behavioral",
+      "description": "Aşırı tanışma uygulaması kullanımı",
+      "tips": [
+        "Uygulamaları sınırla",
+        "Gerçek sosyal aktivitelere katıl",
+        "Kendi ile vakit geçir",
+        "Kaliteli ilişkilere odaklan"
+      ]
+    },
+    {
+      "id": 31,
+      "name": "Para Harcama",
+      "icon": "💳",
+      "category": "behavioral",
+      "description": "Kompulsif harcama",
+      "tips": [
+        "Bütçe yap ve takip et",
+        "Alışveriş öncesi liste yap",
+        "Duygusal harcamayı fark et",
+        "Alternatif aktiviteler bul"
+      ]
+    },
+    {
+      "id": 32,
+      "name": "Spor Bahis",
+      "icon": "⚽",
+      "category": "behavioral",
+      "description": "Spor bahis bağımlılığı",
+      "tips": [
+        "Bahis uygulamalarını sil",
+        "Mali durumunu takip et",
+        "Sporu sadece izle",
+        "Profesyonel yardım al"
+      ]
+    },
+    {
+      "id": 33,
+      "name": "Crypto/Borsa",
+      "icon": "📈",
+      "category": "behavioral",
+      "description": "Aşırı yatırım/trading",
+      "tips": [
+        "Yatırım limitlerini belirle",
+        "Duygusal karar verme",
+        "Eğitim al",
+        "Uzun vadeli düşün"
+      ]
+    },
+    {
+      "id": 34,
+      "name": "YouTube",
+      "icon": "📹",
+      "category": "digital",
+      "description": "Aşırı video izleme",
+      "tips": [
+        "İzleme süresini sınırla",
+        "Otomatik oynatmayı kapat",
+        "Eğitici içerik seç",
+        "Aktif hobiler edin"
+      ]
+    },
+    {
+      "id": 35,
+      "name": "TikTok/Reels",
+      "icon": "🎬",
+      "category": "digital",
+      "description": "Kısa video bağımlılığı",
+      "tips": [
+        "Uygulama süresini sınırla",
+        "Bildirimları kapat",
+        "Gerçek sosyal etkileşim kur",
+        "Yaratıcı hobiler edin"
+      ]
+    },
+    {
+      "id": 36,
+      "name": "Mastürbasyon",
+      "icon": "🤚",
+      "category": "behavioral",
+      "description": "Aşırı mastürbasyon",
+      "tips": [
+        "Günlük rutinini yoğunlaştır",
+        "Fiziksel aktivite artır",
+        "Sosyal aktivitelere katıl",
+        "Profesyonel yardım al"
+      ]
+    },
+    {
+      "id": 37,
+      "name": "Kitap Okuma",
+      "icon": "📚",
+      "category": "behavioral",
+      "description": "Aşırı okuma (escapism)",
+      "tips": [
+        "Okuma saatleri belirle",
+        "Gerçek yaşam aktiviteleri ekle",
+        "Sosyal etkileşim artır",
+        "Çeşitli hobiler edin"
+      ]
+    },
+    {
+      "id": 38,
+      "name": "Emoji/GIF",
+      "icon": "😂",
+      "category": "digital",
+      "description": "Aşırı emoji/gif kullanımı",
+      "tips": [
+        "Metinlerini kontrol et",
+        "Sade iletişim dene",
+        "Yüz yüze konuşmayı artır",
+        "Yazılı ifade becerisini geliştir"
+      ]
+    },
+    {
+      "id": 39,
+      "name": "Selfie",
+      "icon": "🤳",
+      "category": "behavioral",
+      "description": "Aşırı selfie çekme",
+      "tips": [
+        "Günlük selfie sayısını sınırla",
+        "Aynadan uzak dur",
+        "Gerçek anları yaşa",
+        "Özgüveni başka yollarla geliştir"
+      ]
+    },
+    {
+      "id": 40,
+      "name": "Hırsızlık",
+      "icon": "🥷",
+      "category": "behavioral",
+      "description": "Kleptomani",
+      "tips": [
+        "Profesyonel yardım al",
+        "Tetikleyici durumlardan kaçın",
+        "Alternatif aktiviteler bul",
+        "Destek grubu katıl"
+      ]
+    }
+  ]
+}

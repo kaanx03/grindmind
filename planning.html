@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planlama & Görevler - GRINDMIND</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/planning.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <div class="logo" onclick="window.location.href='dashboard.html'">
+            GRINDMIND
+          </div>
+          <a href="dashboard.html" class="back-btn">← Ana Sayfaya Dön</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1 class="page-title">📋 Planlama & Görevler</h1>
+          <p class="page-subtitle">
+            Haftalık programını düzenle, görevlerini kanban board ile yönet ve
+            hedeflerine odaklanarak daha verimli ol.
+          </p>
+        </div>
+
+        <!-- View Toggle -->
+        <div class="view-toggle">
+          <button
+            class="toggle-btn active"
+            data-view="kanban"
+            onclick="switchView('kanban')"
+          >
+            📋 Kanban Board
+          </button>
+          <button
+            class="toggle-btn"
+            data-view="calendar"
+            onclick="switchView('calendar')"
+          >
+            📅 Haftalık Program
+          </button>
+          <button
+            class="toggle-btn"
+            data-view="stats"
+            onclick="switchView('stats')"
+          >
+            📊 İstatistikler
+          </button>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <button class="action-btn btn-primary" onclick="showAddTaskModal()">
+            Yeni Görev Ekle
+          </button>
+          <button
+            class="action-btn btn-secondary"
+            onclick="showTemplatesModal()"
+          >
+            Şablonlar
+          </button>
+          <button class="action-btn btn-secondary" onclick="exportTasks()">
+            Dışa Aktar
+          </button>
+        </div>
+
+        <!-- Kanban Board View -->
+        <section class="kanban-view active" id="kanbanView">
+          <div class="kanban-board">
+            <div class="kanban-column" data-status="todo">
+              <div class="column-header">
+                <h3>📝 Yapılacaklar</h3>
+                <span class="task-count" id="todoCount">0</span>
+              </div>
+              <div class="task-list" id="todoList">
+                <!-- Tasks will be loaded here -->
+              </div>
+              <button class="add-task-btn" onclick="showAddTaskModal('todo')">
+                + Görev Ekle
+              </button>
+            </div>
+
+            <div class="kanban-column" data-status="in-progress">
+              <div class="column-header">
+                <h3>⚡ Devam Ediyor</h3>
+                <span class="task-count" id="inProgressCount">0</span>
+              </div>
+              <div class="task-list" id="inProgressList">
+                <!-- Tasks will be loaded here -->
+              </div>
+              <button
+                class="add-task-btn"
+                onclick="showAddTaskModal('in-progress')"
+              >
+                + Görev Ekle
+              </button>
+            </div>
+
+            <div class="kanban-column" data-status="done">
+              <div class="column-header">
+                <h3>✅ Tamamlandı</h3>
+                <span class="task-count" id="doneCount">0</span>
+              </div>
+              <div class="task-list" id="doneList">
+                <!-- Tasks will be loaded here -->
+              </div>
+              <button class="add-task-btn" onclick="showAddTaskModal('done')">
+                + Görev Ekle
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Weekly Calendar View -->
+        <section class="calendar-view" id="calendarView">
+          <div class="week-navigation">
+            <button class="nav-btn" onclick="changeWeek(-1)">
+              ❮ Önceki Hafta
+            </button>
+            <h3 class="current-week" id="currentWeek">Bu Hafta</h3>
+            <button class="nav-btn" onclick="changeWeek(1)">
+              Sonraki Hafta ❯
+            </button>
+          </div>
+
+          <div class="weekly-calendar">
+            <div class="calendar-day" data-day="monday">
+              <div class="day-header">
+                <h4>Pazartesi</h4>
+                <span class="day-date" id="mondayDate"></span>
+              </div>
+              <div class="day-tasks" id="mondayTasks">
+                <!-- Daily tasks will be loaded here -->
+              </div>
+              <button
+                class="add-day-task-btn"
+                onclick="showAddTaskModal('todo', 'monday')"
+              >
+                + Görev Ekle
+              </button>
+            </div>
+
+            <div class="calendar-day" data-day="tuesday">
+              <div class="day-header">
+                <h4>Salı</h4>
+                <span class="day-date" id="tuesdayDate"></span>
+              </div>
+              <div class="day-tasks" id="tuesdayTasks">
+                <!-- Daily tasks will be loaded here -->
+              </div>
+              <button
+                class="add-day-task-btn"
+                onclick="showAddTaskModal('todo', 'tuesday')"
+              >
+                + Görev Ekle
+              </button>
+            </div>
+
+            <div class="calendar-day" data-day="wednesday">
+              <div class="day-header">
+                <h4>Çarşamba</h4>
+                <span class="day-date" id="wednesdayDate"></span>
+              </div>
+              <div class="day-tasks" id="wednesdayTasks">
+                <!-- Daily tasks will be loaded here -->
+              </div>
+              <button
+                class="add-day-task-btn"
+                onclick="showAddTaskModal('todo', 'wednesday')"
+              >
+                + Görev Ekle
+              </button>
+            </div>
+
+            <div class="calendar-day" data-day="thursday">
+              <div class="day-header">
+                <h4>Perşembe</h4>
+                <span class="day-date" id="thursdayDate"></span>
+              </div>
+              <div class="day-tasks" id="thursdayTasks">
+                <!-- Daily tasks will be loaded here -->
+              </div>
+              <button
+                class="add-day-task-btn"
+                onclick="showAddTaskModal('todo', 'thursday')"
+              >
+                + Görev Ekle
+              </button>
+            </div>
+
+            <div class="calendar-day" data-day="friday">
+              <div class="day-header">
+                <h4>Cuma</h4>
+                <span class="day-date" id="fridayDate"></span>
+              </div>
+              <div class="day-tasks" id="fridayTasks">
+                <!-- Daily tasks will be loaded here -->
+              </div>
+              <button
+                class="add-day-task-btn"
+                onclick="showAddTaskModal('todo', 'friday')"
+              >
+                + Görev Ekle
+              </button>
+            </div>
+
+            <div class="calendar-day weekend" data-day="saturday">
+              <div class="day-header">
+                <h4>Cumartesi</h4>
+                <span class="day-date" id="saturdayDate"></span>
+              </div>
+              <div class="day-tasks" id="saturdayTasks">
+                <!-- Daily tasks will be loaded here -->
+              </div>
+              <button
+                class="add-day-task-btn"
+                onclick="showAddTaskModal('todo', 'saturday')"
+              >
+                + Görev Ekle
+              </button>
+            </div>
+
+            <div class="calendar-day weekend" data-day="sunday">
+              <div class="day-header">
+                <h4>Pazar</h4>
+                <span class="day-date" id="sundayDate"></span>
+              </div>
+              <div class="day-tasks" id="sundayTasks">
+                <!-- Daily tasks will be loaded here -->
+              </div>
+              <button
+                class="add-day-task-btn"
+                onclick="showAddTaskModal('todo', 'sunday')"
+              >
+                + Görev Ekle
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Statistics View -->
+        <section class="stats-view" id="statsView">
+          <div class="stats-grid">
+            <div class="stats-card">
+              <span class="stat-number primary" id="totalTasks">0</span>
+              <span class="stat-label">Toplam Görev</span>
+            </div>
+            <div class="stats-card">
+              <span class="stat-number success" id="completedTasks">0</span>
+              <span class="stat-label">Tamamlanan</span>
+            </div>
+            <div class="stats-card">
+              <span class="stat-number warning" id="pendingTasks">0</span>
+              <span class="stat-label">Bekleyen</span>
+            </div>
+            <div class="stats-card">
+              <span class="stat-number danger" id="overdueTasks">0</span>
+              <span class="stat-label">Geciken</span>
+            </div>
+          </div>
+
+          <div class="chart-container">
+            <h4>📈 Haftalık Performans</h4>
+            <div class="chart-wrapper">
+              <canvas id="weeklyPerformanceChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-container">
+            <h4>📊 Görev Dağılımı</h4>
+            <div class="chart-wrapper">
+              <canvas id="taskDistributionChart"></canvas>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Add Task Modal -->
+    <div id="addTaskModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Yeni Görev Ekle</h3>
+          <span class="close-btn" onclick="closeModal('addTaskModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="taskTitle">Görev Başlığı:</label>
+            <input
+              type="text"
+              id="taskTitle"
+              placeholder="Görev başlığını yazın..."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="taskDescription">Açıklama (isteğe bağlı):</label>
+            <textarea
+              id="taskDescription"
+              placeholder="Görev detaylarını yazın..."
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="taskPriority">Öncelik:</label>
+              <select id="taskPriority">
+                <option value="low">Düşük 🟢</option>
+                <option value="medium" selected>Orta 🟡</option>
+                <option value="high">Yüksek 🔴</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="taskCategory">Kategori:</label>
+              <select id="taskCategory">
+                <option value="work">İş 💼</option>
+                <option value="personal">Kişisel 👤</option>
+                <option value="health">Sağlık 🏥</option>
+                <option value="learning">Öğrenme 📚</option>
+                <option value="other">Diğer 📋</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="taskDueDate">Bitiş Tarihi:</label>
+              <input type="date" id="taskDueDate" />
+            </div>
+
+            <div class="form-group">
+              <label for="taskEstimate">Tahmini Süre:</label>
+              <select id="taskEstimate">
+                <option value="15">15 dakika</option>
+                <option value="30">30 dakika</option>
+                <option value="60" selected>1 saat</option>
+                <option value="120">2 saat</option>
+                <option value="240">4 saat</option>
+                <option value="480">8 saat</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="taskDay">Hangi Gün:</label>
+            <select id="taskDay">
+              <option value="">Gün seçmeyin</option>
+              <option value="monday">Pazartesi</option>
+              <option value="tuesday">Salı</option>
+              <option value="wednesday">Çarşamba</option>
+              <option value="thursday">Perşembe</option>
+              <option value="friday">Cuma</option>
+              <option value="saturday">Cumartesi</option>
+              <option value="sunday">Pazar</option>
+            </select>
+          </div>
+
+          <div class="modal-actions">
+            <button
+              class="modal-btn btn-secondary"
+              onclick="closeModal('addTaskModal')"
+            >
+              İptal
+            </button>
+            <button class="modal-btn btn-primary" onclick="addTask()">
+              Görev Ekle
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task Details Modal -->
+    <div id="taskDetailsModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="taskDetailsTitle">Görev Detayları</h3>
+          <span class="close-btn" onclick="closeModal('taskDetailsModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body" id="taskDetailsBody">
+          <!-- Task details will be loaded here -->
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn btn-danger" onclick="deleteTask()">
+            Sil
+          </button>
+          <button class="modal-btn btn-warning" onclick="editTask()">
+            Düzenle
+          </button>
+          <button
+            class="modal-btn btn-secondary"
+            onclick="closeModal('taskDetailsModal')"
+          >
+            Kapat
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Templates Modal -->
+    <div id="templatesModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Görev Şablonları</h3>
+          <span class="close-btn" onclick="closeModal('templatesModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body">
+          <div class="template-grid">
+            <div class="template-card" onclick="loadTemplate('daily')">
+              <div class="template-icon">🌅</div>
+              <h4>Günlük Rutin</h4>
+              <p>Sabah rutini, egzersiz, beslenme</p>
+            </div>
+
+            <div class="template-card" onclick="loadTemplate('work')">
+              <div class="template-icon">💼</div>
+              <h4>İş Görevleri</h4>
+              <p>Toplantılar, projeler, e-postalar</p>
+            </div>
+
+            <div class="template-card" onclick="loadTemplate('study')">
+              <div class="template-icon">📚</div>
+              <h4>Çalışma Planı</h4>
+              <p>Ders çalışma, proje hazırlama</p>
+            </div>
+
+            <div class="template-card" onclick="loadTemplate('fitness')">
+              <div class="template-icon">💪</div>
+              <h4>Fitness Programı</h4>
+              <p>Antrenman, kardiyo, dinlenme</p>
+            </div>
+
+            <div class="template-card" onclick="loadTemplate('weekend')">
+              <div class="template-icon">🎉</div>
+              <h4>Hafta Sonu</h4>
+              <p>Eğlence, sosyal aktiviteler</p>
+            </div>
+
+            <div class="template-card" onclick="loadTemplate('cleaning')">
+              <div class="template-icon">🏠</div>
+              <h4>Ev İşleri</h4>
+              <p>Temizlik, düzen, bakım işleri</p>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button
+              class="modal-btn btn-secondary"
+              onclick="closeModal('templatesModal')"
+            >
+              Kapat
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/planning.js"></script>
+  </body>
+</html>

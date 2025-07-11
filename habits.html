@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yeni Alışkanlıklar - GRINDMIND</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/habits.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <div class="logo" onclick="window.location.href='dashboard.html'">
+            GRINDMIND
+          </div>
+          <a href="dashboard.html" class="back-btn">← Ana Sayfaya Dön</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1 class="page-title">✨ Yeni Alışkanlıklar</h1>
+          <p class="page-subtitle">
+            Pozitif alışkanlıkları günlük rutininin kalıcı bir parçası haline
+            getir. 21 günde yeni yaşam tarzını oluştur.
+          </p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <button class="action-btn btn-primary" onclick="showAddHabitModal()">
+            Yeni Alışkanlık Ekle
+          </button>
+          <button class="action-btn btn-secondary" onclick="showStats()">
+            İstatistikleri Gör
+          </button>
+        </div>
+
+        <!-- Current Habits -->
+        <section class="habits-section">
+          <h2 class="section-title">Aktif Alışkanlıkların</h2>
+          <div class="habits-grid" id="habitsGrid">
+            <!-- Habits will be dynamically loaded here -->
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-state" id="emptyState" style="display: none">
+            <div class="empty-icon">🌱</div>
+            <h3 class="empty-title">Henüz bir alışkanlığın yok</h3>
+            <p class="empty-text">
+              Hayatını değiştirecek ilk pozitif alışkanlığını eklemeye hazır
+              mısın?
+            </p>
+            <button
+              class="action-btn btn-primary"
+              onclick="showAddHabitModal()"
+            >
+              İlk Alışkanlığını Ekle
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Add Habit Modal -->
+    <div id="addHabitModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Yeni Alışkanlık Ekle</h3>
+          <span class="close-btn" onclick="closeModal('addHabitModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Eklemek istediğin alışkanlığı seç:</label>
+
+            <!-- Arama Kutusu -->
+            <div class="search-container">
+              <span class="search-icon"></span>
+              <input
+                type="text"
+                class="search-input"
+                id="habitSearch"
+                placeholder="Meditasyon, egzersiz, kitap okuma..."
+                oninput="filterHabits()"
+              />
+            </div>
+
+            <!-- Custom Habit -->
+            <div
+              class="custom-habit"
+              id="customHabitBox"
+              onclick="toggleCustomHabit()"
+            >
+              <div>✨ Özel alışkanlık oluştur</div>
+              <input
+                type="text"
+                class="custom-input"
+                id="customHabitInput"
+                placeholder="Alışkanlık adını yaz..."
+                style="display: none"
+                onclick="event.stopPropagation()"
+              />
+            </div>
+
+            <div class="habit-list" id="availableHabits">
+              <!-- Available habits will be loaded here -->
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="targetDays">Hedef gün sayısı:</label>
+            <input type="number" id="targetDays" value="21" min="1" max="365" />
+          </div>
+
+          <div class="modal-actions">
+            <button
+              class="modal-btn btn-secondary"
+              onclick="closeModal('addHabitModal')"
+            >
+              İptal
+            </button>
+            <button class="modal-btn btn-primary" onclick="addHabit()">
+              Ekle
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complete Habit Modal -->
+    <div id="completeHabitModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Alışkanlık Tamamla</h3>
+          <span class="close-btn" onclick="closeModal('completeHabitModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body">
+          <p id="completeQuestion"></p>
+
+          <div class="form-group">
+            <label>Bugün nasıl hissediyorsun?</label>
+            <select id="moodSelect">
+              <option value="excellent">Mükemmel 😊</option>
+              <option value="good">İyi 🙂</option>
+              <option value="neutral">Normal 😐</option>
+              <option value="bad">Kötü 😔</option>
+              <option value="terrible">Berbat 😞</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="completionNotes">Notların (isteğe bağlı):</label>
+            <textarea
+              id="completionNotes"
+              placeholder="Bugün nasıl geçti? Nasıl hissettin?"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="modal-actions">
+            <button
+              class="modal-btn btn-secondary"
+              onclick="closeModal('completeHabitModal')"
+            >
+              İptal
+            </button>
+            <button class="modal-btn btn-primary" onclick="completeHabit()">
+              Tamamla
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Habit Details Modal -->
+    <div id="detailsModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="detailsTitle">Alışkanlık Detayları</h3>
+          <span class="close-btn" onclick="closeModal('detailsModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body" id="detailsBody">
+          <!-- Details will be loaded here -->
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn btn-danger" onclick="deleteHabit()">
+            Sil
+          </button>
+          <button
+            class="modal-btn btn-secondary"
+            onclick="closeModal('detailsModal')"
+          >
+            Kapat
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Modal -->
+    <div id="statisticsModal" class="modal">
+      <div class="modal-content large">
+        <div class="modal-header">
+          <h3>📊 Genel İstatistikler</h3>
+          <span class="close-btn" onclick="closeModal('statisticsModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body" id="statisticsBody">
+          <!-- Statistics will be loaded here -->
+        </div>
+        <div class="modal-actions">
+          <button
+            class="modal-btn btn-secondary"
+            onclick="closeModal('statisticsModal')"
+          >
+            Kapat
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/habits.js"></script>
+  </body>
+</html>

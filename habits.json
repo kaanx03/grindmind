@@ -1,0 +1,628 @@
+{
+  "habits": [
+    {
+      "id": 1,
+      "name": "Sabah Meditasyonu",
+      "icon": "🧘‍♀️",
+      "category": "mindfulness",
+      "description": "Günü sakin başlatmak için meditasyon",
+      "tips": [
+        "Sessiz ve rahat bir ortam seçin",
+        "5-10 dakika ile başlayın",
+        "Nefes egzersizlerine odaklanın",
+        "Düzenli saatlerde yapın"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Günlük Egzersiz",
+      "icon": "💪",
+      "category": "fitness",
+      "description": "Her gün fiziksel aktivite",
+      "tips": [
+        "Küçük adımlarla başlayın",
+        "Sevdiğiniz aktiviteyi seçin",
+        "Isınma ve soğuma yapmayı unutmayın",
+        "Düzenli uyku ve beslenmeye dikkat edin"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Su İçme",
+      "icon": "💧",
+      "category": "health",
+      "description": "Günde 2-3 litre su içmek",
+      "tips": [
+        "Gün boyunca küçük yudumlarda için",
+        "Su şişenizi yanınızda taşıyın",
+        "Alarm kurarak hatırlatıcı ayarlayın",
+        "Meyve ekleyerek tadını çeşitlendirebilirsiniz"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Kitap Okuma",
+      "icon": "📖",
+      "category": "learning",
+      "description": "Günlük kitap okuma alışkanlığı",
+      "tips": [
+        "Sabit bir okuma saati belirleyin",
+        "İlginizi çeken konulardan başlayın",
+        "Günde 15-30 dakika yeterli",
+        "Okudukları hakkında not alın"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Erken Kalkma",
+      "icon": "🌅",
+      "category": "routine",
+      "description": "Sabah erken saatlerde uyanmak",
+      "tips": [
+        "Yavaş yavaş uyku saatinizi ayarlayın",
+        "Akşam elektronik cihazları kapatın",
+        "Sabah rutininizi planlayın",
+        "Düzenli uyku saatleri belirleyin"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Günlük Yazma",
+      "icon": "✍️",
+      "category": "mindfulness",
+      "description": "Düşüncelerinizi kağıda dökmek",
+      "tips": [
+        "Günün aynı saatinde yazın",
+        "Yargılamadan yazın",
+        "Minnettarlık listesi tutun",
+        "Hedeflerinizi not edin"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Derin Nefes Alma",
+      "icon": "🫁",
+      "category": "mindfulness",
+      "description": "Günlük nefes egzersizleri",
+      "tips": [
+        "4-7-8 tekniğini deneyin",
+        "Stresli anlarda uygulayın",
+        "Rahat bir pozisyonda oturun",
+        "Günde 5-10 dakika yeterli"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Sağlıklı Beslenme",
+      "icon": "🥗",
+      "category": "health",
+      "description": "Dengeli ve besleyici yemekler",
+      "tips": [
+        "Meyve ve sebze tüketimini artırın",
+        "İşlenmiş gıdaları azaltın",
+        "Porsiyon kontrolü yapın",
+        "Yemek planı hazırlayın"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Günlük Yürüyüş",
+      "icon": "🚶‍♂️",
+      "category": "fitness",
+      "description": "Her gün en az 30 dakika yürümek",
+      "tips": [
+        "Rahat ayakkabı giyin",
+        "Günün aynı saatinde yapın",
+        "Müzik veya podcast dinleyebilirsiniz",
+        "Adım sayacı kullanın"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Temizlik",
+      "icon": "🧹",
+      "category": "routine",
+      "description": "Yaşam alanını düzenli tutmak",
+      "tips": [
+        "Her gün 15 dakika temizlik yapın",
+        "Eşyaları yerlerine koyun",
+        "Haftalık büyük temizlik planlayın",
+        "Minimalist yaşam tarzını benimseyin"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Müzik Aleti Çalma",
+      "icon": "🎸",
+      "category": "creative",
+      "description": "Enstrüman çalma pratiği",
+      "tips": [
+        "Günlük pratik yapın",
+        "Temel tekniklerden başlayın",
+        "Sevdiğiniz şarkıları çalmayı deneyin",
+        "Sabırlı olun ve kendinizi zorlamayın"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Yoga",
+      "icon": "🧘‍♀️",
+      "category": "fitness",
+      "description": "Günlük yoga pratiği",
+      "tips": [
+        "Rahat kıyafetler giyin",
+        "Yoga matı kullanın",
+        "Nefes kontrolüne odaklanın",
+        "Başlangıç seviyesinden başlayın"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Fotoğrafçılık",
+      "icon": "📸",
+      "category": "creative",
+      "description": "Günlük fotoğraf çekme",
+      "tips": [
+        "Her gün en az bir fotoğraf çekin",
+        "Farklı açılar deneyin",
+        "Doğal ışığı kullanın",
+        "Kompozisyon kurallarını öğrenin"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Bahçıvanlık",
+      "icon": "🌱",
+      "category": "hobby",
+      "description": "Bitki yetiştirme ve bakım",
+      "tips": [
+        "Sulama zamanlarına dikkat edin",
+        "Uygun toprak kullanın",
+        "Güneş ışığı gereksinimlerini karşılayın",
+        "Düzenli budama yapın"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Dil Öğrenme",
+      "icon": "🗣️",
+      "category": "learning",
+      "description": "Yeni dil öğrenme pratiği",
+      "tips": [
+        "Her gün 15-30 dakika ayırın",
+        "Mobil uygulamalar kullanın",
+        "Anadili o dil olan kişilerle konuşun",
+        "Günlük hayatta kullanmaya çalışın"
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Vitamin Alımı",
+      "icon": "💊",
+      "category": "health",
+      "description": "Günlük vitamin takviyesi",
+      "tips": [
+        "Doktor tavsiyesi alın",
+        "Aynı saatte almaya çalışın",
+        "Yemekle birlikte alın",
+        "Su ile bolca tüketin"
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Planlama",
+      "icon": "📋",
+      "category": "productivity",
+      "description": "Günlük plan yapma",
+      "tips": [
+        "Gece yarısı veya sabah planlayın",
+        "Öncelikleri belirleyin",
+        "Gerçekçi hedefler koyun",
+        "Esnek olun"
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Şükretme",
+      "icon": "🙏",
+      "category": "mindfulness",
+      "description": "Günde 3 şey için şükretmek",
+      "tips": [
+        "Küçük şeyler için bile şükredin",
+        "Yazarak kaydedin",
+        "Aile ve arkadaşlarınızı unutmayın",
+        "Sağlığınız için şükredin"
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Sosyal İletişim",
+      "icon": "👥",
+      "category": "social",
+      "description": "Arkadaşlarla iletişim kurma",
+      "tips": [
+        "Düzenli arayın veya mesaj atın",
+        "Yüz yüze buluşmalar planlayın",
+        "Aktif dinleme yapın",
+        "Empati kurun"
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Teknoloji Detoksu",
+      "icon": "📵",
+      "category": "digital",
+      "description": "Günlük teknoloji molası",
+      "tips": [
+        "Belirli saatlerde telefonu kapatın",
+        "Yatak odasında telefon bulundurmayın",
+        "Sosyal medya süresini sınırlayın",
+        "Doğada vakit geçirin"
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Esneme Egzersizleri",
+      "icon": "🤸‍♀️",
+      "category": "fitness",
+      "description": "Günlük germe ve esneme",
+      "tips": [
+        "Sabah ve akşam yapın",
+        "Yavaş ve kontrollü hareket edin",
+        "Nefes vermeyi unutmayın",
+        "Ağrı hissederseniz durdurun"
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Müzik Dinleme",
+      "icon": "🎵",
+      "category": "entertainment",
+      "description": "Günlük müzik dinleme",
+      "tips": [
+        "Farklı türleri keşfedin",
+        "Kaliteli kulaklık kullanın",
+        "Ses seviyesine dikkat edin",
+        "Canlı konser izleyin"
+      ]
+    },
+    {
+      "id": 23,
+      "name": "Hafıza Egzersizleri",
+      "icon": "🧠",
+      "category": "mental",
+      "description": "Zihin jimnastiği yapma",
+      "tips": [
+        "Sudoku, bulmaca çözün",
+        "Hafıza oyunları oynayın",
+        "Yeni şeyler öğrenin",
+        "Düzenli uyku alın"
+      ]
+    },
+    {
+      "id": 24,
+      "name": "Güneş Işığı",
+      "icon": "☀️",
+      "category": "health",
+      "description": "Günde 20 dakika güneş ışığı alma",
+      "tips": [
+        "Güneş kremini unutmayın",
+        "Sabah saatlerini tercih edin",
+        "Aşırıya kaçmayın",
+        "D vitamini için önemli"
+      ]
+    },
+    {
+      "id": 25,
+      "name": "Yaratıcı Yazım",
+      "icon": "✏️",
+      "category": "creative",
+      "description": "Hikaye, şiir yazma",
+      "tips": [
+        "Düzenli yazın",
+        "İlk taslağı mükemmel olmak zorunda değil",
+        "Farklı türler deneyin",
+        "Geri bildirim alın"
+      ]
+    },
+    {
+      "id": 26,
+      "name": "Podcast Dinleme",
+      "icon": "🎧",
+      "category": "learning",
+      "description": "Eğitici podcast dinleme",
+      "tips": [
+        "İlgi alanınıza uygun seçin",
+        "Notlar alın",
+        "Düzenli dinleyin",
+        "Öğrendiklerinizi uygulayın"
+      ]
+    },
+    {
+      "id": 27,
+      "name": "Nefes Egzersizi",
+      "icon": "🌬️",
+      "category": "mindfulness",
+      "description": "Derin nefes alma pratiği",
+      "tips": [
+        "4-7-8 tekniğini kullanın",
+        "Rahat pozisyonda oturun",
+        "Gözlerinizi kapatın",
+        "Düzenli yapın"
+      ]
+    },
+    {
+      "id": 28,
+      "name": "Arkadaşlarla İletişim",
+      "icon": "👫",
+      "category": "social",
+      "description": "Sosyal bağları güçlendirme",
+      "tips": [
+        "Düzenli görüşün",
+        "Aktif dinleyin",
+        "Yardım teklif edin",
+        "Samimi olun"
+      ]
+    },
+    {
+      "id": 29,
+      "name": "Finansal Takip",
+      "icon": "💰",
+      "category": "finance",
+      "description": "Günlük harcama takibi",
+      "tips": [
+        "Her harcamayı kaydedin",
+        "Bütçe yapın",
+        "Gereksiz harcamaları belirleyin",
+        "Tasarruf hedefi koyun"
+      ]
+    },
+    {
+      "id": 30,
+      "name": "Yemek Yapma",
+      "icon": "👨‍🍳",
+      "category": "life-skill",
+      "description": "Ev yemeği pişirme",
+      "tips": [
+        "Basit tariflerle başlayın",
+        "Taze malzemeler kullanın",
+        "Yeni tarifler deneyin",
+        "Temizliği ihmal etmeyin"
+      ]
+    },
+    {
+      "id": 31,
+      "name": "Sinemaya Gitme",
+      "icon": "🎬",
+      "category": "entertainment",
+      "description": "Film izleme alışkanlığı",
+      "tips": [
+        "Farklı türler izleyin",
+        "Eleştiri yazıları okuyun",
+        "Arkadaşlarla tartışın",
+        "Festival filmlerini takip edin"
+      ]
+    },
+    {
+      "id": 32,
+      "name": "El Yazısı",
+      "icon": "🖊️",
+      "category": "skill",
+      "description": "Güzel yazı yazma pratiği",
+      "tips": [
+        "Yavaş ve dikkatli yazın",
+        "Doğru kalem tutuşu",
+        "Düzenli alıştırmalar yapın",
+        "Farklı yazı stillerini deneyin"
+      ]
+    },
+    {
+      "id": 33,
+      "name": "Geri Dönüşüm",
+      "icon": "♻️",
+      "category": "environment",
+      "description": "Çevre dostu yaşam",
+      "tips": [
+        "Atıkları ayrıştırın",
+        "Plastik kullanımını azaltın",
+        "Su ve enerji tasarrufu yapın",
+        "Toplu taşıma kullanın"
+      ]
+    },
+    {
+      "id": 34,
+      "name": "Öğretme",
+      "icon": "👨‍🏫",
+      "category": "social",
+      "description": "Bilgi paylaşma",
+      "tips": [
+        "Sabırlı olun",
+        "Örneklerle açıklayın",
+        "Geri bildirim alın",
+        "Farklı öğrenme stillerine uygun anlatın"
+      ]
+    },
+    {
+      "id": 35,
+      "name": "Oyun Oynama",
+      "icon": "🎲",
+      "category": "entertainment",
+      "description": "Zeka oyunları oynama",
+      "tips": [
+        "Strateji oyunları tercih edin",
+        "Aile/arkadaşlarla oynayın",
+        "Zaman sınırı koyun",
+        "Farklı oyunlar deneyin"
+      ]
+    },
+    {
+      "id": 36,
+      "name": "Hayvanlara Bakım",
+      "icon": "🐕",
+      "category": "care",
+      "description": "Evcil hayvan bakımı",
+      "tips": [
+        "Düzenli beslenme saatleri",
+        "Veteriner kontrolleri",
+        "Egzersiz ve oyun zamanı",
+        "Sevgi ve ilgi gösterin"
+      ]
+    },
+    {
+      "id": 37,
+      "name": "Coding Pratiği",
+      "icon": "💻",
+      "category": "tech",
+      "description": "Programlama öğrenme",
+      "tips": [
+        "Küçük projelerle başlayın",
+        "Düzenli pratik yapın",
+        "Online kurslar alın",
+        "GitHub kullanın"
+      ]
+    },
+    {
+      "id": 38,
+      "name": "Çizim Yapma",
+      "icon": "🎨",
+      "category": "creative",
+      "description": "Sanatsal çizim pratiği",
+      "tips": [
+        "Her gün sketch yapın",
+        "Farklı teknikler deneyin",
+        "Doğadan çizin",
+        "Online tutoriallar izleyin"
+      ]
+    },
+    {
+      "id": 39,
+      "name": "Dans Etme",
+      "icon": "💃",
+      "category": "fitness",
+      "description": "Ritim ve hareket",
+      "tips": [
+        "Sevdiğiniz müzikle başlayın",
+        "Video dersler izleyin",
+        "Arkadaşlarla dans edin",
+        "Farklı dans türleri deneyin"
+      ]
+    },
+    {
+      "id": 40,
+      "name": "Haber Takibi",
+      "icon": "📰",
+      "category": "information",
+      "description": "Güncel olayları takip etme",
+      "tips": [
+        "Güvenilir kaynakları seçin",
+        "Farklı bakış açılarını okuyun",
+        "Fact-check yapın",
+        "Aşırı tüketimden kaçının"
+      ]
+    },
+    {
+      "id": 41,
+      "name": "Gönüllülük",
+      "icon": "🤝",
+      "category": "social",
+      "description": "Topluma katkı sağlama",
+      "tips": [
+        "İlgi alanınıza uygun seçin",
+        "Düzenli katılım sağlayın",
+        "Ekip çalışması yapın",
+        "Etkilerinizi ölçün"
+      ]
+    },
+    {
+      "id": 42,
+      "name": "Araba Bakımı",
+      "icon": "🚗",
+      "category": "maintenance",
+      "description": "Araç bakım ve temizliği",
+      "tips": [
+        "Düzenli servis yaptırın",
+        "Yağ seviyesini kontrol edin",
+        "Temizliğini ihmal etmeyin",
+        "Güvenli sürüş yapın"
+      ]
+    },
+    {
+      "id": 43,
+      "name": "Günlük Duş",
+      "icon": "🚿",
+      "category": "hygiene",
+      "description": "Kişisel hijyen",
+      "tips": [
+        "Uygun sıcaklıkta su kullanın",
+        "Kaliteli ürünler tercih edin",
+        "Düzenli yapın",
+        "Su tasarrufu yapmayı unutmayın"
+      ]
+    },
+    {
+      "id": 44,
+      "name": "Yatırım Araştırması",
+      "icon": "📈",
+      "category": "finance",
+      "description": "Finansal okur yazarlık",
+      "tips": [
+        "Araştırma yapın",
+        "Riski diversifiye edin",
+        "Uzun vadeli düşünün",
+        "Profesyonel destek alın"
+      ]
+    },
+    {
+      "id": 45,
+      "name": "Aile Zamanı",
+      "icon": "👨‍👩‍👧‍👦",
+      "category": "family",
+      "description": "Aile ile kaliteli vakit",
+      "tips": [
+        "Telefonsuz zaman geçirin",
+        "Ortak aktiviteler yapın",
+        "Dinlemeyi öğrenin",
+        "Gelenekler oluşturun"
+      ]
+    },
+    {
+      "id": 46,
+      "name": "Günlük Refleksiyon",
+      "icon": "🤔",
+      "category": "mindfulness",
+      "description": "Günü değerlendirme",
+      "tips": [
+        "Dürüst olun",
+        "Gelişim alanlarını belirleyin",
+        "Başarıları kutlayın",
+        "Yarın için plan yapın"
+      ]
+    },
+    {
+      "id": 47,
+      "name": "Hobiler",
+      "icon": "🎭",
+      "category": "hobby",
+      "description": "Kişisel ilgi alanları",
+      "tips": [
+        "Tutkulu olduğunuz alanları seçin",
+        "Düzenli vakit ayırın",
+        "Topluluklar bulun",
+        "Kendinizi geliştirin"
+      ]
+    },
+    {
+      "id": 48,
+      "name": "Uzaktan Çalışma",
+      "icon": "🏠",
+      "category": "work",
+      "description": "Verimli ev ofis yönetimi",
+      "tips": [
+        "Çalışma alanı oluşturun",
+        "Düzenli molalar verin",
+        "İletişimi aktif tutun",
+        "İş-yaşam dengesini koruyun"
+      ]
+    }
+  ]
+}

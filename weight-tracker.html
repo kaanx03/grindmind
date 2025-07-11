@@ -1,0 +1,2539 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kilo Takibi - GRINDMIND</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+      /* Reset ve Temel Stiller */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-bg: #ffffff;
+        --secondary-bg: #f8fafc;
+        --card-bg: #ffffff;
+        --accent-color: #2563eb;
+        --accent-hover: #1d4ed8;
+        --accent-light: #eff6ff;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --info-color: #06b6d4;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --text-muted: #94a3b8;
+        --border-color: #e2e8f0;
+        --border-hover: #cbd5e1;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: var(--primary-bg);
+        color: var(--text-primary);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header Stilleri */
+      .header {
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .logo:hover {
+        transform: scale(1.05);
+      }
+
+      .back-btn {
+        padding: 8px 16px;
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .back-btn:hover {
+        background: #6366f1;
+        color: white;
+        border-color: #6366f1;
+      }
+
+      /* Ana İçerik */
+      .main-content {
+        padding: 40px 0 60px;
+        min-height: calc(100vh - 80px);
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .page-title {
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+      }
+
+      .page-subtitle {
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Dashboard Grid */
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+
+      .quick-add-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s ease;
+      }
+
+      .quick-add-section:hover {
+        box-shadow: var(--shadow-md);
+        border-color: var(--accent-color);
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .input-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .input-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .input-label {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      .weight-input {
+        padding: 12px 16px;
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+      }
+
+      .weight-input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .unit-selector {
+        padding: 12px 16px;
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-size: 1rem;
+        cursor: pointer;
+        min-width: 80px;
+      }
+
+      .add-weight-btn {
+        width: 100%;
+        padding: 12px 20px;
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+      }
+
+      .add-weight-btn:hover {
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+
+      /* Current Stats */
+      .current-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .stat-card {
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        background: var(--accent-light);
+        border-color: var(--accent-color);
+        transform: translateY(-2px);
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+        display: block;
+      }
+
+      .stat-value.current {
+        color: var(--accent-color);
+      }
+
+      .stat-value.target {
+        color: var(--accent-color);
+      }
+
+      .stat-value.change {
+        color: var(--success-color);
+      }
+
+      .stat-value.change.negative {
+        color: var(--danger-color);
+      }
+
+      .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      /* BMI ve Boy Bilgisi */
+      .additional-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .stat-card-wide {
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .stat-card-wide:hover {
+        background: var(--accent-light);
+        border-color: var(--accent-color);
+        transform: translateY(-2px);
+      }
+
+      /* Grafik ve İstatistikler */
+      .analytics-section {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+
+      .chart-container {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .chart-wrapper {
+        position: relative;
+        height: 300px;
+        width: 100%;
+      }
+
+      .progress-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .progress-item {
+        margin-bottom: 20px;
+      }
+
+      .progress-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .progress-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: var(--border-color);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          var(--accent-color),
+          var(--accent-hover)
+        );
+        border-radius: 4px;
+        transition: width 0.5s ease;
+      }
+
+      /* Geçmiş Kayıtlar */
+      .history-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .history-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .history-filter {
+        display: flex;
+        gap: 8px;
+      }
+
+      .filter-btn {
+        padding: 6px 12px;
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.85rem;
+      }
+
+      .filter-btn.active {
+        background: var(--accent-color);
+        color: white;
+        border-color: var(--accent-color);
+      }
+
+      .history-list {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .history-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .history-item:last-child {
+        border-bottom: none;
+      }
+
+      .history-date {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      .history-weight {
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .history-change {
+        font-size: 0.85rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+      }
+
+      .history-change.positive {
+        background: #fee2e2;
+        color: var(--danger-color);
+      }
+
+      .history-change.negative {
+        background: #dcfdf7;
+        color: var(--success-color);
+      }
+
+      .history-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .action-btn {
+        padding: 4px 8px;
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.8rem;
+      }
+
+      .action-btn:hover {
+        background: var(--accent-color);
+        color: white;
+        border-color: var(--accent-color);
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+      }
+
+      .modal-content {
+        background: var(--card-bg);
+        margin: 10% auto;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: var(--shadow-xl);
+        animation: modalSlideIn 0.3s ease;
+      }
+
+      @keyframes modalSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-50px) scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .modal-header {
+        padding: 24px 24px 16px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .modal-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .close-btn {
+        color: var(--text-muted);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .close-btn:hover {
+        color: var(--text-primary);
+        background: var(--secondary-bg);
+      }
+
+      .modal-body {
+        padding: 24px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-secondary);
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px 16px;
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .modal-btn {
+        flex: 1;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        font-size: 0.95rem;
+      }
+
+      .btn-primary {
+        background: var(--accent-color);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: var(--accent-hover);
+      }
+
+      .btn-secondary {
+        background: var(--secondary-bg);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-secondary:hover {
+        background: var(--accent-light);
+        color: var(--accent-color);
+        border-color: var(--accent-color);
+      }
+
+      /* Bildirim */
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--success-color);
+        color: white;
+        padding: 16px 20px;
+        border-radius: 12px;
+        box-shadow: var(--shadow-lg);
+        font-weight: 500;
+        z-index: 10000;
+        max-width: 300px;
+        animation: slideIn 0.5s ease;
+        cursor: pointer;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* Boş durum */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-muted);
+      }
+
+      .empty-icon {
+        font-size: 3rem;
+        margin-bottom: 16px;
+      }
+
+      .empty-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text-secondary);
+      }
+
+      .empty-text {
+        margin-bottom: 24px;
+        line-height: 1.6;
+      }
+
+      /* Özel scroll bar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--secondary-bg);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--border-hover);
+      }
+
+      /* BMI Bilgi Bölümü */
+      .bmi-info-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 32px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .bmi-explanation {
+        margin-bottom: 32px;
+        padding: 20px;
+        background: var(--accent-light);
+        border-radius: 12px;
+        border-left: 4px solid var(--accent-color);
+      }
+
+      .bmi-intro {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--text-primary);
+        margin: 0;
+      }
+
+      .bmi-intro strong {
+        color: var(--accent-color);
+        font-weight: 600;
+      }
+
+      .bmi-categories {
+        display: grid;
+        gap: 20px;
+        margin-bottom: 32px;
+      }
+
+      .bmi-category {
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+      }
+
+      .bmi-category:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .bmi-category.underweight {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border-color: #f59e0b;
+      }
+
+      .bmi-category.normal {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        border-color: #10b981;
+      }
+
+      .bmi-category.overweight {
+        background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+        border-color: #f97316;
+      }
+
+      .bmi-category.obese {
+        background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+        border-color: #ef4444;
+      }
+
+      .category-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .category-icon {
+        font-size: 2rem;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .category-info h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0 0 4px 0;
+      }
+
+      .category-range {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        background: rgba(255, 255, 255, 0.8);
+        padding: 4px 12px;
+        border-radius: 20px;
+      }
+
+      .category-description {
+        line-height: 1.6;
+      }
+
+      .category-description p {
+        margin: 0 0 8px 0;
+        color: var(--text-primary);
+      }
+
+      .category-description strong {
+        font-weight: 600;
+      }
+
+      .category-tips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .tip {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      /* BMI Hesaplayıcı */
+      .bmi-calculator {
+        background: var(--secondary-bg);
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        border: 1px solid var(--border-color);
+      }
+
+      .bmi-calculator h3 {
+        margin: 0 0 20px 0;
+        color: var(--text-primary);
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .calculator-inputs {
+        display: flex;
+        gap: 16px;
+        align-items: end;
+        flex-wrap: wrap;
+      }
+
+      .calc-input-group {
+        flex: 1;
+        min-width: 120px;
+      }
+
+      .calc-input-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-secondary);
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+
+      .calc-input-group input {
+        width: 100%;
+        padding: 12px 16px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .calc-input-group input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .calc-btn {
+        padding: 12px 24px;
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+      }
+
+      .calc-btn:hover {
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+      }
+
+      .calc-result {
+        margin-top: 20px;
+        padding: 16px;
+        background: var(--card-bg);
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        text-align: center;
+      }
+
+      .result-bmi {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .result-label {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      .result-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent-color);
+      }
+
+      .result-category {
+        font-size: 1.1rem;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 20px;
+        display: inline-block;
+      }
+
+      .result-category.underweight {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .result-category.normal {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      .result-category.overweight {
+        background: #fed7aa;
+        color: #9a3412;
+      }
+
+      .result-category.obese {
+        background: #fecaca;
+        color: #991b1b;
+      }
+
+      /* BMI Sonuç Detayları */
+      .result-details {
+        margin-top: 20px;
+        padding: 20px;
+        background: var(--secondary-bg);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+      }
+
+      .weight-recommendation {
+        margin-bottom: 20px;
+      }
+
+      .weight-recommendation h4 {
+        margin: 0 0 12px 0;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .target-ranges {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .target-range {
+        background: var(--card-bg);
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        text-align: center;
+      }
+
+      .target-range.ideal {
+        border-color: var(--success-color);
+        background: #f0fdf4;
+      }
+
+      .target-range h5 {
+        margin: 0 0 8px 0;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .target-range .range-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .target-range.ideal .range-value {
+        color: var(--success-color);
+      }
+
+      .weight-goals {
+        display: grid;
+        gap: 12px;
+      }
+
+      .weight-goal {
+        background: var(--card-bg);
+        padding: 16px;
+        border-radius: 8px;
+        border-left: 4px solid var(--accent-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .goal-info {
+        flex: 1;
+      }
+
+      .goal-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-bottom: 4px;
+      }
+
+      .goal-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .goal-timeline {
+        text-align: right;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      .health-tips {
+        margin-top: 20px;
+        padding: 16px;
+        background: var(--accent-light);
+        border-radius: 8px;
+        border-left: 4px solid var(--accent-color);
+      }
+
+      .health-tips h5 {
+        margin: 0 0 12px 0;
+        color: var(--accent-color);
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .tips-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .tips-list li {
+        margin-bottom: 8px;
+        padding-left: 20px;
+        position: relative;
+        color: var(--text-primary);
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .tips-list li:before {
+        content: "💡";
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      /* BMI Uyarı */
+      .bmi-disclaimer {
+        background: #f8fafc;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 20px;
+        border-left: 4px solid var(--warning-color);
+      }
+
+      .bmi-disclaimer h4 {
+        margin: 0 0 12px 0;
+        color: var(--warning-color);
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .bmi-disclaimer p {
+        margin: 0;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        font-size: 0.95rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .dashboard-grid,
+        .analytics-section {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .current-stats {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .input-row {
+          flex-direction: column;
+        }
+
+        .additional-stats {
+          grid-template-columns: 1fr;
+        }
+
+        .history-controls {
+          flex-direction: column;
+          gap: 16px;
+          align-items: stretch;
+        }
+
+        .history-filter {
+          justify-content: center;
+        }
+
+        .container {
+          padding: 0 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 0 12px;
+        }
+
+        .modal-content {
+          margin: 5% auto;
+          width: 95%;
+        }
+
+        .history-item {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        .history-actions {
+          align-self: flex-end;
+        }
+      }
+
+      /* Responsive - BMI Bölümü */
+      @media (max-width: 768px) {
+        .bmi-info-section {
+          padding: 24px 20px;
+          margin-top: 24px;
+        }
+
+        .category-header {
+          flex-direction: column;
+          text-align: center;
+          gap: 12px;
+        }
+
+        .category-icon {
+          width: 50px;
+          height: 50px;
+          font-size: 1.5rem;
+        }
+
+        .calculator-inputs {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .calc-btn {
+          margin-top: 12px;
+        }
+
+        .category-tips {
+          justify-content: center;
+        }
+
+        /* Responsive - BMI Sonuç Detayları */
+        .target-ranges {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .weight-goal {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        .goal-timeline {
+          text-align: left;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .bmi-categories {
+          gap: 16px;
+        }
+
+        .bmi-category {
+          padding: 16px;
+        }
+
+        .bmi-calculator {
+          padding: 20px;
+        }
+
+        .bmi-disclaimer {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <div class="logo" onclick="window.location.href='dashboard.html'">
+            GRINDMIND
+          </div>
+          <a href="dashboard.html" class="back-btn">← Dashboard'a Dön</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Ana İçerik -->
+    <main class="main-content">
+      <div class="container">
+        <!-- Sayfa Başlığı -->
+        <div class="page-header">
+          <h1 class="page-title">⚖️ Kilo Takibi</h1>
+          <p class="page-subtitle">
+            Kilo değişimini takip et, hedeflerini belirle ve sağlıklı yaşama
+            ulaş
+          </p>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+          <!-- Kilo ve Boy Ekleme -->
+          <div class="quick-add-section">
+            <h2 class="section-title">📊 Bilgilerini Ekle</h2>
+
+            <!-- Kilo Girişi -->
+            <div class="input-row">
+              <div class="input-group">
+                <label class="input-label">Kilo</label>
+                <input
+                  type="number"
+                  class="weight-input"
+                  id="weightInput"
+                  placeholder="75.5"
+                  step="0.1"
+                  min="20"
+                  max="300"
+                />
+              </div>
+              <div class="input-group" style="flex: 0 0 80px">
+                <label class="input-label">Birim</label>
+                <select class="unit-selector" id="unitSelector">
+                  <option value="kg">kg</option>
+                  <option value="lbs">lbs</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Boy Girişi -->
+            <div class="input-row">
+              <div class="input-group">
+                <label class="input-label">Boy (cm)</label>
+                <input
+                  type="number"
+                  class="weight-input"
+                  id="heightInput"
+                  placeholder="175"
+                  min="100"
+                  max="250"
+                />
+              </div>
+              <div class="input-group" style="flex: 0 0 80px">
+                <label class="input-label">&nbsp;</label>
+                <button
+                  class="add-weight-btn"
+                  onclick="saveHeight()"
+                  style="height: 48px"
+                >
+                  💾
+                </button>
+              </div>
+            </div>
+
+            <button class="add-weight-btn" onclick="addWeight()">
+              Kilo Ekle
+            </button>
+          </div>
+
+          <!-- Mevcut İstatistikler -->
+          <div class="quick-add-section">
+            <h2 class="section-title">📈 Mevcut Durum</h2>
+            <div class="current-stats">
+              <div class="stat-card">
+                <span class="stat-value current" id="currentWeight">-</span>
+                <span class="stat-label">Mevcut</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-value target" id="targetWeight">Belirle</span>
+                <span class="stat-label">Hedef</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-value change" id="weightChange">-</span>
+                <span class="stat-label">Değişim</span>
+              </div>
+            </div>
+
+            <div class="additional-stats">
+              <div class="stat-card-wide">
+                <span class="stat-value" id="heightDisplay">-</span>
+                <span class="stat-label">Boy (cm)</span>
+              </div>
+              <div class="stat-card-wide">
+                <span class="stat-value" id="bmiValue">-</span>
+                <span class="stat-label">BMI</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analitik ve İlerleme -->
+        <div class="analytics-section">
+          <!-- Grafik -->
+          <div class="chart-container">
+            <h2 class="section-title">📊 Kilo Grafiği</h2>
+            <div class="chart-wrapper">
+              <canvas id="weightChart"></canvas>
+            </div>
+          </div>
+
+          <!-- İlerleme -->
+          <div class="progress-section">
+            <h2 class="section-title">🎯 İlerleme</h2>
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Hedefe Ulaşma</span>
+                <span id="goalProgress">0%</span>
+              </div>
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  id="goalProgressBar"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Bu Ay Değişim</span>
+                <span id="monthlyChange">0 kg</span>
+              </div>
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  id="monthlyProgressBar"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>BMI Durumu</span>
+                <span id="bmiStatus">-</span>
+              </div>
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  id="bmiProgressBar"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Geçmiş Kayıtlar -->
+        <div class="history-section">
+          <div class="history-controls">
+            <h2 class="section-title">📅 Geçmiş Kayıtlar</h2>
+            <div class="history-filter">
+              <button class="filter-btn active" onclick="filterHistory('all')">
+                Tümü
+              </button>
+              <button class="filter-btn" onclick="filterHistory('week')">
+                Bu Hafta
+              </button>
+              <button class="filter-btn" onclick="filterHistory('month')">
+                Bu Ay
+              </button>
+            </div>
+          </div>
+
+          <div class="history-list" id="historyList">
+            <!-- Geçmiş kayıtlar buraya gelecek -->
+          </div>
+        </div>
+
+        <!-- BMI Bilgi Bölümü -->
+        <div class="bmi-info-section">
+          <h2 class="section-title">🏥 BMI Değerin Ne Anlama Geliyor?</h2>
+
+          <div class="bmi-explanation">
+            <p class="bmi-intro">
+              BMI (Vücut Kitle İndeksi), vücut ağırlığının boy uzunluğuna
+              oranıdır ve genel sağlık durumunu değerlendirmek için kullanılır.
+              <strong>BMI = Kilo (kg) ÷ Boy² (m)</strong>
+            </p>
+          </div>
+
+          <div class="bmi-categories">
+            <div class="bmi-category underweight">
+              <div class="category-header">
+                <span class="category-icon">⚖️</span>
+                <div class="category-info">
+                  <h3>Zayıf</h3>
+                  <span class="category-range">BMI < 18.5</span>
+                </div>
+              </div>
+              <div class="category-description">
+                <p><strong>Durum:</strong> Normal kilodan düşük</p>
+                <p>
+                  <strong>Öneriler:</strong> Sağlıklı kilo almaya odaklanın,
+                  dengeli beslenin ve kas kütlesi artırıcı egzersizler yapın.
+                </p>
+                <div class="category-tips">
+                  <span class="tip">💡 Protein ağırlıklı beslenme</span>
+                  <span class="tip">💪 Kuvvet antrenmanları</span>
+                  <span class="tip">👨‍⚕️ Doktor kontrolü</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmi-category normal">
+              <div class="category-header">
+                <span class="category-icon">✅</span>
+                <div class="category-info">
+                  <h3>Normal</h3>
+                  <span class="category-range">BMI 18.5 - 24.9</span>
+                </div>
+              </div>
+              <div class="category-description">
+                <p><strong>Durum:</strong> İdeal kilo aralığında</p>
+                <p>
+                  <strong>Öneriler:</strong> Mevcut kiloyu koruyun, düzenli
+                  egzersiz yapın ve dengeli beslenmeye devam edin.
+                </p>
+                <div class="category-tips">
+                  <span class="tip">🥗 Dengeli beslenme</span>
+                  <span class="tip">🏃‍♂️ Düzenli egzersiz</span>
+                  <span class="tip">😴 Kaliteli uyku</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmi-category overweight">
+              <div class="category-header">
+                <span class="category-icon">⚠️</span>
+                <div class="category-info">
+                  <h3>Fazla Kilolu</h3>
+                  <span class="category-range">BMI 25.0 - 29.9</span>
+                </div>
+              </div>
+              <div class="category-description">
+                <p><strong>Durum:</strong> Normal kilonun üzerinde</p>
+                <p>
+                  <strong>Öneriler:</strong> Kademeli kilo verme, kalori
+                  kontrolü ve düzenli kardiyovasküler egzersizler.
+                </p>
+                <div class="category-tips">
+                  <span class="tip">🔥 Kalori açığı</span>
+                  <span class="tip">🚴‍♂️ Kardiyovasküler egzersiz</span>
+                  <span class="tip">📊 Porsiyon kontrolü</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmi-category obese">
+              <div class="category-header">
+                <span class="category-icon">🚨</span>
+                <div class="category-info">
+                  <h3>Obez</h3>
+                  <span class="category-range">BMI ≥ 30.0</span>
+                </div>
+              </div>
+              <div class="category-description">
+                <p><strong>Durum:</strong> Sağlık riski taşıyan kilo</p>
+                <p>
+                  <strong>Öneriler:</strong> Profesyonel destek alın, sistematik
+                  kilo verme planı ve yaşam tarzı değişiklikleri.
+                </p>
+                <div class="category-tips">
+                  <span class="tip">👨‍⚕️ Doktor desteği</span>
+                  <span class="tip">📋 Beslenme uzmanı</span>
+                  <span class="tip">🎯 Aşamalı hedefler</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bmi-calculator">
+            <h3>🔢 BMI Hesaplayıcı</h3>
+            <div class="calculator-inputs">
+              <div class="calc-input-group">
+                <label>Kilo (kg)</label>
+                <input
+                  type="number"
+                  id="calcWeight"
+                  placeholder="75"
+                  step="0.1"
+                  min="20"
+                  max="300"
+                />
+              </div>
+              <div class="calc-input-group">
+                <label>Boy (cm)</label>
+                <input
+                  type="number"
+                  id="calcHeight"
+                  placeholder="175"
+                  min="100"
+                  max="250"
+                />
+              </div>
+              <button class="calc-btn" onclick="calculateBMI()">Hesapla</button>
+            </div>
+            <div class="calc-result" id="calcResult" style="display: none">
+              <div class="result-bmi">
+                <span class="result-label">BMI Değerin:</span>
+                <span class="result-value" id="resultBMI">-</span>
+              </div>
+              <div class="result-category" id="resultCategory">-</div>
+              <div class="result-details" id="resultDetails"></div>
+            </div>
+          </div>
+
+          <div class="bmi-disclaimer">
+            <h4>⚠️ Önemli Uyarı</h4>
+            <p>
+              BMI genel bir göstergedir ve kas kütlesi, kemik yoğunluğu gibi
+              faktörleri hesaba katmaz. Atletler ve kas kütlesi yüksek kişilerde
+              yanıltıcı olabilir. Sağlık durumunuz hakkında kesin bilgi için
+              mutlaka sağlık profesyoneline danışın.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Hedef Belirleme Modal -->
+    <div id="targetModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">🎯 Hedef Belirle</h3>
+          <span class="close-btn" onclick="closeModal('targetModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Hedef Kilo (kg)</label>
+            <input
+              type="number"
+              id="targetInput"
+              placeholder="Hedef kilonuzu girin"
+              step="0.1"
+              min="20"
+              max="300"
+            />
+          </div>
+          <div class="modal-actions">
+            <button
+              class="modal-btn btn-secondary"
+              onclick="closeModal('targetModal')"
+            >
+              İptal
+            </button>
+            <button class="modal-btn btn-primary" onclick="setTarget()">
+              Hedef Belirle
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Global değişkenler
+      let weightData = JSON.parse(localStorage.getItem("weightData") || "[]");
+      let targetWeight = parseFloat(
+        localStorage.getItem("targetWeight") || "0"
+      );
+      let userHeight = parseFloat(localStorage.getItem("userHeight") || "0");
+      let chart = null;
+      let currentFilter = "all";
+
+      // Sayfa yüklendiğinde
+      document.addEventListener("DOMContentLoaded", function () {
+        loadData();
+        initializeChart();
+        updateStats();
+        updateHistory();
+
+        // Enter tuşu ile kilo ekleme
+        document
+          .getElementById("weightInput")
+          .addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              addWeight();
+            }
+          });
+
+        // Enter tuşu ile boy kaydetme
+        document
+          .getElementById("heightInput")
+          .addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              saveHeight();
+            }
+          });
+
+        // BMI hesaplayıcı için enter tuşu
+        const calcInputs = document.querySelectorAll(
+          "#calcWeight, #calcHeight"
+        );
+        calcInputs.forEach((input) => {
+          input.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              calculateBMI();
+            }
+          });
+        });
+
+        // Mevcut kilo varsa BMI hesaplayıcısına otomatik doldur
+        if (weightData.length > 0) {
+          const currentWeight = weightData[weightData.length - 1].weight;
+          document.getElementById("calcWeight").value = currentWeight;
+        }
+
+        // Mevcut boy varsa BMI hesaplayıcısına otomatik doldur
+        if (userHeight > 0) {
+          document.getElementById("calcHeight").value = userHeight;
+          document.getElementById("heightInput").value = userHeight;
+        }
+      });
+
+      // Kilo ekleme
+      function addWeight() {
+        const weightInput = document.getElementById("weightInput");
+        const unitSelector = document.getElementById("unitSelector");
+        const weight = parseFloat(weightInput.value);
+
+        if (!weight || weight < 20 || weight > 300) {
+          showNotification(
+            "Lütfen geçerli bir kilo girin (20-300 kg)",
+            "error"
+          );
+          return;
+        }
+
+        // Birim dönüşümü (lbs to kg)
+        const weightInKg =
+          unitSelector.value === "lbs" ? weight * 0.453592 : weight;
+
+        const entry = {
+          id: Date.now(),
+          weight: Math.round(weightInKg * 10) / 10, // 1 ondalık basamak
+          originalWeight: weight,
+          unit: unitSelector.value,
+          date: new Date().toISOString(),
+          timestamp: Date.now(),
+        };
+
+        weightData.push(entry);
+        saveData();
+
+        weightInput.value = "";
+        updateStats();
+        updateHistory();
+        updateChart();
+
+        showNotification("Kilo başarıyla eklendi!");
+      }
+
+      // Boy kaydetme fonksiyonu
+      function saveHeight() {
+        const heightInput = document.getElementById("heightInput");
+        const height = parseFloat(heightInput.value);
+
+        if (!height || height < 100 || height > 250) {
+          showNotification(
+            "Lütfen geçerli bir boy girin (100-250 cm)",
+            "error"
+          );
+          return;
+        }
+
+        userHeight = height;
+        localStorage.setItem("userHeight", userHeight.toString());
+
+        updateStats();
+        showNotification("Boy bilginiz kaydedildi!");
+
+        // BMI hesaplayıcısını da güncelle
+        document.getElementById("calcHeight").value = userHeight;
+      }
+
+      // Hedef belirleme modalını aç
+      function showTargetModal() {
+        document.getElementById("targetModal").style.display = "flex";
+        if (targetWeight > 0) {
+          document.getElementById("targetInput").value = targetWeight;
+        }
+      }
+
+      // Hedef belirleme
+      function setTarget() {
+        const targetInput = document.getElementById("targetInput");
+
+        const newTarget = parseFloat(targetInput.value);
+
+        if (!newTarget || newTarget < 20 || newTarget > 300) {
+          showNotification(
+            "Lütfen geçerli bir hedef kilo girin (20-300 kg)",
+            "error"
+          );
+          return;
+        }
+
+        targetWeight = newTarget;
+        localStorage.setItem("targetWeight", targetWeight.toString());
+
+        closeModal("targetModal");
+        updateStats();
+        showNotification("Hedef başarıyla belirlendi!");
+      }
+
+      // Modal kapatma
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+      }
+
+      // İstatistikleri güncelle
+      function updateStats() {
+        const currentWeightEl = document.getElementById("currentWeight");
+        const targetWeightEl = document.getElementById("targetWeight");
+        const weightChangeEl = document.getElementById("weightChange");
+        const heightDisplayEl = document.getElementById("heightDisplay");
+        const goalProgressEl = document.getElementById("goalProgress");
+        const goalProgressBarEl = document.getElementById("goalProgressBar");
+        const monthlyChangeEl = document.getElementById("monthlyChange");
+        const monthlyProgressBarEl =
+          document.getElementById("monthlyProgressBar");
+        const bmiValueEl = document.getElementById("bmiValue");
+        const bmiProgressBarEl = document.getElementById("bmiProgressBar");
+        const bmiStatusEl = document.getElementById("bmiStatus");
+
+        if (weightData.length === 0) {
+          currentWeightEl.textContent = "-";
+          weightChangeEl.textContent = "-";
+          goalProgressEl.textContent = "0%";
+          goalProgressBarEl.style.width = "0%";
+          monthlyChangeEl.textContent = "0 kg";
+          monthlyProgressBarEl.style.width = "0%";
+          bmiValueEl.textContent = "-";
+          bmiProgressBarEl.style.width = "0%";
+          bmiStatusEl.textContent = "-";
+        } else {
+          // Mevcut kilo
+          const currentWeight = weightData[weightData.length - 1].weight;
+          currentWeightEl.textContent = `${currentWeight} kg`;
+
+          // Kilo değişimi (son 2 kayıt)
+          if (weightData.length >= 2) {
+            const previousWeight = weightData[weightData.length - 2].weight;
+            const change = currentWeight - previousWeight;
+            const changeText =
+              change > 0
+                ? `+${change.toFixed(1)} kg`
+                : `${change.toFixed(1)} kg`;
+            weightChangeEl.textContent = changeText;
+            weightChangeEl.className = `stat-value change ${
+              change < 0 ? "" : "negative"
+            }`;
+          } else {
+            weightChangeEl.textContent = "-";
+            weightChangeEl.className = "stat-value change";
+          }
+
+          // Hedefe ilerleme
+          if (targetWeight > 0 && weightData.length >= 1) {
+            const startWeight = weightData[0].weight;
+            const totalChange = Math.abs(targetWeight - startWeight);
+            const currentChange = Math.abs(currentWeight - startWeight);
+            const progress = Math.min((currentChange / totalChange) * 100, 100);
+
+            goalProgressEl.textContent = `${Math.round(progress)}%`;
+            goalProgressBarEl.style.width = `${progress}%`;
+          }
+
+          // Aylık değişim
+          const oneMonthAgo = new Date();
+          oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+          const monthlyData = weightData.filter(
+            (entry) => new Date(entry.date) >= oneMonthAgo
+          );
+          if (monthlyData.length >= 2) {
+            const monthlyChange = currentWeight - monthlyData[0].weight;
+            monthlyChangeEl.textContent = `${
+              monthlyChange >= 0 ? "+" : ""
+            }${monthlyChange.toFixed(1)} kg`;
+
+            const maxChange = 10; // Maksimum aylık değişim varsayımı
+            const changePercent = Math.min(
+              Math.abs(monthlyChange / maxChange) * 100,
+              100
+            );
+            monthlyProgressBarEl.style.width = `${changePercent}%`;
+          }
+
+          // BMI hesaplama
+          if (userHeight > 0) {
+            const heightInM = userHeight / 100;
+            const bmi = currentWeight / (heightInM * heightInM);
+            updateBMIProgress(bmi);
+          }
+        }
+
+        // Hedef kilo
+        if (targetWeight > 0) {
+          targetWeightEl.textContent = `${targetWeight} kg`;
+          targetWeightEl.onclick = showTargetModal;
+          targetWeightEl.style.cursor = "pointer";
+          targetWeightEl.title = "Hedefi değiştirmek için tıklayın";
+        } else {
+          targetWeightEl.textContent = "Belirle";
+          targetWeightEl.onclick = showTargetModal;
+          targetWeightEl.style.cursor = "pointer";
+          targetWeightEl.title = "Hedef belirlemek için tıklayın";
+        }
+
+        // Boy gösterimi
+        if (userHeight > 0) {
+          heightDisplayEl.textContent = `${userHeight} cm`;
+        } else {
+          heightDisplayEl.textContent = "Belirtilmedi";
+        }
+
+        // BMI gösterimi
+        if (userHeight > 0 && weightData.length > 0) {
+          const currentWeight = weightData[weightData.length - 1].weight;
+          const heightInM = userHeight / 100;
+          const bmi = currentWeight / (heightInM * heightInM);
+          bmiValueEl.textContent = bmi.toFixed(1);
+
+          // BMI durumu
+          let bmiCategory = "";
+          if (bmi < 18.5) bmiCategory = "Zayıf";
+          else if (bmi < 25) bmiCategory = "Normal";
+          else if (bmi < 30) bmiCategory = "Fazla Kilolu";
+          else bmiCategory = "Obez";
+
+          bmiStatusEl.textContent = bmiCategory;
+        } else {
+          bmiValueEl.textContent = "Hesapla";
+          bmiValueEl.onclick = () => {
+            document.getElementById("calcHeight").focus();
+            document
+              .getElementById("calcHeight")
+              .scrollIntoView({ behavior: "smooth" });
+          };
+          bmiValueEl.style.cursor = "pointer";
+          bmiValueEl.title =
+            "BMI hesaplamak için aşağıdaki hesaplayıcıyı kullanın";
+          bmiProgressBarEl.style.width = "0%";
+          bmiStatusEl.textContent = "-";
+        }
+      }
+
+      // Geçmişi güncelle
+      function updateHistory() {
+        const historyList = document.getElementById("historyList");
+
+        if (weightData.length === 0) {
+          historyList.innerHTML = `
+                  <div class="empty-state">
+                      <div class="empty-icon">📝</div>
+                      <h3 class="empty-title">Henüz kilo kaydın yok</h3>
+                      <p class="empty-text">İlk kilo ölçümünü ekleyerek başla!</p>
+                  </div>
+              `;
+          return;
+        }
+
+        // Filtreleme
+        let filteredData = [...weightData];
+        const now = new Date();
+
+        if (currentFilter === "week") {
+          const oneWeekAgo = new Date();
+          oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+          filteredData = weightData.filter(
+            (entry) => new Date(entry.date) >= oneWeekAgo
+          );
+        } else if (currentFilter === "month") {
+          const oneMonthAgo = new Date();
+          oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+          filteredData = weightData.filter(
+            (entry) => new Date(entry.date) >= oneMonthAgo
+          );
+        }
+
+        // Tersten sırala (en yeni önce)
+        filteredData.reverse();
+
+        historyList.innerHTML = filteredData
+          .map((entry, index) => {
+            const date = new Date(entry.date);
+            const dateStr = formatDate(date);
+
+            // Önceki kayıtla karşılaştırma
+            let changeHtml = "";
+            if (index < filteredData.length - 1) {
+              const prevEntry = filteredData[index + 1];
+              const change = entry.weight - prevEntry.weight;
+              if (Math.abs(change) >= 0.1) {
+                const changeClass = change > 0 ? "positive" : "negative";
+                const changeSymbol = change > 0 ? "+" : "";
+                changeHtml = `<span class="history-change ${changeClass}">${changeSymbol}${change.toFixed(
+                  1
+                )} kg</span>`;
+              }
+            }
+
+            return `
+                  <div class="history-item">
+                      <div>
+                          <div class="history-weight">${entry.weight} kg</div>
+                          <div class="history-date">${dateStr}</div>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px;">
+                          ${changeHtml}
+                          <div class="history-actions">
+                              <button class="action-btn" onclick="editWeight(${entry.id})" title="Düzenle">✏️</button>
+                              <button class="action-btn" onclick="deleteWeight(${entry.id})" title="Sil">🗑️</button>
+                          </div>
+                      </div>
+                  </div>
+              `;
+          })
+          .join("");
+      }
+
+      // Geçmiş filtreleme
+      function filterHistory(filter) {
+        currentFilter = filter;
+
+        // Filtre butonlarını güncelle
+        document.querySelectorAll(".filter-btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        event.target.classList.add("active");
+
+        updateHistory();
+      }
+
+      // Grafik başlatma
+      function initializeChart() {
+        const ctx = document.getElementById("weightChart").getContext("2d");
+
+        chart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: [],
+            datasets: [
+              {
+                label: "Kilo (kg)",
+                data: [],
+                borderColor: "#2563eb",
+                backgroundColor: "rgba(37, 99, 235, 0.1)",
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: "#2563eb",
+                pointBorderColor: "#ffffff",
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+            scales: {
+              x: {
+                grid: {
+                  color: "#e2e8f0",
+                },
+                ticks: {
+                  color: "#64748b",
+                },
+              },
+              y: {
+                grid: {
+                  color: "#e2e8f0",
+                },
+                ticks: {
+                  color: "#64748b",
+                  callback: function (value) {
+                    return value + " kg";
+                  },
+                },
+              },
+            },
+            elements: {
+              point: {
+                hoverBackgroundColor: "#2563eb",
+              },
+            },
+          },
+        });
+
+        updateChart();
+      }
+
+      // Grafik güncelleme
+      function updateChart() {
+        if (!chart) return;
+
+        const chartData = weightData.slice(-30); // Son 30 kayıt
+
+        chart.data.labels = chartData.map((entry) => {
+          const date = new Date(entry.date);
+          return date.toLocaleDateString("tr-TR", {
+            month: "short",
+            day: "numeric",
+          });
+        });
+
+        chart.data.datasets[0].data = chartData.map((entry) => entry.weight);
+
+        // Hedef çizgisi ekle
+        if (targetWeight > 0) {
+          if (chart.data.datasets.length === 1) {
+            chart.data.datasets.push({
+              label: "Hedef",
+              data: new Array(chartData.length).fill(targetWeight),
+              borderColor: "#06b6d4",
+              backgroundColor: "transparent",
+              borderWidth: 2,
+              borderDash: [5, 5],
+              fill: false,
+              pointRadius: 0,
+              pointHoverRadius: 0,
+            });
+          } else {
+            chart.data.datasets[1].data = new Array(chartData.length).fill(
+              targetWeight
+            );
+          }
+        }
+
+        chart.update();
+      }
+
+      // Kilo düzenleme
+      function editWeight(id) {
+        const entry = weightData.find((w) => w.id === id);
+        if (!entry) return;
+
+        const newWeight = prompt("Yeni kilo değeri:", entry.weight);
+        if (newWeight && !isNaN(newWeight) && newWeight > 0) {
+          entry.weight = parseFloat(newWeight);
+          saveData();
+          updateStats();
+          updateHistory();
+          updateChart();
+          showNotification("Kilo güncellendi!");
+        }
+      }
+
+      // Kilo silme
+      function deleteWeight(id) {
+        if (confirm("Bu kaydı silmek istediğinizden emin misiniz?")) {
+          weightData = weightData.filter((w) => w.id !== id);
+          saveData();
+          updateStats();
+          updateHistory();
+          updateChart();
+          showNotification("Kayıt silindi!");
+        }
+      }
+
+      // Veri kaydetme
+      function saveData() {
+        localStorage.setItem("weightData", JSON.stringify(weightData));
+      }
+
+      // Veri yükleme
+      function loadData() {
+        // Veriler zaten global değişkenlerde yüklü
+      }
+
+      // Tarih formatlama
+      function formatDate(date) {
+        const now = new Date();
+        const diffTime = Math.abs(now - date);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays === 1) {
+          return "Bugün";
+        } else if (diffDays === 2) {
+          return "Dün";
+        } else if (diffDays <= 7) {
+          return `${diffDays - 1} gün önce`;
+        } else {
+          return date.toLocaleDateString("tr-TR", {
+            day: "numeric",
+            month: "short",
+            year:
+              date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
+          });
+        }
+      }
+
+      // Bildirim gösterme
+      function showNotification(message, type = "success") {
+        const notification = document.createElement("div");
+        notification.className = "notification";
+        notification.textContent = message;
+
+        if (type === "error") {
+          notification.style.background = "#ef4444";
+        }
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.style.transform = "translateX(100%)";
+          notification.style.opacity = "0";
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 300);
+        }, 3000);
+
+        notification.onclick = () => {
+          notification.style.transform = "translateX(100%)";
+          notification.style.opacity = "0";
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 300);
+        };
+      }
+
+      // BMI hesaplayıcı fonksiyonu
+      function calculateBMI() {
+        const weightInput = document.getElementById("calcWeight");
+        const heightInput = document.getElementById("calcHeight");
+        const resultDiv = document.getElementById("calcResult");
+        const resultBMI = document.getElementById("resultBMI");
+        const resultCategory = document.getElementById("resultCategory");
+
+        const weight = parseFloat(weightInput.value);
+        const height = parseFloat(heightInput.value);
+
+        if (
+          !weight ||
+          !height ||
+          weight < 20 ||
+          weight > 300 ||
+          height < 100 ||
+          height > 250
+        ) {
+          showNotification(
+            "Lütfen geçerli kilo (20-300 kg) ve boy (100-250 cm) değerleri girin",
+            "error"
+          );
+          return;
+        }
+
+        // Boy bilgisini kaydet
+        userHeight = height;
+        localStorage.setItem("userHeight", userHeight.toString());
+
+        const heightInM = height / 100;
+        const bmi = weight / (heightInM * heightInM);
+
+        resultBMI.textContent = bmi.toFixed(1);
+
+        let category = "";
+        let categoryClass = "";
+
+        if (bmi < 18.5) {
+          category = "Zayıf";
+          categoryClass = "underweight";
+        } else if (bmi < 25) {
+          category = "Normal";
+          categoryClass = "normal";
+        } else if (bmi < 30) {
+          category = "Fazla Kilolu";
+          categoryClass = "overweight";
+        } else {
+          category = "Obez";
+          categoryClass = "obese";
+        }
+
+        resultCategory.textContent = category;
+        resultCategory.className = `result-category ${categoryClass}`;
+
+        // Detaylı analiz ve öneriler
+        generateWeightRecommendations(bmi, weight, height, category);
+
+        resultDiv.style.display = "block";
+
+        // İstatistikleri güncelle (BMI bilgisi kaydedildi)
+        updateStats();
+
+        // Üstteki BMI progress bar'ını da güncelle
+        updateBMIProgress(bmi);
+
+        // Smooth scroll to result
+        resultDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+        showNotification("BMI hesaplandı ve boy bilginiz kaydedildi!");
+      }
+
+      // BMI sonuçları için detaylı öneriler oluştur
+      function generateWeightRecommendations(
+        bmi,
+        currentWeight,
+        height,
+        category
+      ) {
+        const heightInM = height / 100;
+        const resultDetails = document.getElementById("resultDetails");
+
+        // Sağlıklı BMI aralığı (18.5 - 24.9)
+        const minHealthyWeight = 18.5 * heightInM * heightInM;
+        const maxHealthyWeight = 24.9 * heightInM * heightInM;
+        const idealWeight = 22 * heightInM * heightInM; // BMI 22 ideal kabul edilir
+
+        let recommendationsHTML = "";
+
+        // Hedef ağırlık aralıkları
+        recommendationsHTML += `
+          <div class="weight-recommendation">
+            <h4>🎯 Sağlıklı Kilo Aralığı</h4>
+            <div class="target-ranges">
+              <div class="target-range">
+                <h5>Minimum Sağlıklı</h5>
+                <div class="range-value">${minHealthyWeight.toFixed(1)} kg</div>
+              </div>
+              <div class="target-range ideal">
+                <h5>İdeal Kilo</h5>
+                <div class="range-value">${idealWeight.toFixed(1)} kg</div>
+              </div>
+              <div class="target-range">
+                <h5>Maksimum Sağlıklı</h5>
+                <div class="range-value">${maxHealthyWeight.toFixed(1)} kg</div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Kilo verme/alma hesaplamaları
+        const weightGoals = [];
+
+        if (bmi < 18.5) {
+          // Zayıf - kilo alması gerekiyor
+          const toMinHealthy = minHealthyWeight - currentWeight;
+          const toIdeal = idealWeight - currentWeight;
+
+          weightGoals.push({
+            label: "Sağlıklı BMI'ye ulaşmak için",
+            value: `+${toMinHealthy.toFixed(1)} kg almalısın`,
+            timeline: `${Math.ceil(toMinHealthy / 0.5)} hafta (haftada 0.5kg)`,
+          });
+
+          if (toIdeal > 0) {
+            weightGoals.push({
+              label: "İdeal kiloya ulaşmak için",
+              value: `+${toIdeal.toFixed(1)} kg almalısın`,
+              timeline: `${Math.ceil(toIdeal / 0.5)} hafta (haftada 0.5kg)`,
+            });
+          }
+        } else if (bmi >= 25) {
+          // Fazla kilolu/obez - kilo vermesi gerekiyor
+          const toMaxHealthy = currentWeight - maxHealthyWeight;
+          const toIdeal = currentWeight - idealWeight;
+
+          if (toMaxHealthy > 0) {
+            weightGoals.push({
+              label: "Sağlıklı BMI'ye ulaşmak için",
+              value: `${toMaxHealthy.toFixed(1)} kg vermelisin`,
+              timeline: `${Math.ceil(
+                toMaxHealthy / 0.5
+              )} hafta (haftada 0.5kg)`,
+            });
+          }
+
+          if (toIdeal > 0) {
+            weightGoals.push({
+              label: "İdeal kiloya ulaşmak için",
+              value: `${toIdeal.toFixed(1)} kg vermelisin`,
+              timeline: `${Math.ceil(toIdeal / 0.5)} hafta (haftada 0.5kg)`,
+            });
+          }
+        } else {
+          // Normal BMI - tebrikler!
+          const diffFromIdeal = Math.abs(currentWeight - idealWeight);
+          if (diffFromIdeal > 1) {
+            const direction = currentWeight > idealWeight ? "vermek" : "almak";
+            weightGoals.push({
+              label: "İdeal kiloya yaklaşmak için",
+              value: `${diffFromIdeal.toFixed(
+                1
+              )} kg ${direction} isteyebilirsin`,
+              timeline: `${Math.ceil(
+                diffFromIdeal / 0.5
+              )} hafta (haftada 0.5kg)`,
+            });
+          } else {
+            weightGoals.push({
+              label: "Harika! İdeal kilo aralığındasın",
+              value: "Mevcut kilonu korumaya odaklan",
+              timeline: "Düzenli egzersiz ve dengeli beslenme",
+            });
+          }
+        }
+
+        // Hedef listesi
+        if (weightGoals.length > 0) {
+          recommendationsHTML += `
+            <div class="weight-recommendation">
+              <h4>📊 Kilo Hedeflerin</h4>
+              <div class="weight-goals">
+                ${weightGoals
+                  .map(
+                    (goal) => `
+                  <div class="weight-goal">
+                    <div class="goal-info">
+                      <div class="goal-label">${goal.label}</div>
+                      <div class="goal-value">${goal.value}</div>
+                    </div>
+                    <div class="goal-timeline">${goal.timeline}</div>
+                  </div>
+                `
+                  )
+                  .join("")}
+              </div>
+            </div>
+          `;
+        }
+
+        // Kategori bazlı sağlık önerileri
+        const healthTips = getHealthTipsByCategory(category, bmi);
+        if (healthTips.length > 0) {
+          recommendationsHTML += `
+            <div class="health-tips">
+              <h5>💊 Sağlıklı ${
+                category === "Normal" ? "Kilo Koruma" : "Kilo Değişimi"
+              } İpuçları</h5>
+              <ul class="tips-list">
+                ${healthTips.map((tip) => `<li>${tip}</li>`).join("")}
+              </ul>
+            </div>
+          `;
+        }
+
+        resultDetails.innerHTML = recommendationsHTML;
+      }
+
+      // Kategori bazlı sağlık önerileri
+      function getHealthTipsByCategory(category, bmi) {
+        const tips = {
+          Zayıf: [
+            "Günde 300-500 kalori fazla alarak sağlıklı kilo artışı hedefleyin",
+            "Protein ağırlıklı beslenme: tavuk, balık, yumurta, kuruyemiş tüketin",
+            "Kuvvet antrenmanları yaparak kas kütlesi artırın",
+            "Sık sık küçük öğünler halinde beslenin (6-8 öğün)",
+            "Sağlıklı yağlar ekleyin: avokado, zeytinyağı, fındık",
+          ],
+          Normal: [
+            "Mevcut kilonuzu korumak için günlük kalori dengesini sağlayın",
+            "Haftada 150 dakika orta şiddetli egzersiz yapın",
+            "Dengeli beslenme: sebze, meyve, tam tahıl, protein",
+            "Bol su için (günde 2-3 litre)",
+            "Düzenli uyku alın (7-9 saat)",
+          ],
+          "Fazla Kilolu": [
+            "Günde 300-500 kalori açığı yaratarak haftada 0.5kg verin",
+            "Porsiyon kontrolü yapın ve yavaş yiyin",
+            "Kardiyovasküler egzersizleri artırın (yürüyüş, koşu, bisiklet)",
+            "Şekerli içecekleri ve işlenmiş gıdaları azaltın",
+            "Lif oranı yüksek gıdalar tüketin (sebze, meyve, tam tahıl)",
+          ],
+          Obez: [
+            "Doktor kontrolünde sistematik kilo verme programı başlatın",
+            "Beslenme uzmanından destek alın",
+            "Düşük etkili egzersizlerle başlayın (yürüyüş, yüzme)",
+            "Aşırı kısıtlayıcı diyetlerden kaçının, sürdürülebilir değişiklikler yapın",
+            "Sosyal destek alın, ailenizi sürece dahil edin",
+          ],
+        };
+
+        return tips[category] || [];
+      }
+
+      // Modal dışına tıklama ile kapatma
+      window.onclick = function (event) {
+        const modals = document.querySelectorAll(".modal");
+        modals.forEach((modal) => {
+          if (event.target === modal) {
+            modal.style.display = "none";
+          }
+        });
+      };
+
+      // Sayfa yenilendiğinde achievement güncelle
+      window.addEventListener("beforeunload", function () {
+        if (window.dashboardAPI && weightData.length > 0) {
+          // Weight tracking achievement tetikle
+          try {
+            window.dashboardAPI.triggerAchievements();
+          } catch (error) {
+            // Sessizce devam et
+          }
+        }
+      });
+
+      // BMI progress bar'ını güncelle
+      function updateBMIProgress(bmi) {
+        const bmiValueEl = document.getElementById("bmiValue");
+        const bmiProgressBarEl = document.getElementById("bmiProgressBar");
+        const bmiStatusEl = document.getElementById("bmiStatus");
+
+        if (bmi) {
+          bmiValueEl.textContent = bmi.toFixed(1);
+
+          // BMI progress hesaplama
+          let bmiProgress = 0;
+          if (bmi < 18.5) {
+            bmiProgress = (bmi / 18.5) * 40; // Zayıf
+          } else if (bmi <= 24.9) {
+            bmiProgress = 40 + ((bmi - 18.5) / (24.9 - 18.5)) * 40; // Normal
+          } else {
+            bmiProgress = 80 + Math.min(((bmi - 24.9) / 10) * 20, 20); // Fazla kilolu+
+          }
+
+          bmiProgressBarEl.style.width = `${Math.min(bmiProgress, 100)}%`;
+
+          // Progress bar rengini BMI kategorisine göre değiştir
+          if (bmi < 18.5) {
+            bmiProgressBarEl.style.background =
+              "linear-gradient(90deg, #f59e0b, #fbbf24)"; // Sarı
+            bmiStatusEl.textContent = "Zayıf";
+          } else if (bmi <= 24.9) {
+            bmiProgressBarEl.style.background =
+              "linear-gradient(90deg, #10b981, #34d399)"; // Yeşil
+            bmiStatusEl.textContent = "Normal";
+          } else if (bmi <= 29.9) {
+            bmiProgressBarEl.style.background =
+              "linear-gradient(90deg, #f97316, #fb923c)"; // Turuncu
+            bmiStatusEl.textContent = "Fazla Kilolu";
+          } else {
+            bmiProgressBarEl.style.background =
+              "linear-gradient(90deg, #ef4444, #f87171)"; // Kırmızı
+            bmiStatusEl.textContent = "Obez";
+          }
+        }
+      }
+
+      // Debug fonksiyonları (geliştirme için)
+      window.weightTrackerDebug = {
+        addSampleData: () => {
+          const sampleWeights = [
+            75.2, 74.8, 74.5, 74.1, 73.9, 73.6, 73.2, 72.8,
+          ];
+          const now = new Date();
+
+          sampleWeights.forEach((weight, index) => {
+            const date = new Date(now);
+            date.setDate(date.getDate() - (sampleWeights.length - index));
+
+            weightData.push({
+              id: Date.now() + index,
+              weight: weight,
+              originalWeight: weight,
+              unit: "kg",
+              date: date.toISOString(),
+              timestamp: date.getTime(),
+            });
+          });
+
+          saveData();
+          updateStats();
+          updateHistory();
+          updateChart();
+          showNotification("Örnek veriler eklendi!");
+        },
+
+        clearData: () => {
+          if (confirm("Tüm veriler silinecek! Emin misiniz?")) {
+            weightData = [];
+            localStorage.removeItem("weightData");
+            localStorage.removeItem("targetWeight");
+            localStorage.removeItem("userHeight");
+            location.reload();
+          }
+        },
+
+        showData: () => {
+          console.log("Weight Data:", weightData);
+          console.log("Target Weight:", targetWeight);
+          console.log("User Height:", userHeight);
+        },
+      };
+    </script>
+  </body>
+</html>

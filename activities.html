@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aktiviteler - GRINDMIND</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Reset ve Temel Stiller */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-bg: #f8fafc;
+        --secondary-bg: #f1f5f9;
+        --card-bg: #ffffff;
+        --accent-color: #6366f1;
+        --accent-hover: #5855eb;
+        --accent-light: #eef2ff;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #94a3b8;
+        --border-color: #e2e8f0;
+        --border-hover: #cbd5e1;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --info-color: #3b82f6;
+        --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: var(--primary-bg);
+        color: var(--text-primary);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      /* Header */
+      .header {
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border-color);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+      }
+
+      .logo {
+        font-size: 1.75rem;
+        font-weight: 800;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .logo:hover {
+        transform: scale(1.05);
+      }
+
+      .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      .nav-item {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+      }
+
+      .nav-item:hover {
+        color: var(--accent-color);
+        background: var(--accent-light);
+        transform: translateY(-1px);
+      }
+
+      .nav-item.active {
+        color: var(--accent-color);
+        background: var(--accent-light);
+        font-weight: 600;
+      }
+
+      .user-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: relative;
+      }
+
+      .notification-btn {
+        position: relative;
+        background: none;
+        border: none;
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .notification-btn:hover {
+        background: var(--secondary-bg);
+        color: var(--accent-color);
+        transform: scale(1.1);
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: 0.25rem;
+        right: 0.25rem;
+        background: var(--danger-color);
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.125rem 0.375rem;
+        border-radius: 0.75rem;
+        min-width: 1.25rem;
+        text-align: center;
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--gradient-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-md);
+      }
+
+      .user-avatar:hover {
+        transform: scale(1.1);
+        box-shadow: var(--shadow-lg);
+      }
+
+      /* Main Content */
+      .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .page-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .page-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      /* Activities Grid */
+      .activities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .activity-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        transition: all 0.4s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .activity-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-primary);
+        border-radius: 1.5rem 1.5rem 0 0;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+      }
+
+      .activity-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .activity-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--accent-color);
+      }
+
+      .activity-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .activity-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        background: var(--accent-light);
+        color: var(--accent-color);
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .activity-card:hover .activity-icon {
+        transform: scale(1.1);
+        background: var(--accent-color);
+        color: white;
+        box-shadow: var(--shadow-md);
+      }
+
+      .activity-info {
+        flex: 1;
+      }
+
+      .activity-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .activity-subtitle {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .activity-description {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+        flex-grow: 1;
+      }
+
+      .activity-features {
+        list-style: none;
+        margin-bottom: 2rem;
+        flex-shrink: 0;
+      }
+
+      .activity-features li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      .activity-features li::before {
+        content: "✨";
+        font-size: 1rem;
+        color: var(--success-color);
+      }
+
+      .activity-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-top: auto;
+        flex-shrink: 0;
+      }
+
+      .activity-btn {
+        flex: 1;
+        padding: 0.875rem 1.5rem;
+        border: none;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn-primary {
+        background: var(--accent-color);
+        color: white;
+        box-shadow: var(--shadow-md);
+      }
+
+      .btn-primary:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .btn-secondary {
+        background: var(--secondary-bg);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-secondary:hover {
+        background: var(--accent-light);
+        color: var(--accent-color);
+        border-color: var(--accent-color);
+        transform: translateY(-2px);
+      }
+
+      .activity-status {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .status-available {
+        background: var(--success-color);
+        color: white;
+      }
+
+      .status-premium {
+        background: var(--warning-color);
+        color: white;
+      }
+
+      .status-coming-soon {
+        background: var(--text-muted);
+        color: white;
+      }
+
+      /* Special Activity Colors */
+      .activity-card.pomodoro .activity-icon {
+        background: linear-gradient(135deg, #ff6b6b20, #ff6b6b30);
+        color: #ff6b6b;
+      }
+
+      .activity-card.pomodoro:hover .activity-icon {
+        background: #ff6b6b;
+        color: white;
+      }
+
+      .activity-card.habits .activity-icon {
+        background: linear-gradient(135deg, #4ecdc420, #4ecdc430);
+        color: #4ecdc4;
+      }
+
+      .activity-card.habits:hover .activity-icon {
+        background: #4ecdc4;
+        color: white;
+      }
+
+      .activity-card.planning .activity-icon {
+        background: linear-gradient(135deg, #45b7d120, #45b7d130);
+        color: #45b7d1;
+      }
+
+      .activity-card.planning:hover .activity-icon {
+        background: #45b7d1;
+        color: white;
+      }
+
+      .activity-card.weight .activity-icon {
+        background: linear-gradient(135deg, #f093fb20, #f093fb30);
+        color: #f093fb;
+      }
+
+      .activity-card.weight:hover .activity-icon {
+        background: #f093fb;
+        color: white;
+      }
+
+      .activity-card.addictions .activity-icon {
+        background: linear-gradient(135deg, #96ceb420, #96ceb430);
+        color: #96ceb4;
+      }
+
+      .activity-card.addictions:hover .activity-icon {
+        background: #96ceb4;
+        color: white;
+      }
+
+      .activity-card.study .activity-icon {
+        background: linear-gradient(135deg, #ffecd220, #ffecd230);
+        color: #f6b93b;
+      }
+
+      .activity-card.study:hover .activity-icon {
+        background: #f6b93b;
+        color: white;
+      }
+
+      /* Statistics Section */
+      .stats-section {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        text-align: center;
+        margin-bottom: 3rem;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .stats-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .stat-card {
+        background: var(--secondary-bg);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+      }
+
+      .stat-card:hover {
+        background: var(--accent-light);
+        border-color: var(--accent-color);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--accent-color);
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-label {
+        color: var(--text-secondary);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9rem;
+      }
+
+      /* Quick Actions */
+      .quick-actions {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        margin-bottom: 3rem;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .quick-actions-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+        text-align: center;
+      }
+
+      .quick-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+
+      .quick-action {
+        background: var(--secondary-bg);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .quick-action:hover {
+        background: var(--accent-light);
+        border-color: var(--accent-color);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .quick-action-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        display: block;
+      }
+
+      .quick-action-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+      }
+
+      .quick-action-desc {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      /* Notification */
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--success-color);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: var(--shadow-lg);
+        font-weight: 500;
+        z-index: 10000;
+        max-width: 300px;
+        animation: slideInRight 0.5s ease;
+        cursor: pointer;
+      }
+
+      @keyframes slideInRight {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+        .nav-menu {
+          display: none;
+        }
+
+        .main-content {
+          padding: 1.5rem 1rem;
+        }
+
+        .page-title {
+          font-size: 2rem;
+        }
+
+        .page-subtitle {
+          font-size: 1rem;
+        }
+
+        .activities-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .activity-card {
+          padding: 1.5rem;
+        }
+
+        .activity-header {
+          flex-direction: column;
+          text-align: center;
+          gap: 1rem;
+        }
+
+        .activity-icon {
+          width: 70px;
+          height: 70px;
+          font-size: 2rem;
+        }
+
+        .activity-actions {
+          flex-direction: column;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+        }
+
+        .quick-actions-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .nav {
+          padding: 1rem;
+        }
+
+        .page-header {
+          margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Hover Effects */
+      .activity-card:hover .activity-title {
+        color: var(--accent-color);
+      }
+
+      /* Loading States */
+      .loading {
+        opacity: 0.6;
+        pointer-events: none;
+        position: relative;
+      }
+
+      .loading::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin: -10px 0 0 -10px;
+        border: 2px solid var(--accent-color);
+        border-top: 2px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="nav">
+        <div class="logo" onclick="window.location.href='dashboard.html'">
+          GRINDMIND
+        </div>
+        <div class="nav-menu">
+          <a href="dashboard.html" class="nav-item">Ana Sayfa</a>
+          <a href="activities.html" class="nav-item active">Aktiviteler</a>
+          <a href="statistics.html" class="nav-item">İstatistikler</a>
+          <a href="achievements.html" class="nav-item">Başarılar</a>
+        </div>
+        <div class="user-section">
+          <button class="notification-btn" id="notificationBtn">
+            🔔
+            <span class="notification-badge" id="notificationBadge">3</span>
+          </button>
+          <div class="user-avatar" id="userAvatar">T</div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">⚡ Aktiviteler</h1>
+        <p class="page-subtitle">
+          Yaşamını dönüştürecek güçlü araçları keşfet. Her aktivite, hedeflerine
+          ulaşman için özel olarak tasarlandı.
+        </p>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <h2 class="quick-actions-title">🚀 Hızlı Başlangıç</h2>
+        <div class="quick-actions-grid">
+          <a href="pomodoro.html" class="quick-action">
+            <span class="quick-action-icon">⏱️</span>
+            <div class="quick-action-title">Hemen Pomodoro Başlat</div>
+            <div class="quick-action-desc">25 dakikalık odaklanma seansı</div>
+          </a>
+          <a href="habits.html" class="quick-action">
+            <span class="quick-action-icon">✅</span>
+            <div class="quick-action-title">Bugünün Alışkanlıkları</div>
+            <div class="quick-action-desc">Günlük rutinini tamamla</div>
+          </a>
+          <a href="planning.html" class="quick-action">
+            <span class="quick-action-icon">📝</span>
+            <div class="quick-action-title">Hızlı Görev Ekle</div>
+            <div class="quick-action-desc">Yeni bir görev oluştur</div>
+          </a>
+          <a href="weight-tracker.html" class="quick-action">
+            <span class="quick-action-icon">⚖️</span>
+            <div class="quick-action-title">Kilo Kaydet</div>
+            <div class="quick-action-desc">Bugünkü kiloyu ekle</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Activities Grid -->
+      <div class="activities-grid">
+        <!-- Pomodoro Timer -->
+        <div
+          class="activity-card pomodoro"
+          onclick="navigateToActivity('pomodoro.html')"
+        >
+          <div class="activity-header">
+            <div class="activity-icon">⏱️</div>
+            <div class="activity-info">
+              <h3 class="activity-title">Pomodoro Timer</h3>
+              <p class="activity-subtitle">Odaklanma ve Verimlilik</p>
+              <span class="activity-status status-available">Mevcut</span>
+            </div>
+          </div>
+          <p class="activity-description">
+            25 dakikalık odaklanma seansları ile verimliliğini maksimuma çıkar.
+            Bilimsel olarak kanıtlanmış pomodoro tekniği ile dikkat
+            dağınıklığını ortadan kaldır ve daha fazla iş yap.
+          </p>
+          <ul class="activity-features">
+            <li>Özelleştirilebilir çalışma süreleri</li>
+            <li>Otomatik mola hatırlatıcıları</li>
+            <li>Günlük session takibi</li>
+            <li>Görev bazında pomodoro ölçümü</li>
+            <li>İstatistik ve raporlar</li>
+          </ul>
+          <div class="activity-actions">
+            <button class="activity-btn btn-primary">Başla</button>
+            <button
+              class="activity-btn btn-secondary"
+              onclick="event.stopPropagation(); showActivityInfo('pomodoro')"
+            >
+              Detay
+            </button>
+          </div>
+        </div>
+
+        <!-- Habits Tracker -->
+        <div
+          class="activity-card habits"
+          onclick="navigateToActivity('habits.html')"
+        >
+          <div class="activity-header">
+            <div class="activity-icon">✨</div>
+            <div class="activity-info">
+              <h3 class="activity-title">Alışkanlık Takibi</h3>
+              <p class="activity-subtitle">Pozitif Yaşam Tarzı</p>
+              <span class="activity-status status-available">Mevcut</span>
+            </div>
+          </div>
+          <p class="activity-description">
+            Yeni alışkanlıkları hayatının kalıcı bir parçası haline getir. 21
+            günlük döngülerle istediğin yaşam tarzını oluştur ve pozitif
+            değişimleri takip et.
+          </p>
+          <ul class="activity-features">
+            <li>Kişisel alışkanlık planları</li>
+            <li>Görsel ilerleme takibi</li>
+            <li>Streak (seri) sistemi</li>
+            <li>Motivasyon bildirimleri</li>
+            <li>Başarı rozetleri</li>
+          </ul>
+          <div class="activity-actions">
+            <button class="activity-btn btn-primary">Ekle</button>
+            <button
+              class="activity-btn btn-secondary"
+              onclick="event.stopPropagation(); showActivityInfo('habits')"
+            >
+              Detay
+            </button>
+          </div>
+        </div>
+
+        <!-- Task Planning -->
+        <div
+          class="activity-card planning"
+          onclick="navigateToActivity('planning.html')"
+        >
+          <div class="activity-header">
+            <div class="activity-icon">📅</div>
+            <div class="activity-info">
+              <h3 class="activity-title">Planlama & Görevler</h3>
+              <p class="activity-subtitle">Organize Hayat</p>
+              <span class="activity-status status-available">Mevcut</span>
+            </div>
+          </div>
+          <p class="activity-description">
+            Görevlerini organize et, haftalık planlar yap ve hedeflerine
+            systematik bir şekilde ulaş. Kanban board ve takvim görünümleri ile
+            tam kontrol.
+          </p>
+          <ul class="activity-features">
+            <li>Kanban board sistemi</li>
+            <li>Haftalık takvim planlama</li>
+            <li>Öncelik ve kategori sistemi</li>
+            <li>Görev şablonları</li>
+            <li>İlerleme istatistikleri</li>
+          </ul>
+          <div class="activity-actions">
+            <button class="activity-btn btn-primary">Ekle</button>
+            <button
+              class="activity-btn btn-secondary"
+              onclick="event.stopPropagation(); showActivityInfo('planning')"
+            >
+              Detay
+            </button>
+          </div>
+        </div>
+
+        <!-- Weight Tracker -->
+        <div
+          class="activity-card weight"
+          onclick="navigateToActivity('weight-tracker.html')"
+        >
+          <div class="activity-header">
+            <div class="activity-icon">⚖️</div>
+            <div class="activity-info">
+              <h3 class="activity-title">Kilo Takibi</h3>
+              <p class="activity-subtitle">Sağlıklı Yaşam</p>
+              <span class="activity-status status-available">Mevcut</span>
+            </div>
+          </div>
+          <p class="activity-description">
+            Kilo değişimini sistematik olarak takip et, BMI hesapla ve sağlıklı
+            hedeflere ulaş. Detaylı grafikler ve analiz araçları ile ilerlemeyi
+            görselleştir.
+          </p>
+          <ul class="activity-features">
+            <li>Günlük kilo girişi</li>
+            <li>BMI hesaplama ve analiz</li>
+            <li>İlerleme grafikleri</li>
+            <li>Hedef belirleme sistemi</li>
+            <li>Sağlık önerileri</li>
+          </ul>
+          <div class="activity-actions">
+            <button class="activity-btn btn-primary">Ekle</button>
+            <button
+              class="activity-btn btn-secondary"
+              onclick="event.stopPropagation(); showActivityInfo('weight')"
+            >
+              Detay
+            </button>
+          </div>
+        </div>
+
+        <!-- Addiction Recovery -->
+        <div
+          class="activity-card addictions"
+          onclick="navigateToActivity('addictions.html')"
+        >
+          <div class="activity-header">
+            <div class="activity-icon">🚫</div>
+            <div class="activity-info">
+              <h3 class="activity-title">Bağımlılık Bırakma</h3>
+              <p class="activity-subtitle">Özgür Yaşam</p>
+              <span class="activity-status status-available">Mevcut</span>
+            </div>
+          </div>
+          <p class="activity-description">
+            Kötü alışkanlıklardan kurtul ve daha sağlıklı bir yaşam tarzına
+            geçiş yap. Günlük takip sistemi ile bağımlılıklarını yenmeye
+            odaklan.
+          </p>
+          <ul class="activity-features">
+            <li>Günlük temiz kalma takibi</li>
+            <li>Motivasyon sistemi</li>
+            <li>Tetikleyici analizi</li>
+            <li>Destek grubu erişimi</li>
+            <li>İlerleme istatistikleri</li>
+          </ul>
+          <div class="activity-actions">
+            <button class="activity-btn btn-primary">Başla</button>
+            <button
+              class="activity-btn btn-secondary"
+              onclick="event.stopPropagation(); showActivityInfo('addictions')"
+            >
+              Detay
+            </button>
+          </div>
+        </div>
+
+        <!-- Study Notes -->
+        <div
+          class="activity-card study"
+          onclick="navigateToActivity('study-notes.html')"
+        >
+          <div class="activity-header">
+            <div class="activity-icon">📚</div>
+            <div class="activity-info">
+              <h3 class="activity-title">Çalışma Notları</h3>
+              <p class="activity-subtitle">Etkili Öğrenme</p>
+              <span class="activity-status status-available">Mevcut</span>
+            </div>
+          </div>
+          <p class="activity-description">
+            Çalışma notlarını organize et, konu başlıklarına göre düzenle ve
+            etkili bir öğrenme sistemi oluştur. Spaced repetition ile kalıcı
+            öğrenme.
+          </p>
+          <ul class="activity-features">
+            <li>Dijital not alma sistemi</li>
+            <li>Konu kategorilendirme</li>
+            <li>Spaced repetition sistemi</li>
+            <li>Çalışma planları</li>
+            <li>Sınav hazırlık araçları</li>
+          </ul>
+          <div class="activity-actions">
+            <button class="activity-btn btn-primary">Başla</button>
+            <button
+              class="activity-btn btn-secondary"
+              onclick="event.stopPropagation(); showActivityInfo('study')"
+            >
+              Detay
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Overview -->
+      <div class="stats-section">
+        <h2 class="stats-title">📊 Genel Bakış</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem">
+          Tüm aktivitelerden toplu veriler ve başarı istatistiklerin
+        </p>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-number">6</span>
+            <span class="stat-label">Mevcut Aktivite</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">100+</span>
+            <span class="stat-label">Özellik</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">24/7</span>
+            <span class="stat-label">Erişim</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">∞</span>
+            <span class="stat-label">Potansiyel</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="notificationToast" class="notification" style="display: none">
+      <div id="notificationText">Aktivite başlatıldı!</div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      // Global functions
+      function navigateToActivity(url) {
+        // Loading effect
+        const target = event.currentTarget;
+        target.classList.add("loading");
+
+        // Simulate loading and navigate
+        setTimeout(() => {
+          window.location.href = url;
+        }, 800);
+      }
+
+      function showActivityInfo(activityType) {
+        const messages = {
+          pomodoro:
+            "Pomodoro Tekniği ile verimliliğini artır! 25 dakikalık odaklanma seansları ile dikkat dağınıklığını yenebilirsin.",
+          habits:
+            "Yeni alışkanlıklar edinin veya kötü alışkanlıklardan kurtulun. 21 günlük döngülerle yaşam tarzınızı değiştirin.",
+          planning:
+            "Görevlerinizi organize edin, önceliklerinizi belirleyin ve hedeflerinize sistemli bir şekilde ulaşın.",
+          weight:
+            "Sağlıklı bir yaşam için kilo takibi yapın. BMI hesaplamaları ve detaylı analizlerle sağlığınızı kontrol altında tutun.",
+          addictions:
+            "Bağımlılıklardan kurtulmak için güçlü bir destek sistemi. Günlük takip ile özgürlüğünüze kavuşun.",
+          study:
+            "Etkili çalışma teknikleri ve not alma sistemleri ile öğrenme sürecinizi optimize edin.",
+        };
+
+        showNotification(
+          messages[activityType] ||
+            "Bu aktivite hakkında daha fazla bilgi yakında eklenecek."
+        );
+      }
+
+      function showNotification(message) {
+        const toast = document.getElementById("notificationToast");
+        const text = document.getElementById("notificationText");
+
+        text.textContent = message;
+        toast.style.display = "block";
+
+        setTimeout(() => {
+          toast.style.animation = "slideInRight 0.5s ease reverse";
+          setTimeout(() => {
+            toast.style.display = "none";
+            toast.style.animation = "";
+          }, 500);
+        }, 4000);
+      }
+
+      // Close notification on click
+      document
+        .getElementById("notificationToast")
+        .addEventListener("click", function () {
+          this.style.animation = "slideInRight 0.5s ease reverse";
+          setTimeout(() => {
+            this.style.display = "none";
+            this.style.animation = "";
+          }, 500);
+        });
+
+      // User interactions
+      document
+        .getElementById("notificationBtn")
+        .addEventListener("click", function () {
+          showNotification("Bildirimler yakında aktif edilecek! 🔔");
+        });
+
+      document
+        .getElementById("userAvatar")
+        .addEventListener("click", function () {
+          showNotification("Profil sayfası yakında eklenecek! 👤");
+        });
+
+      // Keyboard shortcuts
+      document.addEventListener("keydown", function (e) {
+        if (e.ctrlKey || e.metaKey) {
+          switch (e.key) {
+            case "1":
+              e.preventDefault();
+              navigateToActivity("pomodoro.html");
+              break;
+            case "2":
+              e.preventDefault();
+              navigateToActivity("habits.html");
+              break;
+            case "3":
+              e.preventDefault();
+              navigateToActivity("planning.html");
+              break;
+            case "4":
+              e.preventDefault();
+              navigateToActivity("weight-tracker.html");
+              break;
+            case "5":
+              e.preventDefault();
+              navigateToActivity("addictions.html");
+              break;
+          }
+        }
+      });
+
+      // Page load animation
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("⚡ GRINDMIND Aktiviteler sayfası yüklendi");
+
+        // Animate cards on load
+        const cards = document.querySelectorAll(".activity-card");
+        cards.forEach((card, index) => {
+          card.style.opacity = "0";
+          card.style.transform = "translateY(20px)";
+
+          setTimeout(() => {
+            card.style.transition = "all 0.6s ease";
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+          }, index * 100);
+        });
+
+        // Welcome notification
+        setTimeout(() => {
+          showNotification(
+            "Aktiviteler sayfasına hoş geldin! Hangi aktiviteyi denemek istersin? 🚀"
+          );
+        }, 1000);
+      });
+
+      // Activity hover effects
+      document.querySelectorAll(".activity-card").forEach((card) => {
+        card.addEventListener("mouseenter", function () {
+          this.style.transform = "translateY(-8px) scale(1.02)";
+        });
+
+        card.addEventListener("mouseleave", function () {
+          if (!this.classList.contains("loading")) {
+            this.style.transform = "translateY(0) scale(1)";
+          }
+        });
+      });
+
+      // Quick action analytics
+      document.querySelectorAll(".quick-action").forEach((action) => {
+        action.addEventListener("click", function (e) {
+          const title = this.querySelector(".quick-action-title").textContent;
+          console.log(`Quick action clicked: ${title}`);
+        });
+      });
+
+      // Responsive menu handling
+      function handleResize() {
+        const navMenu = document.querySelector(".nav-menu");
+        if (window.innerWidth <= 768) {
+          navMenu.style.display = "none";
+        } else {
+          navMenu.style.display = "flex";
+        }
+      }
+
+      window.addEventListener("resize", handleResize);
+      handleResize(); // Initial check
+
+      // Performance monitoring
+      window.addEventListener("load", function () {
+        console.log("⚡ Sayfa yükleme tamamlandı");
+        console.log(`📊 Yükleme süresi: ${performance.now().toFixed(2)}ms`);
+      });
+
+      // Error handling
+      window.addEventListener("error", function (e) {
+        console.error("Sayfa hatası:", e.error);
+        showNotification("Bir hata oluştu. Sayfa yenileniyor...", "error");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      });
+
+      // Dashboard integration
+      if (window.grindmindAPI) {
+        console.log("🔗 Dashboard API bağlantısı aktif");
+      }
+    </script>
+  </body>
+</html>

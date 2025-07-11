@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bağımlılık Bırakma - GRINDMIND</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/addictions.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <div class="logo" onclick="window.location.href='dashboard.html'">
+            GRINDMIND
+          </div>
+          <a href="home.html" class="back-btn">← Ana Sayfaya Dön</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1 class="page-title">🚫 Bağımlılık Bırakma</h1>
+          <p class="page-subtitle">
+            Kötü alışkanlıklarını takip et ve bırakmak için her gün motivasyon
+            al. Hedefin sadece bir: tamamen bırakmak.
+          </p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <button
+            class="action-btn btn-primary"
+            onclick="showAddAddictionModal()"
+          >
+            Bağımlılık Ekle
+          </button>
+          <button class="action-btn btn-secondary" onclick="showStats()">
+            İstatistikler
+          </button>
+        </div>
+
+        <!-- Current Addictions -->
+        <section class="addictions-section">
+          <h2 class="section-title">Takip Ettiğin Bağımlılıklar</h2>
+          <div class="addictions-grid" id="addictionsGrid">
+            <!-- Addictions will be dynamically loaded here -->
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-state" id="emptyState" style="display: none">
+            <div class="empty-icon">🎯</div>
+            <h3 class="empty-title">Henüz takip ettiğin bir bağımlılık yok</h3>
+            <p class="empty-text">
+              İlk adımını atmaya hazır mısın? Bırakmak istediğin bir bağımlılık
+              ekleyerek başla.
+            </p>
+            <button
+              class="action-btn btn-primary"
+              onclick="showAddAddictionModal()"
+            >
+              İlk Bağımlılığını Ekle
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Add Addiction Modal -->
+    <div id="addAddictionModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Bağımlılık Ekle</h3>
+          <span class="close-btn" onclick="closeModal('addAddictionModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Bağımlılık ara:</label>
+            <div class="search-container">
+              <input
+                type="text"
+                class="search-input"
+                id="addictionSearch"
+                placeholder="Sigara, sosyal medya, şeker..."
+                oninput="filterAddictions()"
+              />
+            </div>
+          </div>
+
+          <!-- Custom Addiction -->
+          <div
+            class="custom-addiction"
+            id="customAddictionBox"
+            onclick="toggleCustom()"
+          >
+            <div>📝 Özel bağımlılık oluştur</div>
+            <input
+              type="text"
+              class="custom-input"
+              id="customAddictionInput"
+              placeholder="Bağımlılık adını yaz..."
+              style="display: none"
+              onclick="event.stopPropagation()"
+            />
+          </div>
+
+          <div class="available-addictions">
+            <div class="addiction-list" id="availableAddictions">
+              <!-- Available addictions will be loaded here -->
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button
+              class="modal-btn btn-secondary"
+              onclick="closeModal('addAddictionModal')"
+            >
+              İptal
+            </button>
+            <button class="modal-btn btn-primary" onclick="addAddiction()">
+              Ekle
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Check-in Modal -->
+    <div id="checkinModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Günlük Check-in</h3>
+          <span class="close-btn" onclick="closeModal('checkinModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body">
+          <p id="checkinQuestion"></p>
+
+          <div class="form-group">
+            <label>Bugün nasıl hissediyorsun?</label>
+            <select id="moodSelect">
+              <option value="excellent">Mükemmel 😊</option>
+              <option value="good">İyi 🙂</option>
+              <option value="neutral">Normal 😐</option>
+              <option value="bad">Kötü 😔</option>
+              <option value="terrible">Berbat 😞</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Notların (isteğe bağlı):</label>
+            <textarea
+              id="checkinNotes"
+              placeholder="Bugün nasıl geçti, zorlandığın anlar oldu mu?"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="modal-actions">
+            <button
+              class="modal-btn btn-secondary"
+              onclick="submitCheckin(false)"
+            >
+              Başaramadım 😔
+            </button>
+            <button class="modal-btn btn-primary" onclick="submitCheckin(true)">
+              Temiz Kaldım ✅
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="detailsModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="detailsTitle">Bağımlılık Detayları</h3>
+          <span class="close-btn" onclick="closeModal('detailsModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body" id="detailsBody">
+          <!-- Details will be loaded here -->
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn btn-danger" onclick="deleteAddiction()">
+            Sil
+          </button>
+          <button
+            class="modal-btn btn-secondary"
+            onclick="closeModal('detailsModal')"
+          >
+            Kapat
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Modal -->
+    <div id="statisticsModal" class="modal">
+      <div class="modal-content large">
+        <div class="modal-header">
+          <h3>📊 Genel İstatistikler</h3>
+          <span class="close-btn" onclick="closeModal('statisticsModal')"
+            >&times;</span
+          >
+        </div>
+        <div class="modal-body" id="statisticsBody">
+          <!-- Statistics will be loaded here -->
+        </div>
+        <div class="modal-actions">
+          <button
+            class="modal-btn btn-secondary"
+            onclick="closeModal('statisticsModal')"
+          >
+            Kapat
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/addictions.js"></script>
+  </body>
+</html>

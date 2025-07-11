@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GRINDMIND - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">GRINDMIND</div>
+        <div class="nav-menu">
+          <a href="#" class="nav-item active">Ana Sayfa</a>
+          <a href="activities.html" class="nav-item">Aktiviteler</a>
+          <a href="statistics.html" class="nav-item">İstatistikler</a>
+          <a href="achievements.html" class="nav-item">Başarılar</a>
+        </div>
+        <div class="user-section">
+          <button class="notification-btn" id="notificationBtn">
+            🔔
+            <span class="notification-badge" id="notificationBadge">3</span>
+          </button>
+          <div class="user-avatar" id="userAvatar">T</div>
+          <!-- Profile Dropdown -->
+          <div class="profile-dropdown" id="profileDropdown">
+            <a href="#" class="dropdown-item" id="settingsBtn">
+              <span class="dropdown-icon">⚙️</span>
+              <span>Ayarlar</span>
+            </a>
+            <a href="#" class="dropdown-item" id="logoutBtn">
+              <span class="dropdown-icon">🚪</span>
+              <span>Çıkış Yap</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Left Sidebar -->
+      <aside class="left-sidebar">
+        <!-- Profile Card -->
+        <div class="sidebar-card profile-card">
+          <div class="profile-avatar">T</div>
+          <h3 class="profile-name" id="profileName">Test User</h3>
+          <p class="profile-email" id="profileEmail">test@test.com</p>
+          <div class="profile-stats">
+            <div class="stat-item">
+              <span class="stat-number" id="userLevel">28</span>
+              <span class="stat-label">Level</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="userXP">8.2k</span>
+              <span class="stat-label">XP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mini Activities -->
+        <div class="sidebar-card">
+          <h3 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 700">
+            ⚡ Hızlı Bakış
+          </h3>
+          <div class="mini-activities">
+            <div
+              class="mini-activity"
+              onclick="window.location.href='pomodoro.html'"
+            >
+              <span class="mini-activity-icon">⏱️</span>
+              <div class="mini-activity-name">Pomodoro</div>
+              <div class="mini-activity-stat" id="miniPomodoro">5/8</div>
+            </div>
+            <div
+              class="mini-activity"
+              onclick="window.location.href='habits.html'"
+            >
+              <span class="mini-activity-icon">✨</span>
+              <div class="mini-activity-name">Alışkanlık</div>
+              <div class="mini-activity-stat" id="miniHabits">7/9</div>
+            </div>
+            <div
+              class="mini-activity"
+              onclick="window.location.href='planning.html'"
+            >
+              <span class="mini-activity-icon">📅</span>
+              <div class="mini-activity-name">Görevler</div>
+              <div class="mini-activity-stat" id="miniTasks">12/15</div>
+            </div>
+            <div
+              class="mini-activity"
+              onclick="window.location.href='weight-tracker.html'"
+            >
+              <span class="mini-activity-icon">⚖️</span>
+              <div class="mini-activity-name">Kilo</div>
+              <div class="mini-activity-stat" id="miniWeight">-2.3kg</div>
+            </div>
+            <div
+              class="mini-activity"
+              onclick="window.location.href='addictions.html'"
+            >
+              <span class="mini-activity-icon">🚫</span>
+              <div class="mini-activity-name">Temiz</div>
+              <div class="mini-activity-stat" id="miniClean">45 gün</div>
+            </div>
+            <div
+              class="mini-activity"
+              onclick="window.location.href='study-notes.html'"
+            >
+              <span class="mini-activity-icon">📚</span>
+              <div class="mini-activity-name">Çalışma</div>
+              <div class="mini-activity-stat" id="miniStudy">3 konu</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Activities -->
+        <div class="live-activity">
+          <h4
+            style="
+              margin-bottom: 1rem;
+              color: var(--text-primary);
+              font-size: 0.95rem;
+            "
+          >
+            📡 Canlı Aktiviteler
+          </h4>
+          <div class="activity-item">
+            <div class="activity-icon">⏱️</div>
+            <div class="activity-text">Pomodoro tamamladın</div>
+            <div class="activity-time">2dk</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">✅</div>
+            <div class="activity-text">Su içme alışkanlığı ✓</div>
+            <div class="activity-time">15dk</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">🏆</div>
+            <div class="activity-text">Yeni başarı kazandın!</div>
+            <div class="activity-time">1s</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Feed -->
+      <main class="main-feed">
+        <!-- Welcome Card -->
+        <div class="welcome-card">
+          <h1 class="welcome-title" id="welcomeTitle">
+            İyi öğleden sonra, Test User! 👋
+          </h1>
+          <p class="welcome-subtitle">
+            Bugün harika şeyler başaracağın bir gün! Topluluğun seninle.
+          </p>
+        </div>
+
+        <!-- Create Post -->
+        <div class="create-post">
+          <textarea
+            class="post-input"
+            placeholder="Bugün hangi hedefini gerçekleştirdin? Topluluğa ilham ver! 💪"
+          ></textarea>
+          <div class="post-actions">
+            <button class="post-submit">Paylaş</button>
+          </div>
+        </div>
+
+        <!-- Main Event: Weekly Challenge -->
+        <div class="main-event-card challenge-system">
+          <h2>🏆 Bu Haftanın Challenge'ı: "Odak Savaşçısı"</h2>
+          <div class="challenge-container">
+            <div class="challenge-info">
+              <h3>7 Günde 50 Pomodoro Tamamla!</h3>
+              <p class="challenge-description">
+                🔥 2 gün kaldı! Sen yapabilirsin!
+              </p>
+              <p class="challenge-reward">💰 Ödül: 500 XP + Özel Rozet</p>
+            </div>
+
+            <div class="challenge-action" id="challengeSection">
+              <!-- Challenge'a katılmadan önce -->
+              <div id="challengeJoin" class="challenge-join-section">
+                <button class="challenge-join-btn" onclick="joinChallenge()">
+                  Challenge'a Katıl
+                </button>
+              </div>
+
+              <!-- Challenge'a katıldıktan sonra -->
+              <div
+                id="challengeActive"
+                class="challenge-active"
+                style="display: none"
+              >
+                <div class="progress-ring">
+                  <span id="challengeProgress">0/50</span>
+                </div>
+                <div class="leaderboard-mini">
+                  <div class="leader-item">
+                    🥇 @productivityking - 47/50 (47 saat)
+                  </div>
+                  <div
+                    class="leader-item current-user"
+                    style="
+                      background: var(--accent-light);
+                      border: 2px solid var(--accent-color);
+                    "
+                  >
+                    🥈 Sen - 0/50 (0 saat)
+                  </div>
+                  <div class="leader-item">
+                    🥉 @focusedmind - 30/50 (30 saat)
+                  </div>
+                  <div class="leader-item">
+                    4️⃣ @habitmaster - 28/50 (28 saat)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Event: AI Coach -->
+        <div class="main-event-card ai-coach">
+          <h2>🤖 GRIND AI Coach - Kişisel Danışmanın</h2>
+          <div class="coach-message">
+            <div class="coach-avatar">🎯</div>
+            <div class="message-bubble" id="aiCoachMessage">
+              "Merhaba! Verilerine bakarak görüyorum ki bu hafta
+              alışkanlıklarında %15 artış var - harika! 🎉 Ancak pomodoro
+              seanslarında biraz düşüş var. Önerim: Yarın sabah 2 kısa pomodoro
+              ile başla. Küçük adımlar büyük başarılara yol açar! 💪"
+            </div>
+          </div>
+          <div class="coach-actions">
+            <button
+              class="suggestion-btn"
+              onclick="generateAIReport()"
+              id="generateReportBtn"
+            >
+              📊 Kişisel Rapor Oluştur
+            </button>
+            <div class="ai-loading" id="aiLoading" style="display: none">
+              <div class="loading-spinner"></div>
+              <span>AI rapor hazırlıyor...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Event: Social Feed -->
+        <div class="main-event-card social-feed">
+          <h2>🌟 Topluluk Akışı</h2>
+          <div class="feed-posts">
+            <div class="post-item">
+              <div class="user-info">
+                <div
+                  class="user-avatar-small"
+                  style="background: linear-gradient(45deg, #ff6b6b, #ffd93d)"
+                ></div>
+                <span><strong>@motivasyonkrali</strong> · 5dk</span>
+              </div>
+              <div class="post-content">
+                "Bugün 8 pomodoro tamamladım! 🔥 Odaklanmak gerçekten işe
+                yarıyor. Matematik sınavına hazırlanıyorum ve bu teknik
+                sayesinde çok daha verimli çalışıyorum! #focus #productivity
+                #pomodoro"
+              </div>
+              <div class="post-actions">
+                <button
+                  class="post-action-btn like-btn"
+                  data-post-id="sample1"
+                  onclick="toggleLikePost(this)"
+                >
+                  ❤️ <span class="count">0</span>
+                </button>
+                <button
+                  class="post-action-btn comment-btn"
+                  data-post-id="sample1"
+                  onclick="toggleComments('sample1')"
+                >
+                  💬 <span class="count">0</span>
+                </button>
+              </div>
+              <div
+                class="post-comments"
+                id="comments-sample1"
+                style="display: none"
+              >
+                <div class="comments-container">
+                  <!-- Yorumlar buraya eklenecek -->
+                </div>
+                <div class="add-comment">
+                  <input
+                    type="text"
+                    class="comment-input"
+                    placeholder="Yorum yazın..."
+                    onkeypress="handleCommentSubmit(event, 'sample1')"
+                  />
+                  <button
+                    class="comment-submit-btn"
+                    onclick="submitComment('sample1')"
+                  >
+                    Gönder
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="post-item">
+              <div class="user-info">
+                <div
+                  class="user-avatar-small"
+                  style="background: linear-gradient(45deg, #4ecdc4, #44a08d)"
+                ></div>
+                <span><strong>@healthylife23</strong> · 23dk</span>
+              </div>
+              <div class="post-content">
+                "45 gündür temiz kalıyorum! 🚫🚬 GRINDMIND sayesinde her gün
+                takip ediyorum. Bu topluluk gerçekten motive ediyor. Teşekkürler
+                herkese! 💪 #cleanliving #motivation #45days"
+              </div>
+              <div class="post-actions">
+                <button
+                  class="post-action-btn like-btn"
+                  data-post-id="sample2"
+                  onclick="toggleLikePost(this)"
+                >
+                  ❤️ <span class="count">0</span>
+                </button>
+                <button
+                  class="post-action-btn comment-btn"
+                  data-post-id="sample2"
+                  onclick="toggleComments('sample2')"
+                >
+                  💬 <span class="count">0</span>
+                </button>
+              </div>
+              <div
+                class="post-comments"
+                id="comments-sample2"
+                style="display: none"
+              >
+                <div class="comments-container">
+                  <!-- Yorumlar buraya eklenecek -->
+                </div>
+                <div class="add-comment">
+                  <input
+                    type="text"
+                    class="comment-input"
+                    placeholder="Yorum yazın..."
+                    onkeypress="handleCommentSubmit(event, 'sample2')"
+                  />
+                  <button
+                    class="comment-submit-btn"
+                    onclick="submitComment('sample2')"
+                  >
+                    Gönder
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Right Sidebar -->
+      <aside class="right-sidebar">
+        <!-- Current Streaks -->
+        <div class="widget-card">
+          <div class="widget-header">
+            <h3 class="widget-title">🔥 Aktif Seriler</h3>
+            <a href="#" class="widget-action">Detay</a>
+          </div>
+          <div id="activeStreaks">
+            <div class="streak-item">
+              <div class="streak-label">
+                <span>⏱️</span>
+                <span>Pomodoro</span>
+              </div>
+              <span class="streak-value" id="pomodoroStreak">5 gün</span>
+            </div>
+            <div class="streak-item">
+              <div class="streak-label">
+                <span>💧</span>
+                <span>Su içme</span>
+              </div>
+              <span class="streak-value" id="waterStreak">12 gün</span>
+            </div>
+            <div class="streak-item">
+              <div class="streak-label">
+                <span>🏃</span>
+                <span>Egzersiz</span>
+              </div>
+              <span class="streak-value" id="exerciseStreak">3 gün</span>
+            </div>
+            <div class="streak-item">
+              <div class="streak-label">
+                <span>🚫</span>
+                <span>Temiz kalma</span>
+              </div>
+              <span class="streak-value" id="cleanStreak">45 gün</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Achievement Widget -->
+        <div class="widget-card" id="achievementWidget">
+          <div class="widget-header">
+            <h3 class="widget-title">🏆 Son Başarılar</h3>
+            <a href="achievements.html" class="widget-action">Tümünü Gör</a>
+          </div>
+          <div id="recentAchievements">
+            <div class="achievement-item">
+              <span class="achievement-icon">🔥</span>
+              <div class="achievement-info">
+                <div class="achievement-name">Streak Master</div>
+                <div class="achievement-points">+100 XP</div>
+              </div>
+            </div>
+            <div class="achievement-item">
+              <span class="achievement-icon">⏱️</span>
+              <div class="achievement-info">
+                <div class="achievement-name">Pomodoro Hero</div>
+                <div class="achievement-points">+75 XP</div>
+              </div>
+            </div>
+            <div class="achievement-item">
+              <span class="achievement-icon">💪</span>
+              <div class="achievement-info">
+                <div class="achievement-name">Consistency King</div>
+                <div class="achievement-points">+50 XP</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weekly Leaderboard -->
+        <div class="widget-card">
+          <div class="widget-header">
+            <h3 class="widget-title">👑 Haftalık Liderler</h3>
+            <a href="#" class="widget-action">Tam Liste</a>
+          </div>
+          <div class="leaderboard">
+            <div class="leaderboard-item gold">
+              <div class="leaderboard-user">
+                <span class="leaderboard-rank">🥇</span>
+                <span class="leaderboard-name">@productivityking</span>
+              </div>
+              <span class="leaderboard-score">47 saat</span>
+            </div>
+            <div class="leaderboard-item silver current-user">
+              <div class="leaderboard-user">
+                <span class="leaderboard-rank">🥈</span>
+                <span class="leaderboard-name">Sen (Test User)</span>
+              </div>
+              <span class="leaderboard-score">32 saat</span>
+            </div>
+            <div class="leaderboard-item bronze">
+              <div class="leaderboard-user">
+                <span class="leaderboard-rank">🥉</span>
+                <span class="leaderboard-name">@focusmaster</span>
+              </div>
+              <span class="leaderboard-score">28 saat</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Community Stats -->
+        <div class="widget-card">
+          <div class="widget-header">
+            <h3 class="widget-title">📊 Topluluk İstatistikleri</h3>
+          </div>
+          <div class="community-stats">
+            <div class="stat-row">
+              <span class="stat-label">👥 Toplam Üyeler</span>
+              <span class="stat-value success" id="totalMembers">15,247</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">⏱️ Bugün Pomodoro</span>
+              <span class="stat-value warning" id="todayPomodoros">3,492</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">🏆 Challenge Katılımcı</span>
+              <span class="stat-value info" id="challengeParticipants"
+                >856</span
+              >
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">📝 Bugün Paylaşım</span>
+              <span class="stat-value accent" id="todayPosts">124</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Motivational Quote -->
+        <div class="widget-card motivational-quote">
+          <div class="quote-content">
+            <div class="quote-icon">💫</div>
+            <div class="quote-text">
+              "Başarı, küçük çabaların günlük olarak tekrarlanmasıdır. Sen de bu
+              yoldasın! 🌟"
+            </div>
+            <div class="quote-author">- GRINDMIND Community</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button
+      class="floating-action-btn"
+      onclick="document.querySelector('.post-input').focus()"
+      title="Hızlı Paylaşım"
+    >
+      ➕
+    </button>
+
+    <!-- Notification Toast -->
+    <div id="notificationToast" class="notification-toast">
+      <div class="notification-content">
+        <span class="notification-icon">🎉</span>
+        <div class="notification-text">
+          <div class="notification-title">Bildirim Başlığı</div>
+          <div class="notification-message">
+            Bildirim mesajı burada görünecek
+          </div>
+        </div>
+        <button class="notification-close" onclick="hideNotification()">
+          ×
+        </button>
+      </div>
+    </div>
+
+    <!-- Comment Modal -->
+    <!-- Modal kaldırıldı - inline comment sistemi kullanıyoruz -->
+
+    <!-- Scripts -->
+    <script src="js/ai-integration.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>
