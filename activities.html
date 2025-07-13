@@ -56,7 +56,7 @@
         min-height: 100vh;
       }
 
-      /* Header */
+      /* Header - Settings ile aynı */
       .header {
         background: var(--card-bg);
         border-bottom: 1px solid var(--border-color);
@@ -73,6 +73,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 1rem 1.5rem;
+        position: relative;
       }
 
       .logo {
@@ -90,6 +91,50 @@
         transform: scale(1.05);
       }
 
+      /* Hamburger Menu - Mobil için */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        transition: all 0.3s ease;
+      }
+
+      .hamburger:hover {
+        background: var(--secondary-bg);
+      }
+
+      .hamburger span {
+        width: 25px;
+        height: 3px;
+        background: var(--text-primary);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        transform-origin: center;
+      }
+
+      .hamburger span:nth-child(1) {
+        margin-bottom: 4px;
+      }
+
+      .hamburger span:nth-child(2) {
+        margin-bottom: 4px;
+      }
+
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+      }
+
+      /* Navigation Menu */
       .nav-menu {
         display: flex;
         align-items: center;
@@ -118,6 +163,103 @@
         font-weight: 600;
       }
 
+      /* Mobile Navigation Overlay */
+      .nav-mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .nav-mobile-overlay.show {
+        display: block;
+        opacity: 1;
+      }
+
+      .nav-mobile {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100%;
+        background: var(--card-bg);
+        z-index: 999;
+        transition: right 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--shadow-xl);
+      }
+
+      .nav-mobile.show {
+        right: 0;
+      }
+
+      .nav-mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .nav-mobile-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-secondary);
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+
+      .nav-mobile-close:hover {
+        background: var(--secondary-bg);
+        color: var(--text-primary);
+      }
+
+      .nav-mobile-menu {
+        flex: 1;
+        padding: 1rem 0;
+      }
+
+      .nav-mobile-item {
+        display: block;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+        font-size: 1rem;
+      }
+
+      .nav-mobile-item:hover {
+        background: var(--secondary-bg);
+        color: var(--accent-color);
+      }
+
+      .nav-mobile-item.active {
+        background: var(--accent-light);
+        color: var(--accent-color);
+        font-weight: 600;
+      }
+
+      .nav-mobile-item:last-child {
+        border-bottom: none;
+      }
+
+      /* User Section */
       .user-section {
         display: flex;
         align-items: center;
@@ -175,6 +317,55 @@
       .user-avatar:hover {
         transform: scale(1.1);
         box-shadow: var(--shadow-lg);
+      }
+
+      /* Profile Dropdown */
+      .profile-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        box-shadow: var(--shadow-lg);
+        min-width: 180px;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+      }
+
+      .profile-dropdown.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+      }
+
+      .dropdown-item:hover {
+        background: var(--secondary-bg);
+        color: var(--text-primary);
+      }
+
+      .dropdown-icon {
+        font-size: 1rem;
       }
 
       /* Main Content */
@@ -580,38 +771,96 @@
         font-size: 0.9rem;
       }
 
-      /* Notification */
-      .notification {
+      /* Notification Toast */
+      .notification-toast {
         position: fixed;
-        top: 20px;
+        top: 100px;
         right: 20px;
-        background: var(--success-color);
+        background: var(--gradient-primary);
         color: white;
         padding: 1rem 1.5rem;
         border-radius: 0.75rem;
         box-shadow: var(--shadow-lg);
-        font-weight: 500;
+        transform: translateX(120%);
+        opacity: 0;
+        transition: all 0.5s ease;
         z-index: 10000;
-        max-width: 300px;
-        animation: slideInRight 0.5s ease;
-        cursor: pointer;
+        min-width: 300px;
+        max-width: 400px;
+        display: none;
       }
 
-      @keyframes slideInRight {
-        from {
-          transform: translateX(100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
+      .notification-toast.show {
+        transform: translateX(0);
+        opacity: 1;
+        display: block;
+      }
+
+      .notification-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+
+      .notification-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      .notification-text {
+        flex: 1;
+      }
+
+      .notification-title {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        font-size: 0.9rem;
+      }
+
+      .notification-message {
+        font-size: 0.825rem;
+        opacity: 0.9;
+        line-height: 1.4;
+      }
+
+      .notification-close {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 1.25rem;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+      }
+
+      .notification-close:hover {
+        background: rgba(255, 255, 255, 0.2);
       }
 
       /* Mobile Responsive */
-      @media (max-width: 768px) {
+      @media (max-width: 1024px) {
+        .user-section {
+          display: none;
+        }
         .nav-menu {
           display: none;
+        }
+
+        .hamburger {
+          display: flex;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav {
+          padding: 1rem;
         }
 
         .main-content {
@@ -659,11 +908,21 @@
         .quick-actions-grid {
           grid-template-columns: 1fr;
         }
+
+        .notification-toast {
+          right: 10px;
+          left: 10px;
+          min-width: auto;
+        }
       }
 
       @media (max-width: 480px) {
         .nav {
-          padding: 1rem;
+          padding: 0.75rem;
+        }
+
+        .logo {
+          font-size: 1.5rem;
         }
 
         .page-header {
@@ -673,11 +932,11 @@
         .stats-grid {
           grid-template-columns: 1fr;
         }
-      }
 
-      /* Hover Effects */
-      .activity-card:hover .activity-title {
-        color: var(--accent-color);
+        .nav-mobile {
+          width: 100%;
+          right: -100%;
+        }
       }
 
       /* Loading States */
@@ -709,30 +968,90 @@
           transform: rotate(360deg);
         }
       }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .fade-in-up {
+        animation: fadeInUp 0.6s ease-out;
+      }
     </style>
   </head>
   <body>
-    <!-- Header -->
+    <!-- Header - Settings ile aynı -->
     <header class="header">
       <nav class="nav">
         <div class="logo" onclick="window.location.href='dashboard.html'">
           GRINDMIND
         </div>
+
+        <!-- Desktop Navigation Menu -->
         <div class="nav-menu">
           <a href="dashboard.html" class="nav-item">Ana Sayfa</a>
           <a href="activities.html" class="nav-item active">Aktiviteler</a>
           <a href="statistics.html" class="nav-item">İstatistikler</a>
           <a href="achievements.html" class="nav-item">Başarılar</a>
         </div>
+
+        <!-- Hamburger Menu Button (Mobil) -->
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
         <div class="user-section">
           <button class="notification-btn" id="notificationBtn">
             🔔
             <span class="notification-badge" id="notificationBadge">3</span>
           </button>
           <div class="user-avatar" id="userAvatar">T</div>
+          <!-- Profile Dropdown -->
+          <div class="profile-dropdown" id="profileDropdown">
+            <button class="dropdown-item" id="settingsBtn">
+              <span class="dropdown-icon">⚙️</span>
+              <span>Ayarlar</span>
+            </button>
+            <button class="dropdown-item" id="logoutBtn">
+              <span class="dropdown-icon">🚪</span>
+              <span>Çıkış Yap</span>
+            </button>
+          </div>
         </div>
       </nav>
     </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="nav-mobile-overlay" id="navMobileOverlay"></div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="nav-mobile" id="navMobile">
+      <div class="nav-mobile-header">
+        <div class="logo">GRINDMIND</div>
+        <button class="nav-mobile-close" id="navMobileClose">×</button>
+      </div>
+      <div class="nav-mobile-menu">
+        <a href="dashboard.html" class="nav-mobile-item">Ana Sayfa</a>
+        <a href="activities.html" class="nav-mobile-item active"
+          >⚡ Aktiviteler</a
+        >
+        <a href="statistics.html" class="nav-mobile-item">İstatistikler</a>
+        <a href="achievements.html" class="nav-mobile-item">Başarılar</a>
+        <a href="settings.html" class="nav-mobile-item">⚙️ Ayarlar</a>
+        <a href="#" class="nav-mobile-item" id="mobileLogoutBtn"
+          >🚪 Çıkış Yap</a
+        >
+      </div>
+    </nav>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -1019,13 +1338,88 @@
     </main>
 
     <!-- Notification Toast -->
-    <div id="notificationToast" class="notification" style="display: none">
-      <div id="notificationText">Aktivite başlatıldı!</div>
+    <div id="notificationToast" class="notification-toast">
+      <div class="notification-content">
+        <span class="notification-icon">🎉</span>
+        <div class="notification-text">
+          <div class="notification-title">Bildirim Başlığı</div>
+          <div class="notification-message">
+            Bildirim mesajı burada görünecek
+          </div>
+        </div>
+        <button class="notification-close" onclick="hideNotification()">
+          ×
+        </button>
+      </div>
     </div>
 
     <!-- JavaScript -->
     <script>
-      // Global functions
+      // Utility Functions
+      function showNotification(title, message, type = "info") {
+        const toast = document.getElementById("notificationToast");
+        const titleEl = toast.querySelector(".notification-title");
+        const messageEl = toast.querySelector(".notification-message");
+        const iconEl = toast.querySelector(".notification-icon");
+
+        const icons = {
+          success: "🎉",
+          error: "❌",
+          warning: "⚠️",
+          info: "ℹ️",
+        };
+
+        titleEl.textContent = title;
+        messageEl.textContent = message;
+        iconEl.textContent = icons[type] || icons.info;
+
+        toast.classList.add("show");
+
+        setTimeout(() => {
+          hideNotification();
+        }, 4000);
+      }
+
+      function hideNotification() {
+        const toast = document.getElementById("notificationToast");
+        toast.classList.remove("show");
+      }
+
+      // Mobile Navigation Functions
+      function toggleMobileNav() {
+        const hamburger = document.getElementById("hamburger");
+        const mobileNav = document.getElementById("navMobile");
+        const overlay = document.getElementById("navMobileOverlay");
+
+        hamburger.classList.toggle("active");
+        mobileNav.classList.toggle("show");
+        overlay.classList.toggle("show");
+
+        if (mobileNav.classList.contains("show")) {
+          document.body.style.overflow = "hidden";
+        } else {
+          document.body.style.overflow = "";
+        }
+      }
+
+      function closeMobileNav() {
+        const hamburger = document.getElementById("hamburger");
+        const mobileNav = document.getElementById("navMobile");
+        const overlay = document.getElementById("navMobileOverlay");
+
+        hamburger.classList.remove("active");
+        mobileNav.classList.remove("show");
+        overlay.classList.remove("show");
+        document.body.style.overflow = "";
+      }
+
+      // Profile Dropdown Functions
+      function toggleProfileDropdown() {
+        const dropdown = document.getElementById("profileDropdown");
+        dropdown.classList.toggle("show");
+      }
+
+      // Activity Functions
       function navigateToActivity(url) {
         // Loading effect
         const target = event.currentTarget;
@@ -1054,108 +1448,198 @@
         };
 
         showNotification(
+          "Aktivite Bilgisi",
           messages[activityType] ||
-            "Bu aktivite hakkında daha fazla bilgi yakında eklenecek."
+            "Bu aktivite hakkında daha fazla bilgi yakında eklenecek.",
+          "info"
         );
       }
 
-      function showNotification(message) {
-        const toast = document.getElementById("notificationToast");
-        const text = document.getElementById("notificationText");
+      // Logout Function
+      function logout() {
+        if (confirm("Çıkış yapmak istediğinizden emin misiniz?")) {
+          showNotification(
+            "Çıkış Yapılıyor",
+            "Güvenli çıkış yapılıyor... Güle güle! 👋",
+            "success"
+          );
 
-        text.textContent = message;
-        toast.style.display = "block";
-
-        setTimeout(() => {
-          toast.style.animation = "slideInRight 0.5s ease reverse";
           setTimeout(() => {
-            toast.style.display = "none";
-            toast.style.animation = "";
-          }, 500);
-        }, 4000);
+            window.location.href = "index.html";
+          }, 2000);
+        }
       }
 
-      // Close notification on click
-      document
-        .getElementById("notificationToast")
-        .addEventListener("click", function () {
-          this.style.animation = "slideInRight 0.5s ease reverse";
-          setTimeout(() => {
-            this.style.display = "none";
-            this.style.animation = "";
-          }, 500);
-        });
+      // Event Handlers
+      function setupEventHandlers() {
+        // Mobile Navigation
+        const hamburger = document.getElementById("hamburger");
+        const mobileClose = document.getElementById("navMobileClose");
+        const mobileOverlay = document.getElementById("navMobileOverlay");
+        const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
 
-      // User interactions
-      document
-        .getElementById("notificationBtn")
-        .addEventListener("click", function () {
-          showNotification("Bildirimler yakında aktif edilecek! 🔔");
-        });
-
-      document
-        .getElementById("userAvatar")
-        .addEventListener("click", function () {
-          showNotification("Profil sayfası yakında eklenecek! 👤");
-        });
-
-      // Keyboard shortcuts
-      document.addEventListener("keydown", function (e) {
-        if (e.ctrlKey || e.metaKey) {
-          switch (e.key) {
-            case "1":
-              e.preventDefault();
-              navigateToActivity("pomodoro.html");
-              break;
-            case "2":
-              e.preventDefault();
-              navigateToActivity("habits.html");
-              break;
-            case "3":
-              e.preventDefault();
-              navigateToActivity("planning.html");
-              break;
-            case "4":
-              e.preventDefault();
-              navigateToActivity("weight-tracker.html");
-              break;
-            case "5":
-              e.preventDefault();
-              navigateToActivity("addictions.html");
-              break;
-          }
+        if (hamburger) {
+          hamburger.addEventListener("click", toggleMobileNav);
         }
-      });
 
-      // Page load animation
-      document.addEventListener("DOMContentLoaded", function () {
-        console.log("⚡ GRINDMIND Aktiviteler sayfası yüklendi");
+        if (mobileClose) {
+          mobileClose.addEventListener("click", closeMobileNav);
+        }
 
-        // Animate cards on load
-        const cards = document.querySelectorAll(".activity-card");
-        cards.forEach((card, index) => {
-          card.style.opacity = "0";
-          card.style.transform = "translateY(20px)";
+        if (mobileOverlay) {
+          mobileOverlay.addEventListener("click", closeMobileNav);
+        }
 
-          setTimeout(() => {
-            card.style.transition = "all 0.6s ease";
-            card.style.opacity = "1";
-            card.style.transform = "translateY(0)";
-          }, index * 100);
+        if (mobileLogoutBtn) {
+          mobileLogoutBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            logout();
+            closeMobileNav();
+          });
+        }
+
+        // Profile dropdown
+        const userAvatar = document.getElementById("userAvatar");
+        if (userAvatar) {
+          userAvatar.addEventListener("click", function (e) {
+            e.stopPropagation();
+            toggleProfileDropdown();
+          });
+        }
+
+        // Settings ve logout butonları
+        const settingsBtn = document.getElementById("settingsBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        if (settingsBtn) {
+          settingsBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            window.location.href = "settings.html";
+          });
+        }
+
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            logout();
+            toggleProfileDropdown();
+          });
+        }
+
+        // Dropdown dışına tıklama
+        document.addEventListener("click", function (e) {
+          const dropdown = document.getElementById("profileDropdown");
+          const userAvatar = document.getElementById("userAvatar");
+
+          if (
+            dropdown &&
+            !dropdown.contains(e.target) &&
+            e.target !== userAvatar
+          ) {
+            dropdown.classList.remove("show");
+          }
         });
 
-        // Welcome notification
-        setTimeout(() => {
+        // Bildirim butonu
+        const notificationBtn = document.getElementById("notificationBtn");
+        if (notificationBtn) {
+          notificationBtn.addEventListener("click", function () {
+            showNotification(
+              "Bildirimler",
+              "Bildirim sistemi aktif! Yeni özellikler yakında gelecek.",
+              "info"
+            );
+          });
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            hideNotification();
+            closeMobileNav();
+          }
+
+          if (e.ctrlKey || e.metaKey) {
+            switch (e.key) {
+              case "1":
+                e.preventDefault();
+                navigateToActivity("pomodoro.html");
+                break;
+              case "2":
+                e.preventDefault();
+                navigateToActivity("habits.html");
+                break;
+              case "3":
+                e.preventDefault();
+                navigateToActivity("planning.html");
+                break;
+              case "4":
+                e.preventDefault();
+                navigateToActivity("weight-tracker.html");
+                break;
+              case "5":
+                e.preventDefault();
+                navigateToActivity("addictions.html");
+                break;
+              case "h":
+                e.preventDefault();
+                window.location.href = "dashboard.html";
+                break;
+            }
+          }
+        });
+      }
+
+      // Initialize page
+      function initializeActivities() {
+        console.log("🚀 GRINDMIND Activities initializing...");
+
+        try {
+          // Setup event handlers
+          setupEventHandlers();
+
+          // Animate cards on load
+          const cards = document.querySelectorAll(".activity-card");
+          cards.forEach((card, index) => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(20px)";
+
+            setTimeout(() => {
+              card.style.transition = "all 0.6s ease";
+              card.style.opacity = "1";
+              card.style.transform = "translateY(0)";
+            }, index * 100);
+          });
+
+          // Welcome notification
+          setTimeout(() => {
+            showNotification(
+              "Hoş Geldin!",
+              "Aktiviteler sayfasına hoş geldin! Hangi aktiviteyi denemek istersin? 🚀",
+              "success"
+            );
+          }, 1000);
+
+          console.log("✅ Activities page loaded successfully!");
+        } catch (error) {
+          console.error("❌ Error initializing activities:", error);
           showNotification(
-            "Aktiviteler sayfasına hoş geldin! Hangi aktiviteyi denemek istersin? 🚀"
+            "Başlatma Hatası",
+            "Aktiviteler sayfası yüklenirken bir hata oluştu.",
+            "error"
           );
-        }, 1000);
-      });
+        }
+      }
+
+      // Auto-initialize when DOM is ready
+      document.addEventListener("DOMContentLoaded", initializeActivities);
 
       // Activity hover effects
       document.querySelectorAll(".activity-card").forEach((card) => {
         card.addEventListener("mouseenter", function () {
-          this.style.transform = "translateY(-8px) scale(1.02)";
+          if (!this.classList.contains("loading")) {
+            this.style.transform = "translateY(-8px) scale(1.02)";
+          }
         });
 
         card.addEventListener("mouseleave", function () {
@@ -1173,19 +1657,6 @@
         });
       });
 
-      // Responsive menu handling
-      function handleResize() {
-        const navMenu = document.querySelector(".nav-menu");
-        if (window.innerWidth <= 768) {
-          navMenu.style.display = "none";
-        } else {
-          navMenu.style.display = "flex";
-        }
-      }
-
-      window.addEventListener("resize", handleResize);
-      handleResize(); // Initial check
-
       // Performance monitoring
       window.addEventListener("load", function () {
         console.log("⚡ Sayfa yükleme tamamlandı");
@@ -1195,16 +1666,15 @@
       // Error handling
       window.addEventListener("error", function (e) {
         console.error("Sayfa hatası:", e.error);
-        showNotification("Bir hata oluştu. Sayfa yenileniyor...", "error");
+        showNotification(
+          "Hata",
+          "Bir hata oluştu. Sayfa yenileniyor...",
+          "error"
+        );
         setTimeout(() => {
           window.location.reload();
         }, 2000);
       });
-
-      // Dashboard integration
-      if (window.grindmindAPI) {
-        console.log("🔗 Dashboard API bağlantısı aktif");
-      }
     </script>
   </body>
 </html>

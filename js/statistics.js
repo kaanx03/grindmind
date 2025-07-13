@@ -1,5 +1,5 @@
-// GRINDMIND Statistics JavaScript - Tamamlanmış Versiyon
-// ========================================================
+// GRINDMIND Statistics JavaScript - Navbar Entegreli Versiyon
+// ============================================================
 
 // Global variables
 let currentTimeFilter = "week";
@@ -196,24 +196,140 @@ const chartData = {
   },
 };
 
+// Utility Functions for Notifications
+function showNotification(title, message, type = "info") {
+  const toast = document.getElementById("notificationToast");
+  if (!toast) return;
+
+  const titleEl = toast.querySelector(".notification-title");
+  const messageEl = toast.querySelector(".notification-message");
+  const iconEl = toast.querySelector(".notification-icon");
+
+  const icons = {
+    success: "🎉",
+    error: "❌",
+    warning: "⚠️",
+    info: "ℹ️",
+  };
+
+  if (titleEl) titleEl.textContent = title;
+  if (messageEl) messageEl.textContent = message;
+  if (iconEl) iconEl.textContent = icons[type] || icons.info;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    hideNotification();
+  }, 4000);
+}
+
+function hideNotification() {
+  const toast = document.getElementById("notificationToast");
+  if (toast) {
+    toast.classList.remove("show");
+  }
+}
+
+// Mobile Navigation Functions
+function toggleMobileNav() {
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
+
+  if (hamburger) hamburger.classList.toggle("active");
+  if (mobileNav) mobileNav.classList.toggle("show");
+  if (overlay) overlay.classList.toggle("show");
+
+  if (mobileNav && mobileNav.classList.contains("show")) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
+}
+
+function closeMobileNav() {
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
+
+  if (hamburger) hamburger.classList.remove("active");
+  if (mobileNav) mobileNav.classList.remove("show");
+  if (overlay) overlay.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+// Profile Dropdown Functions
+function toggleProfileDropdown() {
+  const dropdown = document.getElementById("profileDropdown");
+  if (dropdown) {
+    dropdown.classList.toggle("show");
+  }
+}
+
+// Logout Function
+function logout() {
+  if (confirm("Çıkış yapmak istediğinizden emin misiniz?")) {
+    showNotification(
+      "Çıkış Yapılıyor",
+      "Güvenli çıkış yapılıyor... Güle güle! 👋",
+      "success"
+    );
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2000);
+  }
+}
+
 // Initialize page
 document.addEventListener("DOMContentLoaded", function () {
   console.log("📊 GRINDMIND İstatistikler sayfası yüklendi");
 
-  // Initialize components
-  initializeCharts();
-  updateStats();
-  initializeEventListeners();
-  initializeAnimations();
-  initializeAdvancedFeatures();
-  monitorPerformance();
-
-  // Welcome notification
+  // Wait for DOM to be fully ready
   setTimeout(() => {
-    showNotification(
-      "İstatistikler güncellendi! Harika ilerleme gösteriyorsun! 📈"
-    );
-  }, 1000);
+    try {
+      // Initialize components in order
+      initializeEventListeners();
+      initializeAnimations();
+      updateStats();
+
+      // Initialize charts after ensuring Chart.js is loaded
+      setTimeout(() => {
+        if (typeof Chart !== "undefined") {
+          initializeCharts();
+          console.log("✅ Tüm bileşenler başarıyla yüklendi");
+        } else {
+          console.error("❌ Chart.js kütüphanesi yüklenmemiş!");
+          showNotification(
+            "Grafik Hatası",
+            "Chart.js kütüphanesi yüklenemedi. Sayfayı yenileyin.",
+            "error"
+          );
+        }
+      }, 500);
+
+      // Initialize advanced features
+      initializeAdvancedFeatures();
+      monitorPerformance();
+
+      // Welcome notification
+      setTimeout(() => {
+        showNotification(
+          "İstatistikler Yüklendi",
+          "İstatistikler güncellendi! Harika ilerleme gösteriyorsun! 📈",
+          "success"
+        );
+      }, 1500);
+    } catch (error) {
+      console.error("❌ Başlatma hatası:", error);
+      showNotification(
+        "Başlatma Hatası",
+        "Sayfa yüklenirken bir hata oluştu. Yenileniyor...",
+        "error"
+      );
+      setTimeout(() => window.location.reload(), 2000);
+    }
+  }, 100);
 
   // Performance monitoring
   console.log(`⚡ Yükleme süresi: ${performance.now().toFixed(2)}ms`);
@@ -221,32 +337,126 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Initialize event listeners
 function initializeEventListeners() {
-  // User interactions
-  const notificationBtn = document.getElementById("notificationBtn");
-  const userAvatar = document.getElementById("userAvatar");
-  const notificationToast = document.getElementById("notificationToast");
+  // Mobile Navigation
+  const hamburger = document.getElementById("hamburger");
+  const mobileClose = document.getElementById("navMobileClose");
+  const mobileOverlay = document.getElementById("navMobileOverlay");
+  const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
 
+  if (hamburger) {
+    hamburger.addEventListener("click", toggleMobileNav);
+  }
+
+  if (mobileClose) {
+    mobileClose.addEventListener("click", closeMobileNav);
+  }
+
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener("click", closeMobileNav);
+  }
+
+  if (mobileLogoutBtn) {
+    mobileLogoutBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      logout();
+      closeMobileNav();
+    });
+  }
+
+  // Profile dropdown
+  const userAvatar = document.getElementById("userAvatar");
+  if (userAvatar) {
+    userAvatar.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleProfileDropdown();
+    });
+  }
+
+  // Settings ve logout butonları
+  const settingsBtn = document.getElementById("settingsBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (settingsBtn) {
+    settingsBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.location.href = "settings.html";
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      logout();
+      toggleProfileDropdown();
+    });
+  }
+
+  // Dropdown dışına tıklama
+  document.addEventListener("click", function (e) {
+    const dropdown = document.getElementById("profileDropdown");
+    const userAvatar = document.getElementById("userAvatar");
+
+    if (dropdown && !dropdown.contains(e.target) && e.target !== userAvatar) {
+      dropdown.classList.remove("show");
+    }
+  });
+
+  // Bildirim butonu
+  const notificationBtn = document.getElementById("notificationBtn");
   if (notificationBtn) {
     notificationBtn.addEventListener("click", function () {
-      showNotification("Bildirimler yakında aktif edilecek! 🔔");
-    });
-  }
-
-  if (userAvatar) {
-    userAvatar.addEventListener("click", function () {
-      showNotification("Profil sayfası yakında eklenecek! 👤");
-    });
-  }
-
-  // Close notification on click
-  if (notificationToast) {
-    notificationToast.addEventListener("click", function () {
-      hideNotification();
+      showNotification(
+        "Bildirimler",
+        "Bildirim sistemi aktif! Yeni özellikler yakında gelecek.",
+        "info"
+      );
     });
   }
 
   // Keyboard shortcuts
-  document.addEventListener("keydown", handleKeyboardShortcuts);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      hideNotification();
+      closeMobileNav();
+    }
+
+    if (e.ctrlKey || e.metaKey) {
+      switch (e.key) {
+        case "1":
+          e.preventDefault();
+          changeTimeFilter("today");
+          break;
+        case "2":
+          e.preventDefault();
+          changeTimeFilter("week");
+          break;
+        case "3":
+          e.preventDefault();
+          changeTimeFilter("month");
+          break;
+        case "4":
+          e.preventDefault();
+          changeTimeFilter("year");
+          break;
+        case "5":
+          e.preventDefault();
+          changeTimeFilter("all");
+          break;
+        case "e":
+          e.preventDefault();
+          exportData("pdf");
+          break;
+        case "r":
+          e.preventDefault();
+          window.location.reload();
+          break;
+        case "h":
+          e.preventDefault();
+          window.location.href = "dashboard.html";
+          break;
+      }
+    }
+  });
 
   // Window events
   window.addEventListener("error", handleError);
@@ -260,14 +470,16 @@ function initializeAnimations() {
     ".overview-card, .chart-card, .detail-card"
   );
   cards.forEach((card, index) => {
-    card.style.opacity = "0";
-    card.style.transform = "translateY(20px)";
+    if (card) {
+      card.style.opacity = "0";
+      card.style.transform = "translateY(20px)";
 
-    setTimeout(() => {
-      card.style.transition = "all 0.6s ease";
-      card.style.opacity = "1";
-      card.style.transform = "translateY(0)";
-    }, index * 100);
+      setTimeout(() => {
+        card.style.transition = "all 0.6s ease";
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, index * 100);
+    }
   });
 }
 
@@ -279,13 +491,20 @@ function changeTimeFilter(period) {
   document.querySelectorAll(".filter-btn").forEach((btn) => {
     btn.classList.remove("active");
   });
-  event.target.classList.add("active");
+
+  if (event && event.target) {
+    event.target.classList.add("active");
+  }
 
   // Update stats and charts
   updateStats();
   updateCharts();
 
-  showNotification(`İstatistikler ${getPeriodText(period)} için güncellendi!`);
+  showNotification(
+    "Filtre Güncellendi",
+    `İstatistikler ${getPeriodText(period)} için güncellendi!`,
+    "info"
+  );
 }
 
 // Update stats based on current filter
@@ -318,11 +537,26 @@ function updateStats() {
 
 // Initialize charts
 function initializeCharts() {
+  // Check if Chart.js is loaded
+  if (typeof Chart === "undefined") {
+    console.error("❌ Chart.js kütüphanesi yüklenmemiş!");
+    showNotification(
+      "Grafik Hatası",
+      "Chart.js kütüphanesi yüklenemedi. Sayfayı yenileyin.",
+      "error"
+    );
+    return;
+  }
+
+  console.log("📊 Chart.js yüklendi, grafikler oluşturuluyor...");
+
   try {
     // Weekly Progress Chart
     const weeklyCtx = document.getElementById("weeklyChart");
     if (weeklyCtx) {
-      charts.weekly = new Chart(weeklyCtx, {
+      console.log("📈 Weekly chart oluşturuluyor...");
+      const ctx = weeklyCtx.getContext("2d");
+      charts.weekly = new Chart(ctx, {
         type: "line",
         data: {
           labels: chartData[currentTimeFilter].weekly.labels,
@@ -402,12 +636,17 @@ function initializeCharts() {
           },
         },
       });
+      console.log("✅ Weekly chart oluşturuldu");
+    } else {
+      console.error("❌ Weekly chart canvas bulunamadı");
     }
 
     // Activity Distribution Chart
     const distributionCtx = document.getElementById("distributionChart");
     if (distributionCtx) {
-      charts.distribution = new Chart(distributionCtx, {
+      console.log("🍩 Distribution chart oluşturuluyor...");
+      const ctx = distributionCtx.getContext("2d");
+      charts.distribution = new Chart(ctx, {
         type: "doughnut",
         data: {
           labels: chartData[currentTimeFilter].distribution.labels,
@@ -467,12 +706,17 @@ function initializeCharts() {
           },
         },
       });
+      console.log("✅ Distribution chart oluşturuldu");
+    } else {
+      console.error("❌ Distribution chart canvas bulunamadı");
     }
 
     // Monthly Trend Chart
     const monthlyCtx = document.getElementById("monthlyChart");
     if (monthlyCtx) {
-      charts.monthly = new Chart(monthlyCtx, {
+      console.log("📊 Monthly chart oluşturuluyor...");
+      const ctx = monthlyCtx.getContext("2d");
+      charts.monthly = new Chart(ctx, {
         type: "bar",
         data: {
           labels: chartData[currentTimeFilter].monthly.labels,
@@ -535,12 +779,17 @@ function initializeCharts() {
           },
         },
       });
+      console.log("✅ Monthly chart oluşturuldu");
+    } else {
+      console.error("❌ Monthly chart canvas bulunamadı");
     }
 
     // Success Rate Chart
     const successCtx = document.getElementById("successChart");
     if (successCtx) {
-      charts.success = new Chart(successCtx, {
+      console.log("🎯 Success chart oluşturuluyor...");
+      const ctx = successCtx.getContext("2d");
+      charts.success = new Chart(ctx, {
         type: "radar",
         data: {
           labels: chartData[currentTimeFilter].success.labels,
@@ -608,12 +857,39 @@ function initializeCharts() {
           },
         },
       });
+      console.log("✅ Success chart oluşturuldu");
+    } else {
+      console.error("❌ Success chart canvas bulunamadı");
     }
 
-    console.log("📊 Tüm grafikler başarıyla oluşturuldu");
+    // Check how many charts were created
+    const chartCount = Object.keys(charts).length;
+    console.log(
+      `📊 Toplam ${chartCount} grafik oluşturuldu:`,
+      Object.keys(charts)
+    );
+
+    if (chartCount > 0) {
+      showNotification(
+        "Grafikler Hazır",
+        `${chartCount} grafik başarıyla yüklendi! 📊`,
+        "success"
+      );
+    } else {
+      console.error("❌ Hiç grafik oluşturulamadı!");
+      showNotification(
+        "Grafik Hatası",
+        "Grafikler oluşturulamadı. Sayfayı yenileyin.",
+        "error"
+      );
+    }
   } catch (error) {
-    console.error("Grafik oluşturma hatası:", error);
-    showNotification("Grafikler yüklenirken hata oluştu", "error");
+    console.error("❌ Grafik oluşturma hatası:", error);
+    showNotification(
+      "Grafik Hatası",
+      "Grafikler yüklenirken hata oluştu: " + error.message,
+      "error"
+    );
   }
 }
 
@@ -622,45 +898,64 @@ function updateCharts() {
   const data = chartData[currentTimeFilter];
 
   try {
+    console.log(`🔄 Grafikler ${currentTimeFilter} için güncelleniyor...`);
+
     // Update Weekly Chart
-    if (charts.weekly) {
+    if (charts.weekly && charts.weekly.data) {
       charts.weekly.data.labels = data.weekly.labels;
       charts.weekly.data.datasets[0].data = data.weekly.pomodoro;
       charts.weekly.data.datasets[1].data = data.weekly.tasks;
       charts.weekly.update("active");
+      console.log("✅ Weekly chart güncellendi");
     }
 
     // Update Distribution Chart
-    if (charts.distribution) {
+    if (charts.distribution && charts.distribution.data) {
       charts.distribution.data.labels = data.distribution.labels;
       charts.distribution.data.datasets[0].data = data.distribution.data;
       charts.distribution.update("active");
+      console.log("✅ Distribution chart güncellendi");
     }
 
     // Update Monthly Chart
-    if (charts.monthly) {
+    if (charts.monthly && charts.monthly.data) {
       charts.monthly.data.labels = data.monthly.labels;
       charts.monthly.data.datasets[0].data = data.monthly.data;
       charts.monthly.update("active");
+      console.log("✅ Monthly chart güncellendi");
     }
 
     // Update Success Chart
-    if (charts.success) {
+    if (charts.success && charts.success.data) {
       charts.success.data.labels = data.success.labels;
       charts.success.data.datasets[0].data = data.success.data;
       charts.success.update("active");
+      console.log("✅ Success chart güncellendi");
     }
 
-    console.log(`📊 Grafikler ${currentTimeFilter} için güncellendi`);
+    console.log(`📊 Tüm grafikler ${currentTimeFilter} için güncellendi`);
+    showNotification(
+      "Grafikler Güncellendi",
+      `Grafikler ${getPeriodText(currentTimeFilter)} için güncellendi`,
+      "info"
+    );
   } catch (error) {
-    console.error("Grafik güncelleme hatası:", error);
-    showNotification("Grafikler güncellenirken hata oluştu", "error");
+    console.error("❌ Grafik güncelleme hatası:", error);
+    showNotification(
+      "Güncelleme Hatası",
+      "Grafikler güncellenirken hata oluştu: " + error.message,
+      "error"
+    );
   }
 }
 
 // Export data function
 function exportData(format) {
-  showNotification(`${format.toUpperCase()} raporu hazırlanıyor...`);
+  showNotification(
+    "Dışa Aktarılıyor",
+    `${format.toUpperCase()} raporu hazırlanıyor...`,
+    "info"
+  );
 
   // Add loading state to button
   const button = event.target;
@@ -709,7 +1004,11 @@ function exportData(format) {
       json: "JSON verisi başarıyla oluşturuldu! 💾",
     };
 
-    showNotification(messages[format] || "Dosya başarıyla oluşturuldu!");
+    showNotification(
+      "Başarılı",
+      messages[format] || "Dosya başarıyla oluşturuldu!",
+      "success"
+    );
   }, 2000);
 }
 
@@ -740,86 +1039,10 @@ function getPeriodText(period) {
   return texts[period] || period;
 }
 
-function showNotification(message, type = "success") {
-  const toast = document.getElementById("notificationToast");
-  const text = document.getElementById("notificationText");
-
-  if (!toast || !text) return;
-
-  // Set notification type styling
-  const colors = {
-    success: "#10b981",
-    error: "#ef4444",
-    warning: "#f59e0b",
-    info: "#6366f1",
-  };
-
-  toast.style.background = colors[type] || colors.success;
-  text.textContent = message;
-  toast.style.display = "block";
-
-  // Auto hide after 4 seconds
-  setTimeout(() => {
-    hideNotification();
-  }, 4000);
-}
-
-function hideNotification() {
-  const toast = document.getElementById("notificationToast");
-  if (!toast) return;
-
-  toast.style.animation = "slideInRight 0.5s ease reverse";
-  setTimeout(() => {
-    toast.style.display = "none";
-    toast.style.animation = "";
-  }, 500);
-}
-
-// Keyboard shortcuts handler
-function handleKeyboardShortcuts(e) {
-  if (e.ctrlKey || e.metaKey) {
-    switch (e.key) {
-      case "1":
-        e.preventDefault();
-        changeTimeFilter("today");
-        break;
-      case "2":
-        e.preventDefault();
-        changeTimeFilter("week");
-        break;
-      case "3":
-        e.preventDefault();
-        changeTimeFilter("month");
-        break;
-      case "4":
-        e.preventDefault();
-        changeTimeFilter("year");
-        break;
-      case "5":
-        e.preventDefault();
-        changeTimeFilter("all");
-        break;
-      case "e":
-        e.preventDefault();
-        exportData("pdf");
-        break;
-      case "r":
-        e.preventDefault();
-        window.location.reload();
-        break;
-    }
-  }
-
-  // ESC key to hide notifications
-  if (e.key === "Escape") {
-    hideNotification();
-  }
-}
-
 // Error handler
 function handleError(e) {
   console.error("Sayfa hatası:", e.error);
-  showNotification("Bir hata oluştu. Sayfa yenileniyor...", "error");
+  showNotification("Hata", "Bir hata oluştu. Sayfa yenileniyor...", "error");
   setTimeout(() => {
     window.location.reload();
   }, 2000);
@@ -976,42 +1199,52 @@ function monitorPerformance() {
   });
 
   // Monitor chart rendering performance
-  const originalChartUpdate = Chart.defaults.animation.onComplete;
-  Chart.defaults.animation.onComplete = function () {
-    if (originalChartUpdate) originalChartUpdate.call(this);
-    const renderTime = performance.now();
-    console.log(`📊 Grafik render süresi: ${renderTime.toFixed(2)}ms`);
-  };
+  if (
+    typeof Chart !== "undefined" &&
+    Chart.defaults &&
+    Chart.defaults.animation
+  ) {
+    const originalChartUpdate = Chart.defaults.animation.onComplete;
+    Chart.defaults.animation.onComplete = function () {
+      if (originalChartUpdate) originalChartUpdate.call(this);
+      const renderTime = performance.now();
+      console.log(`📊 Grafik render süresi: ${renderTime.toFixed(2)}ms`);
+    };
+  }
 }
 
 // Track Core Web Vitals
 function trackWebVitals() {
-  // Largest Contentful Paint (LCP)
-  new PerformanceObserver((entryList) => {
-    const entries = entryList.getEntries();
-    const lastEntry = entries[entries.length - 1];
-    console.log(`🎯 LCP: ${lastEntry.startTime.toFixed(2)}ms`);
-  }).observe({ entryTypes: ["largest-contentful-paint"] });
+  try {
+    // Largest Contentful Paint (LCP)
+    new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      const lastEntry = entries[entries.length - 1];
+      console.log(`🎯 LCP: ${lastEntry.startTime.toFixed(2)}ms`);
+    }).observe({ entryTypes: ["largest-contentful-paint"] });
 
-  // First Input Delay (FID)
-  new PerformanceObserver((entryList) => {
-    const entries = entryList.getEntries();
-    entries.forEach((entry) => {
-      console.log(`⚡ FID: ${entry.processingStart - entry.startTime}ms`);
-    });
-  }).observe({ entryTypes: ["first-input"] });
+    // First Input Delay (FID)
+    new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      entries.forEach((entry) => {
+        console.log(`⚡ FID: ${entry.processingStart - entry.startTime}ms`);
+      });
+    }).observe({ entryTypes: ["first-input"] });
 
-  // Cumulative Layout Shift (CLS)
-  let clsValue = 0;
-  new PerformanceObserver((entryList) => {
-    const entries = entryList.getEntries();
-    entries.forEach((entry) => {
-      if (!entry.hadRecentInput) {
-        clsValue += entry.value;
-      }
-    });
-    console.log(`📏 CLS: ${clsValue.toFixed(4)}`);
-  }).observe({ entryTypes: ["layout-shift"] });
+    // Cumulative Layout Shift (CLS)
+    let clsValue = 0;
+    new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      entries.forEach((entry) => {
+        if (!entry.hadRecentInput) {
+          clsValue += entry.value;
+        }
+      });
+      console.log(`📏 CLS: ${clsValue.toFixed(4)}`);
+    }).observe({ entryTypes: ["layout-shift"] });
+  } catch (error) {
+    console.log("Web Vitals tracking not supported in this browser");
+  }
 }
 
 // Data synchronization
@@ -1173,8 +1406,10 @@ function setupAdvancedChartInteractions() {
     if (chart && chart.canvas) {
       // Add double click to reset zoom
       chart.canvas.addEventListener("dblclick", () => {
-        chart.resetZoom();
-        showNotification(`${chartKey} grafiği sıfırlandı`);
+        if (chart.resetZoom) {
+          chart.resetZoom();
+          showNotification(`${chartKey} grafiği sıfırlandı`);
+        }
       });
 
       // Add context menu for chart options
@@ -1249,7 +1484,7 @@ function showChartContextMenu(e, chartKey) {
 // Chart utility functions
 function saveChartAsPNG(chartKey) {
   const chart = charts[chartKey];
-  if (chart) {
+  if (chart && chart.toBase64Image) {
     const url = chart.toBase64Image();
     const link = document.createElement("a");
     link.download = `${chartKey}-chart.png`;
@@ -1261,7 +1496,7 @@ function saveChartAsPNG(chartKey) {
 
 function copyChartData(chartKey) {
   const chart = charts[chartKey];
-  if (chart) {
+  if (chart && navigator.clipboard) {
     const data = JSON.stringify(chart.data, null, 2);
     navigator.clipboard.writeText(data).then(() => {
       showNotification(`${chartKey} verisi panoya kopyalandı!`);
@@ -1271,7 +1506,7 @@ function copyChartData(chartKey) {
 
 function showChartFullscreen(chartKey) {
   const chart = charts[chartKey];
-  if (chart) {
+  if (chart && chart.canvas) {
     const canvas = chart.canvas;
     if (canvas.requestFullscreen) {
       canvas.requestFullscreen();
@@ -1283,162 +1518,12 @@ function showChartSettings(chartKey) {
   showNotification(`${chartKey} grafik ayarları yakında eklenecek!`, "info");
 }
 
-// Export functionality enhancements
-function exportDataAdvanced(format, options = {}) {
-  const { includeCharts = true, includeSummary = true, customRange } = options;
-
-  showNotification(`Gelişmiş ${format.toUpperCase()} raporu hazırlanıyor...`);
-
-  const exportData = {
-    metadata: {
-      exportDate: new Date().toISOString(),
-      exportFormat: format,
-      period: currentTimeFilter,
-      version: "1.0.0",
-      source: "GRINDMIND Statistics",
-    },
-    stats: sampleData[currentTimeFilter],
-    ...(includeCharts && { charts: chartData[currentTimeFilter] }),
-    ...(includeSummary && {
-      summary: generateAdvancedSummary(),
-      insights: generateInsights(),
-      recommendations: generateRecommendations(),
-    }),
-  };
-
-  // Simulate advanced export process
-  setTimeout(() => {
-    if (format === "json") {
-      downloadJSON(exportData, `grindmind-advanced-report-${Date.now()}.json`);
-    } else if (format === "csv") {
-      downloadCSV(exportData);
-    } else {
-      console.log("Advanced export data:", exportData);
-    }
-
-    showNotification(
-      `Gelişmiş ${format.toUpperCase()} raporu başarıyla oluşturuldu!`
-    );
-  }, 3000);
-}
-
-// Generate advanced summary
-function generateAdvancedSummary() {
-  const data = sampleData[currentTimeFilter];
-
-  return {
-    totalActivities: Object.keys(data).length,
-    averagePerformance: "84%",
-    topPerformer: "Bağımlılık Takibi",
-    improvementAreas: ["Çalışma Saatleri", "Görev Tamamlama"],
-    streak: {
-      current: 45,
-      longest: 67,
-      type: "Günlük Aktivite",
-    },
-    milestones: [
-      "İlk 30 gün tamamlandı",
-      "100 pomodoro hedefine ulaşıldı",
-      "Kilo hedefinin %75'i gerçekleşti",
-    ],
-  };
-}
-
-// Generate insights
-function generateInsights() {
-  return [
-    {
-      type: "trend",
-      title: "Pozitif Trend",
-      description: "Son 2 haftada %23 iyileşme gözlemlendi",
-      confidence: 0.92,
-    },
-    {
-      type: "pattern",
-      title: "Hafta İçi Performansı",
-      description: "Salı ve Çarşamba günleri en yüksek verim",
-      confidence: 0.87,
-    },
-    {
-      type: "correlation",
-      title: "Aktivite İlişkisi",
-      description:
-        "Pomodoro sayısı ile görev tamamlama arasında güçlü bağlantı",
-      confidence: 0.94,
-    },
-  ];
-}
-
-// Generate recommendations
-function generateRecommendations() {
-  return [
-    {
-      priority: "high",
-      category: "Optimizasyon",
-      title: "Çalışma Saatlerini Artır",
-      description:
-        "Günlük ortalama çalışma süresini 30 dakika artırarak hedeflerine daha hızlı ulaşabilirsin.",
-      expectedImpact: "+15% verimlilik artışı",
-    },
-    {
-      priority: "medium",
-      category: "Tutarlılık",
-      title: "Hafta Sonu Aktivitesi",
-      description:
-        "Hafta sonları da düzenli aktivite yaparak momentumunu koruyabilirsin.",
-      expectedImpact: "+8% genel tutarlılık",
-    },
-    {
-      priority: "low",
-      category: "Motivasyon",
-      title: "Yeni Başarı Hedefleri",
-      description:
-        "Mevcut başarıların üzerine yeni challengelar ekleyerek motivasyonunu artırabilirsin.",
-      expectedImpact: "Uzun vadeli motivasyon",
-    },
-  ];
-}
-
-// Download CSV helper
-function downloadCSV(data) {
-  const csv = convertToCSV(data.stats);
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `grindmind-stats-${Date.now()}.csv`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-}
-
-// Convert data to CSV format
-function convertToCSV(data) {
-  const headers = ["Aktivite", "Değer", "Değişim"];
-  const rows = Object.entries(data).map(([key, value]) => [
-    key,
-    value.value,
-    value.change,
-  ]);
-
-  const csvContent = [
-    headers.join(","),
-    ...rows.map((row) => row.join(",")),
-  ].join("\n");
-
-  return csvContent;
-}
-
 // Initialize all systems
 function initializeAllSystems() {
   console.log("🚀 Tüm sistemler başlatılıyor...");
 
   // Setup advanced chart interactions
   setupAdvancedChartInteractions();
-
-  // Initialize performance monitoring
-  monitorPerformance();
 
   // Setup error boundary
   setupErrorBoundary();

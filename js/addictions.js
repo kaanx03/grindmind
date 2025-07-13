@@ -66,6 +66,129 @@ const sampleAddictions = [
   },
 ];
 
+// ===== NAVBAR FUNCTIONS =====
+
+// Mobile navigation toggle
+function toggleMobileNav() {
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
+
+  if (hamburger) hamburger.classList.toggle("active");
+  if (mobileNav) mobileNav.classList.toggle("show");
+  if (overlay) overlay.classList.toggle("show");
+
+  // Body scroll kontrolü
+  if (mobileNav && mobileNav.classList.contains("show")) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
+}
+
+// Close mobile navigation
+function closeMobileNav() {
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
+
+  if (hamburger) hamburger.classList.remove("active");
+  if (mobileNav) mobileNav.classList.remove("show");
+  if (overlay) overlay.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+// Profile dropdown toggle
+function toggleProfileDropdown() {
+  const dropdown = document.getElementById("profileDropdown");
+  if (dropdown) {
+    dropdown.classList.toggle("show");
+  }
+}
+
+// Close profile dropdown when clicking outside
+function closeProfileDropdown(event) {
+  const dropdown = document.getElementById("profileDropdown");
+  const userAvatar = document.getElementById("userAvatar");
+
+  if (dropdown && userAvatar) {
+    if (
+      !dropdown.contains(event.target) &&
+      !userAvatar.contains(event.target)
+    ) {
+      dropdown.classList.remove("show");
+    }
+  }
+}
+
+// Setup navbar event handlers
+function setupNavbarEventHandlers() {
+  // Mobile Navigation
+  const hamburger = document.getElementById("hamburger");
+  const mobileClose = document.getElementById("navMobileClose");
+  const mobileOverlay = document.getElementById("navMobileOverlay");
+  const userAvatar = document.getElementById("userAvatar");
+
+  if (hamburger) {
+    hamburger.addEventListener("click", toggleMobileNav);
+  }
+
+  if (mobileClose) {
+    mobileClose.addEventListener("click", closeMobileNav);
+  }
+
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener("click", closeMobileNav);
+  }
+
+  // User avatar dropdown
+  if (userAvatar) {
+    userAvatar.addEventListener("click", toggleProfileDropdown);
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", closeProfileDropdown);
+
+  // Settings and logout buttons
+  const settingsBtn = document.getElementById("settingsBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (settingsBtn) {
+    settingsBtn.addEventListener("click", function () {
+      showNotification("Ayarlar sayfası henüz hazırlanıyor!", "info");
+      toggleProfileDropdown();
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
+      if (confirm("Çıkış yapmak istediğinizden emin misiniz?")) {
+        localStorage.clear();
+        window.location.href = "login.html";
+      }
+    });
+  }
+
+  // Klavye kısayolları
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeMobileNav();
+      const dropdown = document.getElementById("profileDropdown");
+      if (dropdown) dropdown.classList.remove("show");
+    }
+  });
+
+  // Mobile menu item clicks
+  const mobileItems = document.querySelectorAll(".nav-mobile-item");
+  mobileItems.forEach((item) => {
+    item.addEventListener("click", function () {
+      closeMobileNav();
+    });
+  });
+}
+
+// ===== ADDICTION FUNCTIONS =====
+
 // DÜZELTME: Basitleştirilmiş ve doğru temiz gün hesaplama
 function calculateCleanDays(addiction) {
   const today = new Date().toISOString().split("T")[0];
@@ -192,8 +315,10 @@ function filterAddictions() {
 // Modal'da mevcut bağımlılıkları göster (başlangıçta boş)
 function renderAvailableAddictions() {
   const container = document.getElementById("availableAddictions");
-  container.innerHTML =
-    '<div style="text-align: center; padding: 20px; color: var(--text-muted);">Aramak için en az 2 karakter yazın</div>';
+  if (container) {
+    container.innerHTML =
+      '<div style="text-align: center; padding: 20px; color: var(--text-muted);">Aramak için en az 2 karakter yazın</div>';
+  }
 }
 
 // Özel bağımlılık input'unu aç/kapat
@@ -203,9 +328,11 @@ function toggleCustom() {
 
   if (!isCustomMode) {
     isCustomMode = true;
-    box.classList.add("active");
-    input.style.display = "block";
-    input.focus();
+    if (box) box.classList.add("active");
+    if (input) {
+      input.style.display = "block";
+      input.focus();
+    }
     selectedAddiction = null;
     // Diğer seçimleri temizle
     document.querySelectorAll(".addiction-item").forEach((item) => {
@@ -218,9 +345,14 @@ function toggleCustom() {
 function selectAddiction(id) {
   // Özel modu temizle
   isCustomMode = false;
-  document.getElementById("customAddictionBox").classList.remove("active");
-  document.getElementById("customAddictionInput").style.display = "none";
-  document.getElementById("customAddictionInput").value = "";
+  const customBox = document.getElementById("customAddictionBox");
+  const customInput = document.getElementById("customAddictionInput");
+
+  if (customBox) customBox.classList.remove("active");
+  if (customInput) {
+    customInput.style.display = "none";
+    customInput.value = "";
+  }
 
   // Önceki seçimi kaldır
   document.querySelectorAll(".addiction-item").forEach((item) => {
@@ -239,6 +371,8 @@ function selectAddiction(id) {
 function renderUserAddictions() {
   const container = document.getElementById("addictionsGrid");
   const emptyState = document.getElementById("emptyState");
+
+  if (!container || !emptyState) return;
 
   if (userAddictions.length === 0) {
     container.style.display = "none";
@@ -334,14 +468,23 @@ function renderUserAddictions() {
 
 // Bağımlılık ekleme modal'ını göster
 function showAddAddictionModal() {
-  document.getElementById("addAddictionModal").style.display = "block";
-  selectedAddiction = null;
-  isCustomMode = false;
-  document.getElementById("addictionSearch").value = "";
-  document.getElementById("customAddictionInput").value = "";
-  document.getElementById("customAddictionBox").classList.remove("active");
-  document.getElementById("customAddictionInput").style.display = "none";
-  renderAvailableAddictions();
+  const modal = document.getElementById("addAddictionModal");
+  if (modal) {
+    modal.style.display = "block";
+    selectedAddiction = null;
+    isCustomMode = false;
+
+    const searchInput = document.getElementById("addictionSearch");
+    const customInput = document.getElementById("customAddictionInput");
+    const customBox = document.getElementById("customAddictionBox");
+
+    if (searchInput) searchInput.value = "";
+    if (customInput) customInput.value = "";
+    if (customBox) customBox.classList.remove("active");
+    if (customInput) customInput.style.display = "none";
+
+    renderAvailableAddictions();
+  }
 }
 
 // Check-in modal'ını göster
@@ -359,11 +502,15 @@ function showCheckinModal(addictionId) {
   }
 
   currentCheckinAddiction = addiction;
-  document.getElementById(
-    "checkinQuestion"
-  ).textContent = `${addiction.name} için bugünkü check-in. Bugün temiz kaldın mı?`;
+  const questionEl = document.getElementById("checkinQuestion");
+  if (questionEl) {
+    questionEl.textContent = `${addiction.name} için bugünkü check-in. Bugün temiz kaldın mı?`;
+  }
 
-  document.getElementById("checkinModal").style.display = "block";
+  const modal = document.getElementById("checkinModal");
+  if (modal) {
+    modal.style.display = "block";
+  }
 }
 
 // Bağımlılık detaylarını göster
@@ -386,95 +533,103 @@ function viewAddictionDetails(addictionId) {
   );
   const tips = addictionData?.tips || [];
 
-  document.getElementById(
-    "detailsTitle"
-  ).textContent = `${addiction.name} Detayları`;
+  const detailsTitle = document.getElementById("detailsTitle");
+  if (detailsTitle) {
+    detailsTitle.textContent = `${addiction.name} Detayları`;
+  }
 
   const detailsBody = document.getElementById("detailsBody");
-  detailsBody.innerHTML = `
-    <div class="details-section">
-      <h4>📊 Genel Bilgiler</h4>
-      <div class="addiction-stats">
-        <div class="stat-box">
-          <span class="stat-number">${cleanDays}</span>
-          <span class="stat-label">Temiz Gün</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number">${totalCheckins}</span>
-          <span class="stat-label">Toplam Check-in</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number">%${successRate}</span>
-          <span class="stat-label">Başarı Oranı</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number">${new Date(
-            addiction.startDate
-          ).toLocaleDateString("tr-TR")}</span>
-          <span class="stat-label">Başlangıç</span>
-        </div>
-      </div>
-    </div>
-
-    ${
-      tips.length > 0
-        ? `
-    <div class="details-section">
-      <h4>💡 Faydalı İpuçları</h4>
-      <div class="tips-container">
-        ${tips
-          .map(
-            (tip, index) => `
-          <div class="tip-card">
-            <span class="tip-number">${index + 1}</span>
-            <span class="tip-text">${tip}</span>
+  if (detailsBody) {
+    detailsBody.innerHTML = `
+      <div class="details-section">
+        <h4>📊 Genel Bilgiler</h4>
+        <div class="addiction-stats">
+          <div class="stat-box">
+            <span class="stat-number">${cleanDays}</span>
+            <span class="stat-label">Temiz Gün</span>
           </div>
-        `
-          )
-          .join("")}
+          <div class="stat-box">
+            <span class="stat-number">${totalCheckins}</span>
+            <span class="stat-label">Toplam Check-in</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">%${successRate}</span>
+            <span class="stat-label">Başarı Oranı</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">${new Date(
+              addiction.startDate
+            ).toLocaleDateString("tr-TR")}</span>
+            <span class="stat-label">Başlangıç</span>
+          </div>
+        </div>
       </div>
-    </div>
-    `
-        : ""
-    }
 
-    <div class="details-section">
-      <h4>📈 Son Check-in'ler</h4>
-      <div class="timeline" style="max-height: 150px; overflow-y: auto;">
-        ${
-          addiction.checkins.length === 0
-            ? '<div style="text-align: center; padding: 20px; color: var(--text-muted);">Henüz check-in yapılmamış</div>'
-            : addiction.checkins
-                .slice(-5)
-                .reverse()
-                .map(
-                  (checkin) => `
-            <div class="timeline-item">
-              <div class="timeline-icon ${
-                checkin.isClean ? "success" : "danger"
-              }">
-                ${checkin.isClean ? "✓" : "✗"}
-              </div>
-              <div class="timeline-content">
-                <div class="timeline-date">${new Date(
-                  checkin.date
-                ).toLocaleDateString("tr-TR")}</div>
-                <div class="timeline-text">
-                  ${checkin.isClean ? "Temiz kaldı" : "Nüks yaşadı"} 
-                  ${checkin.mood ? `• ${getMoodEmoji(checkin.mood)}` : ""}
-                  ${checkin.notes ? `<br><small>${checkin.notes}</small>` : ""}
-                </div>
-              </div>
+      ${
+        tips.length > 0
+          ? `
+      <div class="details-section">
+        <h4>💡 Faydalı İpuçları</h4>
+        <div class="tips-container">
+          ${tips
+            .map(
+              (tip, index) => `
+            <div class="tip-card">
+              <span class="tip-number">${index + 1}</span>
+              <span class="tip-text">${tip}</span>
             </div>
           `
-                )
-                .join("")
-        }
+            )
+            .join("")}
+        </div>
       </div>
-    </div>
-  `;
+      `
+          : ""
+      }
 
-  document.getElementById("detailsModal").style.display = "block";
+      <div class="details-section">
+        <h4>📈 Son Check-in'ler</h4>
+        <div class="timeline" style="max-height: 150px; overflow-y: auto;">
+          ${
+            addiction.checkins.length === 0
+              ? '<div style="text-align: center; padding: 20px; color: var(--text-muted);">Henüz check-in yapılmamış</div>'
+              : addiction.checkins
+                  .slice(-5)
+                  .reverse()
+                  .map(
+                    (checkin) => `
+              <div class="timeline-item">
+                <div class="timeline-icon ${
+                  checkin.isClean ? "success" : "danger"
+                }">
+                  ${checkin.isClean ? "✓" : "✗"}
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-date">${new Date(
+                    checkin.date
+                  ).toLocaleDateString("tr-TR")}</div>
+                  <div class="timeline-text">
+                    ${checkin.isClean ? "Temiz kaldı" : "Nüks yaşadı"} 
+                    ${checkin.mood ? `• ${getMoodEmoji(checkin.mood)}` : ""}
+                    ${
+                      checkin.notes ? `<br><small>${checkin.notes}</small>` : ""
+                    }
+                  </div>
+                </div>
+              </div>
+            `
+                  )
+                  .join("")
+          }
+        </div>
+      </div>
+    `;
+  }
+
+  const modal = document.getElementById("detailsModal");
+  if (modal) {
+    modal.style.display = "block";
+  }
 }
 
 // Mood emoji'si al
@@ -491,12 +646,17 @@ function getMoodEmoji(mood) {
 
 // Modal'ı kapat
 function closeModal(modalId) {
-  document.getElementById(modalId).style.display = "none";
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.style.display = "none";
+  }
 
   // Formları temizle
   if (modalId === "checkinModal") {
-    document.getElementById("moodSelect").value = "good";
-    document.getElementById("checkinNotes").value = "";
+    const moodSelect = document.getElementById("moodSelect");
+    const notesInput = document.getElementById("checkinNotes");
+    if (moodSelect) moodSelect.value = "good";
+    if (notesInput) notesInput.value = "";
   }
 }
 
@@ -505,9 +665,9 @@ function addAddiction() {
   let newAddictionData;
 
   if (isCustomMode) {
-    const customName = document
-      .getElementById("customAddictionInput")
-      .value.trim();
+    const customInput = document.getElementById("customAddictionInput");
+    const customName = customInput ? customInput.value.trim() : "";
+
     if (!customName) {
       showNotification("Lütfen bağımlılık adını yazın!", "error");
       return;
@@ -565,8 +725,11 @@ function addAddiction() {
 function submitCheckin(isClean) {
   if (!currentCheckinAddiction) return;
 
-  const mood = document.getElementById("moodSelect").value;
-  const notes = document.getElementById("checkinNotes").value;
+  const moodSelect = document.getElementById("moodSelect");
+  const notesInput = document.getElementById("checkinNotes");
+
+  const mood = moodSelect ? moodSelect.value : "good";
+  const notes = notesInput ? notesInput.value : "";
   const today = new Date().toISOString().split("T")[0];
 
   // Bugün zaten check-in yapıldı mı kontrol et
@@ -637,9 +800,10 @@ function deleteAddiction() {
 
 // İstatistikler için grafik oluştur
 function createProgressChart(canvasId, labels, data, title) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
 
-  new Chart(ctx, {
+  new Chart(ctx.getContext("2d"), {
     type: "line",
     data: {
       labels: labels,
@@ -691,7 +855,8 @@ function createProgressChart(canvasId, labels, data, title) {
 }
 
 function createSuccessRateChart(canvasId, addictions) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
 
   const labels = addictions.map((a) => a.name);
   const data = addictions.map((a) => {
@@ -700,7 +865,7 @@ function createSuccessRateChart(canvasId, addictions) {
     return total > 0 ? Math.round((clean / total) * 100) : 0;
   });
 
-  new Chart(ctx, {
+  new Chart(ctx.getContext("2d"), {
     type: "doughnut",
     data: {
       labels: labels,
@@ -738,7 +903,8 @@ function createSuccessRateChart(canvasId, addictions) {
 }
 
 function createWeeklyActivityChart(canvasId) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
 
   // Son 7 gün
   const last7Days = [];
@@ -759,7 +925,7 @@ function createWeeklyActivityChart(canvasId) {
     relapseData.push(dayCheckins.filter((c) => !c.isClean).length);
   }
 
-  new Chart(ctx, {
+  new Chart(ctx.getContext("2d"), {
     type: "bar",
     data: {
       labels: last7Days,
@@ -876,6 +1042,8 @@ function showStats() {
   );
 
   const statisticsBody = document.getElementById("statisticsBody");
+  if (!statisticsBody) return;
+
   statisticsBody.innerHTML = `
     <div class="stats-grid">
       <div class="stats-card">
@@ -1004,7 +1172,10 @@ function showStats() {
     }
   `;
 
-  document.getElementById("statisticsModal").style.display = "block";
+  const modal = document.getElementById("statisticsModal");
+  if (modal) {
+    modal.style.display = "block";
+  }
 
   // Grafikleri oluştur
   setTimeout(() => {
@@ -1155,6 +1326,11 @@ document.addEventListener("keydown", function (e) {
 // Sayfa yüklendiğinde çalıştır
 document.addEventListener("DOMContentLoaded", function () {
   console.log("🚫 Bağımlılık Bırakma sayfası yüklendi");
+
+  // Navbar event handler'larını kur
+  setupNavbarEventHandlers();
+
+  // Addiction functionality'yi başlat
   loadAvailableAddictions();
   loadUserAddictions();
 });

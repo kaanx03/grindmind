@@ -18,15 +18,63 @@
   <body>
     <!-- Header -->
     <header class="header">
-      <div class="container">
-        <nav class="nav">
-          <div class="logo" onclick="window.location.href='dashboard.html'">
-            GRINDMIND
+      <nav class="nav">
+        <div class="logo" onclick="window.location.href='dashboard.html'">
+          GRINDMIND
+        </div>
+
+        <!-- Desktop Navigation Menu -->
+        <div class="nav-menu">
+          <a href="dashboard.html" class="nav-item">Ana Sayfa</a>
+          <a href="activities.html" class="nav-item">Aktiviteler</a>
+          <a href="statistics.html" class="nav-item">İstatistikler</a>
+          <a href="achievements.html" class="nav-item">Başarılar</a>
+        </div>
+
+        <!-- Hamburger Menu Button (Mobil) -->
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="user-section">
+          <button class="notification-btn" id="notificationBtn">
+            🔔
+            <span class="notification-badge" id="notificationBadge">3</span>
+          </button>
+          <div class="user-avatar" id="userAvatar">T</div>
+          <!-- Profile Dropdown -->
+          <div class="profile-dropdown" id="profileDropdown">
+            <button class="dropdown-item" id="settingsBtn">
+              <span class="dropdown-icon">⚙️</span>
+              <span>Ayarlar</span>
+            </button>
+            <button class="dropdown-item" id="logoutBtn">
+              <span class="dropdown-icon">🚪</span>
+              <span>Çıkış Yap</span>
+            </button>
           </div>
-          <a href="dashboard.html" class="back-btn">← Ana Sayfaya Dön</a>
-        </nav>
-      </div>
+        </div>
+      </nav>
     </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="nav-mobile-overlay" id="navMobileOverlay"></div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="nav-mobile" id="navMobile">
+      <div class="nav-mobile-header">
+        <div class="logo">GRINDMIND</div>
+        <button class="nav-mobile-close" id="navMobileClose">×</button>
+      </div>
+      <div class="nav-mobile-menu">
+        <a href="dashboard.html" class="nav-mobile-item">Ana Sayfa</a>
+        <a href="activities.html" class="nav-mobile-item">Aktiviteler</a>
+        <a href="statistics.html" class="nav-mobile-item">İstatistikler</a>
+        <a href="achievements.html" class="nav-mobile-item">Başarılar</a>
+      </div>
+    </nav>
 
     <!-- Main Content -->
     <main class="main-content">

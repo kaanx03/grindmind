@@ -75,7 +75,92 @@ const sampleHabits = [
   },
 ];
 
-// Mevcut alışkanlıkları JSON'dan yükle
+// Navbar işlevleri
+function toggleMobileNav() {
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
+
+  if (hamburger) hamburger.classList.toggle("active");
+  if (mobileNav) mobileNav.classList.toggle("show");
+  if (overlay) overlay.classList.toggle("show");
+
+  // Body scroll kontrolü
+  if (mobileNav && mobileNav.classList.contains("show")) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
+}
+
+function closeMobileNav() {
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
+
+  if (hamburger) hamburger.classList.remove("active");
+  if (mobileNav) mobileNav.classList.remove("show");
+  if (overlay) overlay.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+function toggleProfileDropdown() {
+  const dropdown = document.getElementById("profileDropdown");
+  if (dropdown) {
+    dropdown.classList.toggle("show");
+  }
+}
+
+function handleSettings() {
+  showNotification("Ayarlar", "Ayarlar sayfası yakında eklenecek!", "info");
+  toggleProfileDropdown();
+}
+
+function handleLogout() {
+  if (confirm("Çıkış yapmak istediğinizden emin misiniz?")) {
+    showNotification("Çıkış", "Başarıyla çıkış yapıldı. Güle güle!", "success");
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 2000);
+  }
+  toggleProfileDropdown();
+}
+
+// Bildirim sistemi
+function showNotification(title, message, type = "info") {
+  const toast = document.getElementById("notificationToast");
+  if (!toast) return;
+
+  const titleEl = toast.querySelector(".notification-title");
+  const messageEl = toast.querySelector(".notification-message");
+  const iconEl = toast.querySelector(".notification-icon");
+
+  const icons = {
+    success: "🎉",
+    error: "❌",
+    warning: "⚠️",
+    info: "ℹ️",
+  };
+
+  if (titleEl) titleEl.textContent = title;
+  if (messageEl) messageEl.textContent = message;
+  if (iconEl) iconEl.textContent = icons[type] || icons.info;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    hideNotification();
+  }, 4000);
+}
+
+function hideNotification() {
+  const toast = document.getElementById("notificationToast");
+  if (toast) {
+    toast.classList.remove("show");
+  }
+}
+
+// Alışkanlık yönetim fonksiyonları
 async function loadAvailableHabits() {
   try {
     const response = await fetch("habits.json");
@@ -91,25 +176,35 @@ async function loadAvailableHabits() {
   renderAvailableHabits();
 }
 
-// Kullanıcı alışkanlıklarını localStorage'dan yükle
 function loadUserHabits() {
-  const saved = localStorage.getItem("grindmind_user_habits");
-  if (saved) {
-    userHabits = JSON.parse(saved);
+  try {
+    const saved = localStorage.getItem("grindmind_user_habits");
+    if (saved) {
+      userHabits = JSON.parse(saved);
+    }
+  } catch (error) {
+    console.error("Kullanıcı alışkanlıkları yüklenemedi:", error);
+    userHabits = [];
   }
   renderUserHabits();
   checkForDailyReminder();
 }
 
-// Kullanıcı alışkanlıklarını localStorage'a kaydet
 function saveUserHabits() {
-  localStorage.setItem("grindmind_user_habits", JSON.stringify(userHabits));
+  try {
+    localStorage.setItem("grindmind_user_habits", JSON.stringify(userHabits));
+  } catch (error) {
+    console.error("Alışkanlıklar kaydedilemedi:", error);
+  }
 }
 
-// Aramaya göre alışkanlıkları filtrele
 function filterHabits() {
-  const searchTerm = document.getElementById("habitSearch").value.toLowerCase();
+  const searchInput = document.getElementById("habitSearch");
   const container = document.getElementById("availableHabits");
+
+  if (!searchInput || !container) return;
+
+  const searchTerm = searchInput.value.toLowerCase();
 
   if (searchTerm.length < 2) {
     container.innerHTML =
@@ -155,17 +250,19 @@ function filterHabits() {
   });
 }
 
-// Modal'da mevcut alışkanlıkları göster (başlangıçta boş)
 function renderAvailableHabits() {
   const container = document.getElementById("availableHabits");
-  container.innerHTML =
-    '<div style="text-align: center; padding: 20px; color: var(--text-muted);">Aramak için en az 2 karakter yazın</div>';
+  if (container) {
+    container.innerHTML =
+      '<div style="text-align: center; padding: 20px; color: var(--text-muted);">Aramak için en az 2 karakter yazın</div>';
+  }
 }
 
-// Özel alışkanlık modunu aç/kapat
 function toggleCustomHabit() {
   const customBox = document.getElementById("customHabitBox");
   const customInput = document.getElementById("customHabitInput");
+
+  if (!customBox || !customInput) return;
 
   isCustomHabitMode = !isCustomHabitMode;
 
@@ -173,6 +270,7 @@ function toggleCustomHabit() {
     customBox.classList.add("active");
     customInput.style.display = "block";
     customInput.focus();
+
     // Diğer seçimleri temizle
     document.querySelectorAll(".habit-item").forEach((item) => {
       item.classList.remove("selected");
@@ -185,7 +283,6 @@ function toggleCustomHabit() {
   }
 }
 
-// Eklemek için alışkanlık seç
 function selectHabit(id) {
   // Özel alışkanlık modunu kapat
   if (isCustomHabitMode) {
@@ -205,10 +302,11 @@ function selectHabit(id) {
   }
 }
 
-// Kullanıcı alışkanlıklarını göster
 function renderUserHabits() {
   const container = document.getElementById("habitsGrid");
   const emptyState = document.getElementById("emptyState");
+
+  if (!container || !emptyState) return;
 
   if (userHabits.length === 0) {
     container.style.display = "none";
@@ -224,7 +322,6 @@ function renderUserHabits() {
     const card = document.createElement("div");
     card.className = "habit-card";
 
-    // Mevcut seri ve ilerleme hesaplama
     const currentStreak = calculateCurrentStreak(habit);
     const progressPercent = Math.min(
       (currentStreak / habit.targetDays) * 100,
@@ -288,19 +385,16 @@ function renderUserHabits() {
     `;
 
     container.appendChild(card);
-
-    // Bu alışkanlık için takvim oluştur
     generateStreakCalendar(habit);
   });
 }
-// Seri takvimi oluştur
+
 function generateStreakCalendar(habit) {
   const calendar = document.getElementById(`calendar-${habit.id}`);
   if (!calendar) return;
 
   calendar.innerHTML = "";
 
-  // Son 21 günü al
   const today = new Date();
   for (let i = 20; i >= 0; i--) {
     const date = new Date();
@@ -313,7 +407,6 @@ function generateStreakCalendar(habit) {
       dayElement.classList.add("today");
     }
 
-    // Bu tarihte tamamlandı mı kontrol et
     const dateString = date.toISOString().split("T")[0];
     const isCompleted =
       habit.completions && habit.completions.some((c) => c.date === dateString);
@@ -329,14 +422,12 @@ function generateStreakCalendar(habit) {
   }
 }
 
-// Mevcut seriyi hesapla
 function calculateCurrentStreak(habit) {
   if (!habit.completions || habit.completions.length === 0) return 0;
 
   let streak = 0;
   const today = new Date();
 
-  // Bugünden geriye doğru kontrol et
   for (let i = 0; i < habit.targetDays; i++) {
     const checkDate = new Date();
     checkDate.setDate(today.getDate() - i);
@@ -347,10 +438,8 @@ function calculateCurrentStreak(habit) {
     if (isCompleted) {
       streak++;
     } else if (i === 0) {
-      // Eğer bugün tamamlanmadıysa, dün tamamlandı mı kontrol et
       break;
     } else {
-      // Seriyi kır
       break;
     }
   }
@@ -358,55 +447,63 @@ function calculateCurrentStreak(habit) {
   return streak;
 }
 
-// Alışkanlık bugün tamamlandı mı kontrol et
 function isHabitCompletedToday(habit) {
   if (!habit.completions) return false;
-
   const today = new Date().toISOString().split("T")[0];
   return habit.completions.some((c) => c.date === today);
 }
 
-// Alışkanlık ekleme modal'ını göster
+// Modal işlevleri
 function showAddHabitModal() {
-  document.getElementById("addHabitModal").style.display = "block";
+  const modal = document.getElementById("addHabitModal");
+  if (!modal) return;
+
+  modal.style.display = "block";
   selectedHabit = null;
   isCustomHabitMode = false;
-  document.getElementById("targetDays").value = 21;
-  document.getElementById("habitSearch").value = "";
 
-  // Özel alışkanlık kutusunu sıfırla
+  const targetDaysInput = document.getElementById("targetDays");
+  const habitSearchInput = document.getElementById("habitSearch");
+
+  if (targetDaysInput) targetDaysInput.value = 21;
+  if (habitSearchInput) habitSearchInput.value = "";
+
   const customBox = document.getElementById("customHabitBox");
   const customInput = document.getElementById("customHabitInput");
-  customBox.classList.remove("active");
-  customInput.style.display = "none";
-  customInput.value = "";
+
+  if (customBox) customBox.classList.remove("active");
+  if (customInput) {
+    customInput.style.display = "none";
+    customInput.value = "";
+  }
 
   renderAvailableHabits();
 }
 
-// Tamamlama modal'ını göster
 function showCompleteModal(habitId) {
   const habit = userHabits.find((h) => h.id === habitId);
   if (!habit || isHabitCompletedToday(habit)) return;
 
   currentHabitToComplete = habit;
-  document.getElementById(
-    "completeQuestion"
-  ).textContent = `${habit.name} alışkanlığını bugün tamamladın mı?`;
-  document.getElementById("moodSelect").value = "good";
-  document.getElementById("completionNotes").value = "";
 
-  document.getElementById("completeHabitModal").style.display = "block";
+  const modal = document.getElementById("completeHabitModal");
+  const questionEl = document.getElementById("completeQuestion");
+  const moodSelect = document.getElementById("moodSelect");
+  const notesInput = document.getElementById("completionNotes");
+
+  if (questionEl)
+    questionEl.textContent = `${habit.name} alışkanlığını bugün tamamladın mı?`;
+  if (moodSelect) moodSelect.value = "good";
+  if (notesInput) notesInput.value = "";
+  if (modal) modal.style.display = "block";
 }
 
-// Alışkanlık detaylarını göster
 function viewHabitDetails(habitId) {
   const habit = userHabits.find((h) => h.id === habitId);
   if (!habit) return;
 
   currentDetailsHabit = habit;
 
-  // İstatistikleri hesapla
   const currentStreak = calculateCurrentStreak(habit);
   const totalCompletions = habit.completions ? habit.completions.length : 0;
   const daysActive =
@@ -418,110 +515,115 @@ function viewHabitDetails(habitId) {
       ? Math.min(Math.round((totalCompletions / daysActive) * 100), 100)
       : 0;
 
-  // JSON'dan tips bilgisini al
   const habitData = availableHabits.find((h) => h.name === habit.name);
   const tips = habitData?.tips || [];
 
-  document.getElementById(
-    "detailsTitle"
-  ).textContent = `${habit.name} Detayları`;
-
+  const detailsTitle = document.getElementById("detailsTitle");
   const detailsBody = document.getElementById("detailsBody");
-  detailsBody.innerHTML = `
-    <div class="details-section">
-      <h4>📊 Genel Bilgiler</h4>
-      <div class="habit-stats">
-        <div class="stat-box">
-          <span class="stat-number">${currentStreak}</span>
-          <span class="stat-label">Mevcut Seri</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number">${habit.bestStreak || 0}</span>
-          <span class="stat-label">En İyi Seri</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number">${totalCompletions}</span>
-          <span class="stat-label">Toplam Tamamlama</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number">%${completionRate}</span>
-          <span class="stat-label">Başarı Oranı</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number">${habit.targetDays}</span>
-          <span class="stat-label">Hedef Gün</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number">${new Date(
-            habit.startDate
-          ).toLocaleDateString("tr-TR")}</span>
-          <span class="stat-label">Başlangıç</span>
-        </div>
-      </div>
-    </div>
 
-    ${
-      tips.length > 0
-        ? `
-    <div class="details-section">
-      <h4>💡 Faydalı İpuçları</h4>
-      <div class="tips-container">
-        ${tips
-          .map(
-            (tip, index) => `
-          <div class="tip-card">
-            <span class="tip-number">${index + 1}</span>
-            <span class="tip-text">${tip}</span>
+  if (detailsTitle) detailsTitle.textContent = `${habit.name} Detayları`;
+
+  if (detailsBody) {
+    detailsBody.innerHTML = `
+      <div class="details-section">
+        <h4>📊 Genel Bilgiler</h4>
+        <div class="habit-stats">
+          <div class="stat-box">
+            <span class="stat-number">${currentStreak}</span>
+            <span class="stat-label">Mevcut Seri</span>
           </div>
-        `
-          )
-          .join("")}
+          <div class="stat-box">
+            <span class="stat-number">${habit.bestStreak || 0}</span>
+            <span class="stat-label">En İyi Seri</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">${totalCompletions}</span>
+            <span class="stat-label">Toplam Tamamlama</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">%${completionRate}</span>
+            <span class="stat-label">Başarı Oranı</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">${habit.targetDays}</span>
+            <span class="stat-label">Hedef Gün</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">${new Date(
+              habit.startDate
+            ).toLocaleDateString("tr-TR")}</span>
+            <span class="stat-label">Başlangıç</span>
+          </div>
+        </div>
       </div>
-    </div>
-    `
-        : ""
-    }
 
-    <div class="details-section">
-      <h4>📈 Son Tamamlamalar</h4>
-      <div class="timeline" style="max-height: 150px; overflow-y: auto;">
-        ${
-          habit.completions && habit.completions.length > 0
-            ? habit.completions
-                .slice(-5)
-                .reverse()
-                .map(
-                  (completion) => `
-            <div class="timeline-item">
-              <div class="timeline-icon success">✓</div>
-              <div class="timeline-content">
-                <div class="timeline-date">${new Date(
-                  completion.date
-                ).toLocaleDateString("tr-TR")}</div>
-                <div class="timeline-text">
-                  Tamamlandı
-                  ${completion.mood ? `• ${getMoodEmoji(completion.mood)}` : ""}
-                  ${
-                    completion.notes
-                      ? `<br><small>${completion.notes}</small>`
-                      : ""
-                  }
-                </div>
-              </div>
+      ${
+        tips.length > 0
+          ? `
+      <div class="details-section">
+        <h4>💡 Faydalı İpuçları</h4>
+        <div class="tips-container">
+          ${tips
+            .map(
+              (tip, index) => `
+            <div class="tip-card">
+              <span class="tip-number">${index + 1}</span>
+              <span class="tip-text">${tip}</span>
             </div>
           `
-                )
-                .join("")
-            : '<div style="text-align: center; padding: 20px; color: var(--text-muted);">Henüz tamamlama yapılmamış</div>'
-        }
+            )
+            .join("")}
+        </div>
       </div>
-    </div>
-  `;
+      `
+          : ""
+      }
 
-  document.getElementById("detailsModal").style.display = "block";
+      <div class="details-section">
+        <h4>📈 Son Tamamlamalar</h4>
+        <div class="timeline" style="max-height: 150px; overflow-y: auto;">
+          ${
+            habit.completions && habit.completions.length > 0
+              ? habit.completions
+                  .slice(-5)
+                  .reverse()
+                  .map(
+                    (completion) => `
+              <div class="timeline-item">
+                <div class="timeline-icon success">✓</div>
+                <div class="timeline-content">
+                  <div class="timeline-date">${new Date(
+                    completion.date
+                  ).toLocaleDateString("tr-TR")}</div>
+                  <div class="timeline-text">
+                    Tamamlandı
+                    ${
+                      completion.mood
+                        ? `• ${getMoodEmoji(completion.mood)}`
+                        : ""
+                    }
+                    ${
+                      completion.notes
+                        ? `<br><small>${completion.notes}</small>`
+                        : ""
+                    }
+                  </div>
+                </div>
+              </div>
+            `
+                  )
+                  .join("")
+              : '<div style="text-align: center; padding: 20px; color: var(--text-muted);">Henüz tamamlama yapılmamış</div>'
+          }
+        </div>
+      </div>
+    `;
+  }
+
+  const modal = document.getElementById("detailsModal");
+  if (modal) modal.style.display = "block";
 }
 
-// Mood emoji'si al
 function getMoodEmoji(mood) {
   const moods = {
     excellent: "Mükemmel 😊",
@@ -533,46 +635,57 @@ function getMoodEmoji(mood) {
   return moods[mood] || mood;
 }
 
-// Modal'ı kapat
 function closeModal(modalId) {
-  document.getElementById(modalId).style.display = "none";
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.style.display = "none";
+  }
 
   // Formları temizle
   if (modalId === "completeHabitModal") {
-    document.getElementById("moodSelect").value = "good";
-    document.getElementById("completionNotes").value = "";
+    const moodSelect = document.getElementById("moodSelect");
+    const notesInput = document.getElementById("completionNotes");
+    if (moodSelect) moodSelect.value = "good";
+    if (notesInput) notesInput.value = "";
   }
 
   if (modalId === "addHabitModal") {
-    // Özel alışkanlık modunu sıfırla
     isCustomHabitMode = false;
     const customBox = document.getElementById("customHabitBox");
     const customInput = document.getElementById("customHabitInput");
-    customBox.classList.remove("active");
-    customInput.style.display = "none";
-    customInput.value = "";
+    const searchInput = document.getElementById("habitSearch");
+
+    if (customBox) customBox.classList.remove("active");
+    if (customInput) {
+      customInput.style.display = "none";
+      customInput.value = "";
+    }
+    if (searchInput) searchInput.value = "";
     selectedHabit = null;
-    document.getElementById("habitSearch").value = "";
   }
 }
 
-// Yeni alışkanlık ekle
 function addHabit() {
   let habitToAdd = null;
   let habitName = "";
 
   if (isCustomHabitMode) {
-    // Özel alışkanlık
     const customInput = document.getElementById("customHabitInput");
+    if (!customInput) return;
+
     habitName = customInput.value.trim();
 
     if (!habitName) {
-      showNotification("Lütfen alışkanlık adını girin!", "error");
+      showNotification("Hata", "Lütfen alışkanlık adını girin!", "error");
       return;
     }
 
     if (habitName.length < 2) {
-      showNotification("Alışkanlık adı en az 2 karakter olmalı!", "error");
+      showNotification(
+        "Hata",
+        "Alışkanlık adı en az 2 karakter olmalı!",
+        "error"
+      );
       return;
     }
 
@@ -585,18 +698,20 @@ function addHabit() {
       tips: [],
     };
   } else {
-    // Hazır alışkanlık
     if (!selectedHabit) {
-      showNotification("Lütfen bir alışkanlık seçin!", "error");
+      showNotification("Hata", "Lütfen bir alışkanlık seçin!", "error");
       return;
     }
     habitToAdd = selectedHabit;
     habitName = selectedHabit.name;
   }
 
-  const targetDays = parseInt(document.getElementById("targetDays").value);
+  const targetDaysInput = document.getElementById("targetDays");
+  if (!targetDaysInput) return;
+
+  const targetDays = parseInt(targetDaysInput.value);
   if (targetDays < 1) {
-    showNotification("Hedef gün sayısı en az 1 olmalı!", "error");
+    showNotification("Hata", "Hedef gün sayısı en az 1 olmalı!", "error");
     return;
   }
 
@@ -604,7 +719,7 @@ function addHabit() {
   if (
     userHabits.find((h) => h.name.toLowerCase() === habitName.toLowerCase())
   ) {
-    showNotification("Bu alışkanlık zaten takip ediliyor!", "error");
+    showNotification("Hata", "Bu alışkanlık zaten takip ediliyor!", "error");
     return;
   }
 
@@ -626,27 +741,39 @@ function addHabit() {
   closeModal("addHabitModal");
 
   showNotification(
-    `🎉 ${habitToAdd.name} alışkanlığı eklendi! ${targetDays} gün hedefine doğru ilerlemeye başla.`,
+    "Başarılı!",
+    `${habitToAdd.name} alışkanlığı eklendi! ${targetDays} gün hedefine doğru ilerlemeye başla.`,
     "success"
   );
+
+  // Dashboard'a bildir
+  if (window.grindmindAPI && window.grindmindAPI.onHabitCompleted) {
+    window.grindmindAPI.onHabitCompleted(habitToAdd.name);
+  }
 }
 
-// Alışkanlığı tamamla
 function completeHabit() {
   if (!currentHabitToComplete) return;
 
-  const mood = document.getElementById("moodSelect").value;
-  const notes = document.getElementById("completionNotes").value;
+  const moodSelect = document.getElementById("moodSelect");
+  const notesInput = document.getElementById("completionNotes");
+
+  if (!moodSelect || !notesInput) return;
+
+  const mood = moodSelect.value;
+  const notes = notesInput.value;
   const today = new Date().toISOString().split("T")[0];
 
-  // Bugün zaten tamamlandı mı kontrol et
   if (isHabitCompletedToday(currentHabitToComplete)) {
-    showNotification("Bu alışkanlığı bugün zaten tamamladınız!", "warning");
+    showNotification(
+      "Uyarı",
+      "Bu alışkanlığı bugün zaten tamamladınız!",
+      "warning"
+    );
     closeModal("completeHabitModal");
     return;
   }
 
-  // Tamamlama ekle
   if (!currentHabitToComplete.completions) {
     currentHabitToComplete.completions = [];
   }
@@ -658,7 +785,6 @@ function completeHabit() {
     timestamp: new Date().toISOString(),
   });
 
-  // En iyi seriyi güncelle
   const currentStreak = calculateCurrentStreak(currentHabitToComplete);
   if (currentStreak > (currentHabitToComplete.bestStreak || 0)) {
     currentHabitToComplete.bestStreak = currentStreak;
@@ -669,19 +795,21 @@ function completeHabit() {
   closeModal("completeHabitModal");
 
   const newStreak = calculateCurrentStreak(currentHabitToComplete);
-  let message = `🎉 Harika! ${currentHabitToComplete.name} tamamlandı!\n\n`;
-  message += `Mevcut serin: ${newStreak} gün`;
+  let message = `Harika! ${currentHabitToComplete.name} tamamlandı! Mevcut serin: ${newStreak} gün`;
 
   if (newStreak === currentHabitToComplete.targetDays) {
-    message += `\n\n🏆 TEBRİKLER! ${currentHabitToComplete.targetDays} günlük hedefini tamamladın!`;
+    message += ` 🏆 TEBRİKLER! ${currentHabitToComplete.targetDays} günlük hedefini tamamladın!`;
   } else if (newStreak % 7 === 0) {
-    message += `\n\n🔥 ${newStreak} günlük seri! Süper gidiyorsun!`;
+    message += ` 🔥 ${newStreak} günlük seri! Süper gidiyorsun!`;
   }
 
-  showNotification(message, "success");
+  showNotification("Tebrikler!", message, "success");
+
+  if (window.grindmindAPI && window.grindmindAPI.onHabitCompleted) {
+    window.grindmindAPI.onHabitCompleted(currentHabitToComplete.name);
+  }
 }
 
-// Alışkanlığı sil
 function deleteHabit() {
   if (!currentDetailsHabit) return;
 
@@ -695,52 +823,13 @@ function deleteHabit() {
     renderUserHabits();
     closeModal("detailsModal");
     showNotification(
+      "Silindi",
       `${currentDetailsHabit.name} alışkanlığı silindi.`,
       "info"
     );
   }
 }
 
-// Bildirim göster
-function showNotification(message, type = "success") {
-  const notification = document.createElement("div");
-  notification.className = "notification";
-
-  // Türe göre renk ayarla
-  const colors = {
-    success: "var(--success-color)",
-    error: "var(--danger-color)",
-    warning: "var(--warning-color)",
-    info: "#6366f1",
-  };
-
-  notification.style.background = colors[type] || colors.success;
-  notification.textContent = message;
-
-  document.body.appendChild(notification);
-
-  // 5 saniye sonra kaldır
-  setTimeout(() => {
-    notification.style.animation = "slideIn 0.5s ease reverse";
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.parentNode.removeChild(notification);
-      }
-    }, 500);
-  }, 5000);
-
-  // Tıklanınca kaldır
-  notification.addEventListener("click", () => {
-    notification.style.animation = "slideIn 0.5s ease reverse";
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.parentNode.removeChild(notification);
-      }
-    }, 500);
-  });
-}
-
-// Günlük hatırlatıcı kontrol et
 function checkForDailyReminder() {
   const lastReminder = localStorage.getItem("grindmind_habits_last_reminder");
   const today = new Date().toDateString();
@@ -752,7 +841,8 @@ function checkForDailyReminder() {
       );
       if (incompleteHabits.length > 0) {
         showNotification(
-          `🔔 ${incompleteHabits.length} alışkanlığın bugün için bekliyor! Tamamlamayı unutma.`,
+          "Hatırlatma",
+          `${incompleteHabits.length} alışkanlığın bugün için bekliyor! Tamamlamayı unutma.`,
           "info"
         );
         localStorage.setItem("grindmind_habits_last_reminder", today);
@@ -761,38 +851,264 @@ function checkForDailyReminder() {
   }
 }
 
-// Modal dışına tıklanınca kapat
-window.addEventListener("click", function (e) {
-  if (e.target.classList.contains("modal")) {
-    e.target.style.display = "none";
+// İstatistikler
+function showStats() {
+  if (userHabits.length === 0) {
+    showNotification(
+      "Bilgi",
+      "Henüz takip ettiğiniz bir alışkanlık yok.",
+      "info"
+    );
+    return;
   }
-});
 
-// Klavye kısayolları
-document.addEventListener("keydown", function (e) {
-  // Escape tuşu - tüm modal'ları kapat
-  if (e.key === "Escape") {
-    document.querySelectorAll(".modal").forEach((modal) => {
-      modal.style.display = "none";
+  const totalHabits = userHabits.length;
+  const totalCompletions = userHabits.reduce(
+    (sum, habit) => sum + (habit.completions ? habit.completions.length : 0),
+    0
+  );
+  const bestOverallStreak = Math.max(
+    ...userHabits.map((h) => h.bestStreak || 0)
+  );
+  const completedHabits = userHabits.filter(
+    (h) => calculateCurrentStreak(h) >= h.targetDays
+  ).length;
+  const activeHabits = userHabits.filter(
+    (h) => calculateCurrentStreak(h) > 0
+  ).length;
+
+  // Son 7 gün
+  const last7Days = [];
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    last7Days.push(date.toISOString().split("T")[0]);
+  }
+
+  const weeklyCompletions = last7Days.reduce((sum, date) => {
+    const allCompletions = userHabits.flatMap((h) => h.completions || []);
+    return sum + allCompletions.filter((c) => c.date === date).length;
+  }, 0);
+
+  const sortedHabits = [...userHabits].sort(
+    (a, b) => calculateCurrentStreak(b) - calculateCurrentStreak(a)
+  );
+
+  const statisticsBody = document.getElementById("statisticsBody");
+  if (!statisticsBody) return;
+
+  statisticsBody.innerHTML = `
+    <div class="stats-grid">
+      <div class="stats-card">
+        <span class="stat-number primary">${totalHabits}</span>
+        <span class="stat-label">Toplam Alışkanlık</span>
+      </div>
+      <div class="stats-card">
+        <span class="stat-number success">${bestOverallStreak}</span>
+        <span class="stat-label">En İyi Seri</span>
+      </div>
+      <div class="stats-card">
+        <span class="stat-number primary">${completedHabits}</span>
+        <span class="stat-label">Tamamlanan Hedef</span>
+      </div>
+      <div class="stats-card">
+        <span class="stat-number ${
+          activeHabits === totalHabits
+            ? "success"
+            : activeHabits >= totalHabits / 2
+            ? "warning"
+            : "danger"
+        }">${activeHabits}/${totalHabits}</span>
+        <span class="stat-label">Aktif Seri</span>
+      </div>
+    </div>
+
+    <div class="details-section">
+      <h4>📈 Son 7 Gün Aktivitesi</h4>
+      <div class="progress-container">
+        <div class="progress-label">
+          <span>Haftalık Tamamlama: ${weeklyCompletions}/${
+    totalHabits * 7
+  }</span>
+          <span>${Math.round(
+            (weeklyCompletions / (totalHabits * 7)) * 100
+          )}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${Math.min(
+            (weeklyCompletions / (totalHabits * 7)) * 100,
+            100
+          )}%"></div>
+        </div>
+      </div>
+    </div>
+
+    ${
+      totalHabits > 1
+        ? `
+    <div class="details-section">
+      <h4>🏆 Performans Sıralaması</h4>
+      <div class="leaderboard">
+        ${sortedHabits
+          .map((habit, index) => {
+            const currentStreak = calculateCurrentStreak(habit);
+            const totalCompletions = habit.completions
+              ? habit.completions.length
+              : 0;
+            const daysActive =
+              Math.floor(
+                (new Date() - new Date(habit.startDate)) / (1000 * 60 * 60 * 24)
+              ) + 1;
+            const successRate =
+              daysActive > 0
+                ? Math.min(
+                    Math.round((totalCompletions / daysActive) * 100),
+                    100
+                  )
+                : 0;
+
+            return `
+            <div class="leaderboard-item">
+              <div class="leaderboard-rank">${index + 1}</div>
+              <div class="item-icon">${habit.icon}</div>
+              <div class="item-info">
+                <h4>${habit.name}</h4>
+                <p>${currentStreak} gün seri • %${successRate} başarı</p>
+              </div>
+            </div>
+          `;
+          })
+          .join("")}
+      </div>
+    </div>
+    `
+        : ""
+    }
+  `;
+
+  const modal = document.getElementById("statisticsModal");
+  if (modal) {
+    modal.style.display = "block";
+  }
+}
+
+// Event Handler'ları kur
+function setupEventHandlers() {
+  // Mobile Navigation
+  const hamburger = document.getElementById("hamburger");
+  const mobileClose = document.getElementById("navMobileClose");
+  const mobileOverlay = document.getElementById("navMobileOverlay");
+  const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+
+  if (hamburger) {
+    hamburger.addEventListener("click", toggleMobileNav);
+  }
+
+  if (mobileClose) {
+    mobileClose.addEventListener("click", closeMobileNav);
+  }
+
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener("click", closeMobileNav);
+  }
+
+  if (mobileLogoutBtn) {
+    mobileLogoutBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (confirm("Çıkış yapmak istediğinizden emin misiniz?")) {
+        showNotification(
+          "Çıkış",
+          "Başarıyla çıkış yapıldı. Güle güle!",
+          "success"
+        );
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 2000);
+      }
+      closeMobileNav();
     });
   }
 
-  // Ctrl/Cmd + N - Yeni alışkanlık ekle
-  if ((e.ctrlKey || e.metaKey) && e.key === "n") {
-    e.preventDefault();
-    showAddHabitModal();
+  // Profile dropdown
+  const userAvatar = document.getElementById("userAvatar");
+  if (userAvatar) {
+    userAvatar.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleProfileDropdown();
+    });
   }
-});
 
-// Sayfa yüklendiğinde çalıştır
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("✨ Yeni Alışkanlıklar sayfası yüklendi");
-  loadAvailableHabits();
-  loadUserHabits();
-});
-// İstatistikler için grafik oluştur
+  // Settings ve logout butonları
+  const settingsBtn = document.getElementById("settingsBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (settingsBtn) {
+    settingsBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      handleSettings();
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      handleLogout();
+    });
+  }
+
+  // Dropdown dışına tıklama
+  document.addEventListener("click", function (e) {
+    const dropdown = document.getElementById("profileDropdown");
+    const userAvatar = document.getElementById("userAvatar");
+
+    if (dropdown && !dropdown.contains(e.target) && e.target !== userAvatar) {
+      dropdown.classList.remove("show");
+    }
+  });
+
+  // Bildirim butonu
+  const notificationBtn = document.getElementById("notificationBtn");
+  if (notificationBtn) {
+    notificationBtn.addEventListener("click", function () {
+      showNotification(
+        "Bildirimler",
+        "Bildirim sistemi aktif! Yeni özellikler yakında gelecek.",
+        "info"
+      );
+    });
+  }
+
+  // Modal dışına tıklama
+  window.addEventListener("click", function (e) {
+    if (e.target.classList.contains("modal")) {
+      e.target.style.display = "none";
+    }
+  });
+
+  // Klavye kısayolları
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      // Tüm modal'ları kapat
+      document.querySelectorAll(".modal").forEach((modal) => {
+        modal.style.display = "none";
+      });
+      hideNotification();
+      closeMobileNav();
+    }
+
+    if ((e.ctrlKey || e.metaKey) && e.key === "n") {
+      e.preventDefault();
+      showAddHabitModal();
+    }
+  });
+}
+
+// Chart.js ile grafik oluşturma fonksiyonları
 function createProgressChart(canvasId, labels, data, title) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || typeof Chart === "undefined") return;
+
+  const ctx = canvas.getContext("2d");
 
   new Chart(ctx, {
     type: "line",
@@ -818,28 +1134,17 @@ function createProgressChart(canvasId, labels, data, title) {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          display: false,
-        },
+        legend: { display: false },
       },
       scales: {
         y: {
           beginAtZero: true,
-          grid: {
-            color: "rgba(226, 232, 240, 0.5)",
-          },
-          ticks: {
-            color: "#64748b",
-            stepSize: 1,
-          },
+          grid: { color: "rgba(226, 232, 240, 0.5)" },
+          ticks: { color: "#64748b", stepSize: 1 },
         },
         x: {
-          grid: {
-            display: false,
-          },
-          ticks: {
-            color: "#64748b",
-          },
+          grid: { display: false },
+          ticks: { color: "#64748b" },
         },
       },
     },
@@ -847,8 +1152,10 @@ function createProgressChart(canvasId, labels, data, title) {
 }
 
 function createSuccessRateChart(canvasId, habits) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || typeof Chart === "undefined") return;
 
+  const ctx = canvas.getContext("2d");
   const labels = habits.map((h) => h.name);
   const data = habits.map((h) => {
     const total = h.completions ? h.completions.length : 0;
@@ -898,9 +1205,10 @@ function createSuccessRateChart(canvasId, habits) {
 }
 
 function createWeeklyActivityChart(canvasId) {
-  const ctx = document.getElementById(canvasId).getContext("2d");
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || typeof Chart === "undefined") return;
 
-  // Son 7 gün
+  const ctx = canvas.getContext("2d");
   const last7Days = [];
   const completionData = [];
 
@@ -913,7 +1221,6 @@ function createWeeklyActivityChart(canvasId) {
 
     const allCompletions = userHabits.flatMap((h) => h.completions || []);
     const dayCompletions = allCompletions.filter((c) => c.date === dateStr);
-
     completionData.push(dayCompletions.length);
   }
 
@@ -933,245 +1240,46 @@ function createWeeklyActivityChart(canvasId) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
+      plugins: { legend: { display: false } },
       scales: {
         y: {
           beginAtZero: true,
-          grid: {
-            color: "rgba(226, 232, 240, 0.5)",
-          },
-          ticks: {
-            color: "#64748b",
-            stepSize: 1,
-          },
+          grid: { color: "rgba(226, 232, 240, 0.5)" },
+          ticks: { color: "#64748b", stepSize: 1 },
         },
         x: {
-          grid: {
-            display: false,
-          },
-          ticks: {
-            color: "#64748b",
-          },
+          grid: { display: false },
+          ticks: { color: "#64748b" },
         },
       },
     },
   });
 }
 
-// Grafiklerle istatistikleri göster
-function showStats() {
-  if (userHabits.length === 0) {
-    showNotification("Henüz takip ettiğiniz bir alışkanlık yok.", "info");
-    return;
-  }
+// Sayfa yüklendiğinde çalıştır
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("✨ Yeni Alışkanlıklar sayfası yüklendi");
 
-  const totalHabits = userHabits.length;
-  const totalCompletions = userHabits.reduce(
-    (sum, habit) => sum + (habit.completions ? habit.completions.length : 0),
-    0
-  );
-  const avgStreak = Math.round(
-    userHabits.reduce((sum, habit) => sum + calculateCurrentStreak(habit), 0) /
-      totalHabits
-  );
-  const bestOverallStreak = Math.max(
-    ...userHabits.map((h) => h.bestStreak || 0)
-  );
+  try {
+    // Event handler'ları kur
+    setupEventHandlers();
 
-  const completedHabits = userHabits.filter(
-    (h) => calculateCurrentStreak(h) >= h.targetDays
-  ).length;
-  const activeHabits = userHabits.filter(
-    (h) => calculateCurrentStreak(h) > 0
-  ).length;
+    // Verileri yükle
+    loadAvailableHabits();
+    loadUserHabits();
 
-  // Son 7 günde yapılan tamamlama sayısı
-  const last7Days = [];
-  for (let i = 6; i >= 0; i--) {
-    const date = new Date();
-    date.setDate(date.getDate() - i);
-    last7Days.push(date.toISOString().split("T")[0]);
-  }
-
-  const weeklyCompletions = last7Days.reduce((sum, date) => {
-    const allCompletions = userHabits.flatMap((h) => h.completions || []);
-    return sum + allCompletions.filter((c) => c.date === date).length;
-  }, 0);
-
-  // En iyi performans gösteren alışkanlıklar
-  const sortedHabits = [...userHabits].sort(
-    (a, b) => calculateCurrentStreak(b) - calculateCurrentStreak(a)
-  );
-
-  const statisticsBody = document.getElementById("statisticsBody");
-  statisticsBody.innerHTML = `
-    <div class="stats-grid">
-      <div class="stats-card">
-        <span class="stat-number primary">${totalHabits}</span>
-        <span class="stat-label">Toplam Alışkanlık</span>
-      </div>
-      <div class="stats-card">
-        <span class="stat-number success">${bestOverallStreak}</span>
-        <span class="stat-label">En İyi Seri</span>
-      </div>
-      <div class="stats-card">
-        <span class="stat-number primary">${completedHabits}</span>
-        <span class="stat-label">Tamamlanan Hedef</span>
-      </div>
-      <div class="stats-card">
-        <span class="stat-number ${
-          activeHabits === totalHabits
-            ? "success"
-            : activeHabits >= totalHabits / 2
-            ? "warning"
-            : "danger"
-        }">${activeHabits}/${totalHabits}</span>
-        <span class="stat-label">Aktif Seri</span>
-      </div>
-    </div>
-
-    <!-- Grafikler -->
-    <div class="chart-container">
-      <h4>📈 Son 7 Gün Aktivitesi</h4>
-      <div class="chart-wrapper">
-        <canvas id="weeklyActivityChart"></canvas>
-      </div>
-    </div>
-
-    ${
-      totalCompletions > 0
-        ? `
-    <div class="chart-container">
-      <h4>🎯 Başarı Oranları</h4>
-      <div class="chart-wrapper">
-        <canvas id="successRateChart"></canvas>
-      </div>
-    </div>
-    `
-        : ""
-    }
-
-    ${
-      totalCompletions > 10
-        ? `
-    <div class="chart-container">
-      <h4>📊 İlerleme Trendi (Son 30 Gün)</h4>
-      <div class="chart-wrapper">
-        <canvas id="progressChart"></canvas>
-      </div>
-    </div>
-    `
-        : ""
-    }
-
-    <div class="details-section">
-      <h4>📈 Son 7 Gün Aktivitesi</h4>
-      <div class="progress-container">
-        <div class="progress-label">
-          <span>Haftalık Tamamlama: ${weeklyCompletions}/${
-    totalHabits * 7
-  }</span>
-          <span>${Math.round(
-            (weeklyCompletions / (totalHabits * 7)) * 100
-          )}%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: ${Math.min(
-            (weeklyCompletions / (totalHabits * 7)) * 100,
-            100
-          )}%"></div>
-        </div>
-      </div>
-    </div>
-
-    ${
-      totalHabits > 1
-        ? `
-    <div class="details-section">
-      <h4>🏆 Performans Sıralaması</h4>
-      <div class="leaderboard">
-        ${sortedHabits
-          .map((habit, index) => {
-            const currentStreak = calculateCurrentStreak(habit);
-            const totalCompletions = habit.completions
-              ? habit.completions.length
-              : 0;
-            const daysActive =
-              Math.floor(
-                (new Date() - new Date(habit.startDate)) / (1000 * 60 * 60 * 24)
-              ) + 1;
-            const successRate =
-              daysActive > 0
-                ? Math.min(
-                    Math.round((totalCompletions / daysActive) * 100),
-                    100
-                  )
-                : 0;
-
-            let rankClass = "";
-            if (index === 0) rankClass = "gold";
-            else if (index === 1) rankClass = "silver";
-            else if (index === 2) rankClass = "bronze";
-
-            return `
-            <div class="leaderboard-item">
-              <div class="leaderboard-rank ${rankClass}">${index + 1}</div>
-              <div class="item-icon">${habit.icon}</div>
-              <div class="item-info">
-                <h4>${habit.name}</h4>
-                <p>${currentStreak} gün seri • %${successRate} başarı</p>
-              </div>
-            </div>
-          `;
-          })
-          .join("")}
-      </div>
-    </div>
-    `
-        : ""
-    }
-  `;
-
-  document.getElementById("statisticsModal").style.display = "block";
-
-  // Grafikleri oluştur
-  setTimeout(() => {
-    // Haftalık aktivite grafiği
-    createWeeklyActivityChart("weeklyActivityChart");
-
-    // Başarı oranları grafiği (sadece tamamlama varsa)
-    if (totalCompletions > 0) {
-      createSuccessRateChart("successRateChart", userHabits);
-    }
-
-    // İlerleme trendi grafiği (yeterli veri varsa)
-    if (totalCompletions > 10) {
-      const last30Days = [];
-      const progressData = [];
-
-      for (let i = 29; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
-        const dateStr = date.toISOString().split("T")[0];
-
-        last30Days.push(date.getDate() + "/" + (date.getMonth() + 1));
-
-        // O günkü toplam tamamlama sayısı
-        const allCompletions = userHabits.flatMap((h) => h.completions || []);
-        const dayCompletions = allCompletions.filter((c) => c.date === dateStr);
-        progressData.push(dayCompletions.length);
-      }
-
-      createProgressChart(
-        "progressChart",
-        last30Days,
-        progressData,
-        "Günlük Tamamlama"
+    // Hoş geldin bildirimi
+    setTimeout(() => {
+      showNotification(
+        "Alışkanlıklar",
+        "Pozitif alışkanlıklarını takip etmeye başla! 🌟",
+        "info"
       );
-    }
-  }, 100);
-}
+    }, 1500);
+
+    console.log("✅ Alışkanlıklar sayfası başarıyla yüklendi!");
+  } catch (error) {
+    console.error("❌ Sayfa yüklenirken hata:", error);
+    showNotification("Hata", "Sayfa yüklenirken bir hata oluştu.", "error");
+  }
+});

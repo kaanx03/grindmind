@@ -1,3 +1,124 @@
+// Navbar işlevleri - Weight Tracker'dan alındı
+function toggleMobileNav() {
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
+
+  if (hamburger) hamburger.classList.toggle("active");
+  if (mobileNav) mobileNav.classList.toggle("show");
+  if (overlay) overlay.classList.toggle("show");
+
+  // Body scroll kontrolü
+  if (mobileNav && mobileNav.classList.contains("show")) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
+}
+
+function closeMobileNav() {
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
+
+  if (hamburger) hamburger.classList.remove("active");
+  if (mobileNav) mobileNav.classList.remove("show");
+  if (overlay) overlay.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+function toggleProfileDropdown() {
+  const dropdown = document.getElementById("profileDropdown");
+  if (dropdown) {
+    dropdown.classList.toggle("show");
+  }
+}
+
+function logout() {
+  if (confirm("Çıkış yapmak istediğinizden emin misiniz?")) {
+    showNotification("Çıkış yapılıyor... Güle güle! 👋", "success");
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2000);
+  }
+}
+
+// Event Handler'ları kur
+function setupEventHandlers() {
+  // Mobile Navigation
+  const hamburger = document.getElementById("hamburger");
+  const mobileClose = document.getElementById("navMobileClose");
+  const mobileOverlay = document.getElementById("navMobileOverlay");
+
+  if (hamburger) {
+    hamburger.addEventListener("click", toggleMobileNav);
+  }
+
+  if (mobileClose) {
+    mobileClose.addEventListener("click", closeMobileNav);
+  }
+
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener("click", closeMobileNav);
+  }
+
+  // Profile dropdown
+  const userAvatar = document.getElementById("userAvatar");
+  if (userAvatar) {
+    userAvatar.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleProfileDropdown();
+    });
+  }
+
+  // Settings ve logout butonları
+  const settingsBtn = document.getElementById("settingsBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (settingsBtn) {
+    settingsBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.location.href = "settings.html";
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      logout();
+      toggleProfileDropdown();
+    });
+  }
+
+  // Dropdown dışına tıklama
+  document.addEventListener("click", function (e) {
+    const dropdown = document.getElementById("profileDropdown");
+    const userAvatar = document.getElementById("userAvatar");
+
+    if (dropdown && !dropdown.contains(e.target) && e.target !== userAvatar) {
+      dropdown.classList.remove("show");
+    }
+  });
+
+  // Bildirim butonu
+  const notificationBtn = document.getElementById("notificationBtn");
+  if (notificationBtn) {
+    notificationBtn.addEventListener("click", function () {
+      showNotification(
+        "Bildirimler aktif! Yeni özellikler yakında gelecek.",
+        "info"
+      );
+    });
+  }
+
+  // Klavye kısayolları
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeMobileNav();
+    }
+  });
+}
+
 // Global değişkenler
 let tasks = [];
 let currentView = "kanban";
@@ -1108,7 +1229,7 @@ function closeModal(modalId) {
   }
 }
 
-// Bildirim göster
+// Bildirim göster - Weight Tracker'dan alındı
 function showNotification(message, type = "success") {
   const notification = document.createElement("div");
   notification.className = "notification";
@@ -1315,6 +1436,11 @@ function getProductivityStats() {
 // Sayfa yüklendiğinde çalıştır
 document.addEventListener("DOMContentLoaded", function () {
   console.log("📋 Planlama & Görevler sayfası yüklendi");
+
+  // Event handler'ları kur
+  setupEventHandlers();
+
+  // Görevleri yükle
   loadTasks();
 
   // Varsayılan olarak kanban görünümünü göster

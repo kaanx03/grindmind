@@ -1,7 +1,12 @@
-// GRINDMIND Achievements Page - Tam Modern Pagination Kodu
-// =============================================================
+// GRINDMIND Achievements Page - Modern Pagination & JSON Integration
+// ================================================================
 
-// Karakter gelişim aşamaları - 8 Level
+// Global variables for achievements
+let achievementDatabase = null;
+let currentPage = 1;
+const itemsPerPage = 12;
+
+// CHARACTER EVOLUTION DATA
 const CHARACTER_EVOLUTION = {
   1: {
     emoji: "😊",
@@ -53,223 +58,92 @@ const CHARACTER_EVOLUTION = {
   },
 };
 
-// Sayfa yüklendiğinde
-document.addEventListener("DOMContentLoaded", function () {
-  initializeAchievementsPage();
-});
+// Mobile Navigation Functions
+function toggleMobileNav() {
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
 
-// Achievement güncellemelerini dinle
-window.addEventListener("achievementUpdate", (e) => {
-  updateCharacterDisplay();
-  updateAchievementDisplay();
-});
+  if (hamburger) hamburger.classList.toggle("active");
+  if (mobileNav) mobileNav.classList.toggle("show");
+  if (overlay) overlay.classList.toggle("show");
 
-// Storage değişikliklerini dinle
-window.addEventListener("storage", (e) => {
-  if (e.key === "grindmind_achievements") {
-    updateCharacterDisplay();
-    updateAchievementDisplay();
+  if (mobileNav && mobileNav.classList.contains("show")) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
   }
-});
-
-// Ana başlatma fonksiyonu
-function initializeAchievementsPage() {
-  addModernPaginationStyles();
-  updateCharacterDisplay();
-  loadAchievements();
-  setupEventListeners();
 }
 
-// FORCE PROGRESS BAR FIX
-function forceFixProgressBar() {
-  const savedData = localStorage.getItem("grindmind_achievements");
-  if (!savedData) return;
+function closeMobileNav() {
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
 
-  const data = JSON.parse(savedData);
-  const level = data.level || 1;
-  const points = data.points || 0;
-  const levelThresholds = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200];
+  if (hamburger) hamburger.classList.remove("active");
+  if (mobileNav) mobileNav.classList.remove("show");
+  if (overlay) overlay.classList.remove("show");
+  document.body.style.overflow = "";
+}
 
-  let progress = 0;
-  let nextLevelXP = 100;
-
-  if (level >= 8) {
-    progress = 100;
-    nextLevelXP = "MAX";
-  } else {
-    nextLevelXP = levelThresholds[level];
-    progress = Math.min((points / nextLevelXP) * 100, 100);
+// Profile Dropdown Functions
+function toggleProfileDropdown() {
+  const dropdown = document.getElementById("profileDropdown");
+  if (dropdown) {
+    dropdown.classList.toggle("show");
   }
+}
 
-  const elements = {
-    currentXP: document.getElementById("currentXP"),
-    nextLevelXP: document.getElementById("nextLevelXP"),
-    progressFill: document.getElementById("levelProgressFill"),
-    progressText: document.getElementById("progressText"),
+// Notification Functions
+function showNotification(title, message, type = "info") {
+  const toast = document.getElementById("notificationToast");
+  if (!toast) return;
+
+  const titleEl = toast.querySelector(".notification-title");
+  const messageEl = toast.querySelector(".notification-message");
+  const iconEl = toast.querySelector(".notification-icon");
+
+  const icons = {
+    success: "🎉",
+    error: "❌",
+    warning: "⚠️",
+    info: "ℹ️",
   };
 
-  if (elements.currentXP) elements.currentXP.textContent = points;
-  if (elements.nextLevelXP) elements.nextLevelXP.textContent = nextLevelXP;
-  if (elements.progressFill) {
-    elements.progressFill.style.transition = "none";
-    elements.progressFill.style.width = progress + "%";
+  if (titleEl) titleEl.textContent = title;
+  if (messageEl) messageEl.textContent = message;
+  if (iconEl) iconEl.textContent = icons[type] || icons.info;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    hideNotification();
+  }, 4000);
+}
+
+function hideNotification() {
+  const toast = document.getElementById("notificationToast");
+  if (toast) {
+    toast.classList.remove("show");
+  }
+}
+
+// Logout Function
+function logout() {
+  if (confirm("Çıkış yapmak istediğinizden emin misiniz?")) {
+    showNotification(
+      "Çıkış Yapılıyor",
+      "Güvenli çıkış yapılıyor... Güle güle! 👋",
+      "success"
+    );
+
     setTimeout(() => {
-      elements.progressFill.style.transition = "width 0.3s ease";
-    }, 100);
-  }
-  if (elements.progressText) {
-    elements.progressText.textContent = Math.round(progress) + "%";
+      window.location.href = "index.html";
+    }, 2000);
   }
 }
 
-// Karakter görünümünü güncelle
-function updateCharacterDisplay() {
-  const forceData = localStorage.getItem("grindmind_achievements");
-  let achievementData;
-
-  if (forceData) {
-    achievementData = JSON.parse(forceData);
-  } else {
-    achievementData = { level: 1, points: 0, unlocked: [] };
-  }
-
-  const currentLevel = achievementData.level || 1;
-  const currentXP = achievementData.points || 0;
-
-  updateCharacterInfo(currentLevel, currentXP);
-  updateCharacterVisual(currentLevel);
-  updateEvolutionPath(currentLevel);
-  updateLevelProgress(currentLevel, currentXP);
-  updateEvolutionCards(currentLevel);
-  forceFixProgressBar();
-}
-
-// Karakter bilgilerini güncelle
-function updateCharacterInfo(level, xp) {
-  const character = CHARACTER_EVOLUTION[level] || CHARACTER_EVOLUTION[1];
-  const levelElement = document.getElementById("characterLevel");
-  const titleElement = document.getElementById("characterTitle");
-
-  if (levelElement) levelElement.textContent = `Level ${level}`;
-  if (titleElement) titleElement.textContent = character.title;
-}
-
-// Karakter görselini güncelle
-function updateCharacterVisual(level) {
-  const character = CHARACTER_EVOLUTION[level] || CHARACTER_EVOLUTION[1];
-  const characterAvatar = document.getElementById("characterAvatar");
-  const characterFace = characterAvatar?.querySelector(".character-face");
-  const characterEquipment = document.getElementById("characterEquipment");
-
-  if (characterFace) characterFace.textContent = character.emoji;
-  if (characterEquipment) characterEquipment.textContent = character.equipment;
-  if (characterAvatar) characterAvatar.style.background = character.background;
-}
-
-// Evrim yolunu güncelle
-function updateEvolutionPath(currentLevel) {
-  const evolutionSteps = document.querySelectorAll(".evolution-step");
-
-  evolutionSteps.forEach((step) => {
-    const stepLevel = parseInt(step.dataset.level);
-    step.classList.remove("active", "completed");
-
-    if (stepLevel === currentLevel) {
-      step.classList.add("active");
-    } else if (stepLevel < currentLevel) {
-      step.classList.add("completed");
-    }
-  });
-}
-
-// Evolution kartlarını güncelle - DÜZELTİLDİ
-function updateEvolutionCards(currentLevel) {
-  const evolutionCards = document.querySelectorAll(".evolution-card");
-
-  evolutionCards.forEach((card, index) => {
-    const cardLevel = index + 1;
-
-    // Tüm class'ları temizle
-    card.classList.remove("current-level", "completed-level");
-
-    if (cardLevel === currentLevel) {
-      // Mevcut level - sarı arka plan
-      card.classList.add("current-level");
-    } else if (cardLevel < currentLevel) {
-      // Geçilmiş level'lar - yeşil arka plan
-      card.classList.add("completed-level");
-    }
-    // Henüz ulaşılmamış level'lar - varsayılan gri arka plan
-  });
-}
-
-// Level ilerlemesini güncelle
-function updateLevelProgress(level, currentXP) {
-  const levelThresholds = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200];
-
-  let levelProgress;
-  if (window.achievementAPI && window.achievementAPI.getLevelProgress) {
-    levelProgress = window.achievementAPI.getLevelProgress(currentXP, level);
-  } else {
-    const nextLevelStart =
-      levelThresholds[level] || levelThresholds[levelThresholds.length - 1];
-    const progress = Math.min((currentXP / nextLevelStart) * 100, 100);
-
-    levelProgress = {
-      current: currentXP,
-      needed: nextLevelStart,
-      progress: Math.round(progress),
-      nextLevelTotal: nextLevelStart,
-    };
-  }
-
-  const currentXPElement = document.getElementById("currentXP");
-  const nextLevelXPElement = document.getElementById("nextLevelXP");
-
-  if (currentXPElement) currentXPElement.textContent = currentXP;
-  if (nextLevelXPElement) {
-    if (level >= 8) {
-      nextLevelXPElement.textContent = "MAX";
-    } else {
-      nextLevelXPElement.textContent = levelProgress.nextLevelTotal;
-    }
-  }
-
-  const progressFill = document.getElementById("levelProgressFill");
-  const progressText = document.getElementById("progressText");
-
-  if (progressFill) {
-    progressFill.style.transition = "none";
-    progressFill.style.width = `${levelProgress.progress}%`;
-    setTimeout(() => {
-      progressFill.style.transition = "width 0.3s ease";
-    }, 50);
-  }
-  if (progressText) {
-    progressText.textContent = `${levelProgress.progress}%`;
-  }
-
-  const nextReward = getNextReward(level);
-  const nextRewardElement = document.getElementById("nextReward");
-  if (nextRewardElement) nextRewardElement.textContent = nextReward;
-}
-
-// Sonraki ödülü belirle
-function getNextReward(level) {
-  const rewards = {
-    1: "Güneş gözlüğü (Level 2)",
-    2: "Akıllı gözlük (Level 3)",
-    3: "Beyin gücü (Level 4)",
-    4: "Roket gücü (Level 5)",
-    5: "Elektrik gücü (Level 6)",
-    6: "Ateş gücü (Level 7)",
-    7: "Altın taç (Level 8)",
-    8: "Maksimum seviye!",
-  };
-  return rewards[level] || "Yeni karakter görünümü";
-}
-
-// Achievement verilerini al
+// Get achievement data from localStorage
 function getAchievementData() {
   const saved = localStorage.getItem("grindmind_achievements");
   if (saved) {
@@ -279,39 +153,94 @@ function getAchievementData() {
   return { level: 1, points: 0, unlocked: [] };
 }
 
-// Achievement'ları yükle
+// Load achievements from JSON file
 async function loadAchievements() {
+  const grid = document.getElementById("achievementsGrid");
+
   try {
-    let achievementDatabase;
+    console.log("🔄 Achievements yükleniyor...");
 
-    if (window.achievementAPI) {
-      achievementDatabase = window.achievementAPI.getAchievementDatabase();
-    }
-
-    if (!achievementDatabase) {
-      const response = await fetch("./achievements.json");
-      const data = await response.json();
-      achievementDatabase = data.ACHIEVEMENT_DATABASE;
-    }
-
-    if (achievementDatabase) {
-      displayAchievements(achievementDatabase);
-      updateAchievementStats(achievementDatabase);
-    }
-  } catch (error) {
-    const grid = document.getElementById("achievementsGrid");
+    // Show loading state
     if (grid) {
       grid.innerHTML = `
         <div class="loading-message">
-          <p>❌ Achievement'lar yüklenemedi</p>
+          <div class="loading-spinner"></div>
+          <p>Başarılar yükleniyor...</p>
         </div>
       `;
     }
+
+    // Try to get from window.achievementAPI first (if available)
+    if (window.achievementAPI && window.achievementAPI.getAchievementDatabase) {
+      achievementDatabase = window.achievementAPI.getAchievementDatabase();
+      console.log("✅ Achievements API'den alındı");
+    }
+
+    // If not available, fetch from JSON file
+    if (!achievementDatabase) {
+      console.log("📡 achievements.json dosyasından yükleniyor...");
+      const response = await fetch("./achievements.json");
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      achievementDatabase = data.ACHIEVEMENT_DATABASE;
+      console.log(
+        "✅ achievements.json başarıyla yüklendi:",
+        achievementDatabase
+      );
+    }
+
+    if (achievementDatabase) {
+      displayAchievements();
+      updateAchievementStats();
+      setupCategoryFilters();
+
+      showNotification(
+        "Başarılar Yüklendi",
+        "Tüm başarılar başarıyla yüklendi! 🎯",
+        "success"
+      );
+    } else {
+      throw new Error("Achievement database bulunamadı");
+    }
+  } catch (error) {
+    console.error("❌ Achievement yükleme hatası:", error);
+
+    if (grid) {
+      grid.innerHTML = `
+        <div class="loading-message">
+          <p>❌ Başarılar yüklenemedi</p>
+          <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+            ${error.message}
+          </p>
+          <button onclick="loadAchievements()" 
+                  style="margin-top: 1rem; padding: 0.5rem 1rem; 
+                         background: var(--accent-color); color: white; 
+                         border: none; border-radius: 0.5rem; cursor: pointer;">
+            🔄 Tekrar Dene
+          </button>
+        </div>
+      `;
+    }
+
+    showNotification(
+      "Yükleme Hatası",
+      `Başarılar yüklenemedi: ${error.message}`,
+      "error"
+    );
   }
 }
 
-// MODERN PAGINATION - Achievement'ları göster
-function displayAchievements(database) {
+// Display achievements with pagination
+function displayAchievements(categoryFilter = "all") {
+  if (!achievementDatabase) {
+    console.error("❌ Achievement database mevcut değil");
+    return;
+  }
+
   const grid = document.getElementById("achievementsGrid");
   if (!grid) return;
 
@@ -320,79 +249,115 @@ function displayAchievements(database) {
     ? achievementData.unlocked.map((a) => a.id)
     : [];
 
-  // Tüm achievement'ları topla ve sırala
+  // Collect all achievements
   const allAchievements = [];
-  Object.keys(database).forEach((category) => {
-    database[category].forEach((achievement) => {
-      const isUnlocked = unlockedIds.includes(achievement.id);
-      allAchievements.push({
-        ...achievement,
-        category: category,
-        isUnlocked: isUnlocked,
-      });
+  Object.keys(achievementDatabase).forEach((category) => {
+    achievementDatabase[category].forEach((achievement) => {
+      if (categoryFilter === "all" || category === categoryFilter) {
+        const isUnlocked = unlockedIds.includes(achievement.id);
+        allAchievements.push({
+          ...achievement,
+          category: category,
+          isUnlocked: isUnlocked,
+        });
+      }
     });
   });
 
-  // Unlocked olanları önce göster
+  // Sort: unlocked first
   allAchievements.sort((a, b) => {
     if (a.isUnlocked && !b.isUnlocked) return -1;
     if (!a.isUnlocked && b.isUnlocked) return 1;
     return 0;
   });
 
-  // İlk 12 achievement'ı göster
-  const itemsPerPage = 12;
-  const totalPages = Math.ceil(allAchievements.length / itemsPerPage);
+  console.log(
+    `📊 Toplam ${allAchievements.length} achievement bulundu (kategori: ${categoryFilter})`
+  );
 
-  function renderPage(page) {
-    const startIndex = (page - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const pageAchievements = allAchievements.slice(startIndex, endIndex);
-
-    const achievementCards = pageAchievements
-      .map((achievement) => createAchievementCard(achievement))
-      .join("");
-
-    const paginationControls = createModernPaginationControls(
-      page,
-      totalPages,
-      allAchievements.length
-    );
-
+  // Handle empty state
+  if (allAchievements.length === 0) {
     grid.innerHTML = `
-      <div class="achievements-container">
-        <div class="achievements-list">
-          ${achievementCards}
-        </div>
-        ${paginationControls}
+      <div class="empty-achievements">
+        <h3>🔍 Başarı Bulunamadı</h3>
+        <p>Bu kategoride henüz başarı bulunmuyor.</p>
+        <button onclick="displayAchievements('all')">Tüm Başarıları Göster</button>
       </div>
     `;
-
-    // Animasyon
-    setTimeout(() => {
-      const cards = grid.querySelectorAll(".achievement-card");
-      cards.forEach((card, index) => {
-        setTimeout(() => {
-          card.style.opacity = "1";
-          card.style.transform = "translateY(0)";
-        }, index * 50);
-      });
-    }, 100);
-
-    // Event listeners
-    setupModernPaginationEvents(allAchievements, itemsPerPage);
+    return;
   }
 
-  // İlk sayfayı render et
-  renderPage(1);
+  // Pagination
+  const totalPages = Math.ceil(allAchievements.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const pageAchievements = allAchievements.slice(startIndex, endIndex);
+
+  // Create achievement cards
+  const achievementCards = pageAchievements
+    .map((achievement) => createAchievementCard(achievement))
+    .join("");
+
+  // Create pagination
+  const paginationHTML = createPaginationControls(
+    currentPage,
+    totalPages,
+    allAchievements.length
+  );
+
+  grid.innerHTML = `
+    <div class="achievements-container">
+      <div class="achievements-list">
+        ${achievementCards}
+      </div>
+      ${paginationHTML}
+    </div>
+  `;
+
+  // Add animations
+  setTimeout(() => {
+    const cards = grid.querySelectorAll(".achievement-card");
+    cards.forEach((card, index) => {
+      setTimeout(() => {
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, index * 50);
+    });
+  }, 100);
+
+  // Setup pagination events
+  setupPaginationEvents(allAchievements, categoryFilter);
 }
 
-// Modern pagination kontrollerini oluştur - YENİ MİNİMAL TASARIM
-function createModernPaginationControls(currentPage, totalPages, totalItems) {
+// Create achievement card
+function createAchievementCard(achievement) {
+  const statusClass = achievement.isUnlocked ? "unlocked" : "locked";
+  const statusIcon = achievement.isUnlocked ? "✅" : "🔒";
+
+  return `
+    <div class="achievement-card ${statusClass}" data-category="${achievement.category}" 
+         style="opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+      <div class="achievement-header">
+        <div class="achievement-icon">${achievement.icon}</div>
+        <div class="achievement-info">
+          <h3>${achievement.title} ${statusIcon}</h3>
+          <p>${achievement.description}</p>
+        </div>
+      </div>
+      <div class="achievement-footer">
+        <div class="achievement-points">+${achievement.points} XP</div>
+        <div class="achievement-rarity ${achievement.rarity}">${achievement.rarity}</div>
+      </div>
+    </div>
+  `;
+}
+
+// Create pagination controls
+function createPaginationControls(currentPage, totalPages, totalItems) {
   if (totalPages <= 1) return "";
 
   return `
-    <div class="clean-pagination">
+    <div class="pagination-controls">
       <div class="pagination-wrapper">
         <button class="pagination-btn ${currentPage === 1 ? "disabled" : ""}" 
                 data-page="${currentPage - 1}" 
@@ -413,14 +378,14 @@ function createModernPaginationControls(currentPage, totalPages, totalItems) {
         </button>
       </div>
       
-      <button class="show-all-simple" id="showAllBtn">
-        Tümünü Göster (${totalItems})
-      </button>
+      <div class="pagination-info">
+        <span>Sayfa ${currentPage} / ${totalPages} • Toplam ${totalItems} başarı</span>
+      </div>
     </div>
   `;
 }
 
-// Sayfa numaralarını oluştur - BASİT
+// Create page numbers
 function createPageNumbers(currentPage, totalPages) {
   let pages = "";
   const maxVisible = window.innerWidth < 768 ? 3 : 5;
@@ -428,12 +393,11 @@ function createPageNumbers(currentPage, totalPages) {
   let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
   let endPage = Math.min(totalPages, startPage + maxVisible - 1);
 
-  // Eğer sağ tarafta boşluk varsa, sol tarafa kaydır
   if (endPage - startPage + 1 < maxVisible) {
     startPage = Math.max(1, endPage - maxVisible + 1);
   }
 
-  // İlk sayfa
+  // First page
   if (startPage > 1) {
     pages += `<button class="page-num" data-page="1">1</button>`;
     if (startPage > 2) {
@@ -441,13 +405,13 @@ function createPageNumbers(currentPage, totalPages) {
     }
   }
 
-  // Orta sayfalar
+  // Middle pages
   for (let i = startPage; i <= endPage; i++) {
     const active = i === currentPage ? "active" : "";
     pages += `<button class="page-num ${active}" data-page="${i}">${i}</button>`;
   }
 
-  // Son sayfa
+  // Last page
   if (endPage < totalPages) {
     if (endPage < totalPages - 1) {
       pages += `<span class="dots">...</span>`;
@@ -458,174 +422,98 @@ function createPageNumbers(currentPage, totalPages) {
   return pages;
 }
 
-// Sayfa numaralarını da dinle
-function setupModernPaginationEvents(allAchievements, itemsPerPage) {
+// Setup pagination events
+function setupPaginationEvents(allAchievements, categoryFilter) {
   const paginationBtns = document.querySelectorAll(".pagination-btn");
   const pageNums = document.querySelectorAll(".page-num");
-  const showAllBtn = document.getElementById("showAllBtn");
 
-  // Navigation butonları
   paginationBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       const page = parseInt(btn.dataset.page);
       if (page && !btn.disabled) {
-        renderAchievementPage(allAchievements, page, itemsPerPage);
+        currentPage = page;
+        displayAchievements(categoryFilter);
+        scrollToTop();
       }
     });
   });
 
-  // Sayfa numaraları
   pageNums.forEach((btn) => {
     btn.addEventListener("click", () => {
       const page = parseInt(btn.dataset.page);
       if (page) {
-        renderAchievementPage(allAchievements, page, itemsPerPage);
+        currentPage = page;
+        displayAchievements(categoryFilter);
+        scrollToTop();
       }
     });
   });
+}
 
-  // Tümünü göster butonu
-  if (showAllBtn) {
-    showAllBtn.addEventListener("click", () => {
-      showAllAchievements(allAchievements);
+// Scroll to top of achievements section
+function scrollToTop() {
+  const achievementsSection = document.querySelector(".achievements-section");
+  if (achievementsSection) {
+    achievementsSection.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
     });
   }
 }
 
-// Belirli bir sayfayı render et
-function renderAchievementPage(allAchievements, page, itemsPerPage) {
-  const grid = document.getElementById("achievementsGrid");
-  const totalPages = Math.ceil(allAchievements.length / itemsPerPage);
+// Setup category filters
+function setupCategoryFilters() {
+  const filterButtons = document.querySelectorAll(".filter-btn");
 
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const pageAchievements = allAchievements.slice(startIndex, endIndex);
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      // Update active button
+      filterButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
 
-  const achievementCards = pageAchievements
-    .map((achievement) => createAchievementCard(achievement))
-    .join("");
+      // Reset to first page
+      currentPage = 1;
 
-  const paginationControls = createModernPaginationControls(
-    page,
-    totalPages,
-    allAchievements.length
-  );
+      // Filter achievements
+      const category = btn.dataset.category;
+      displayAchievements(category);
 
-  grid.innerHTML = `
-    <div class="achievements-container">
-      <div class="achievements-list">
-        ${achievementCards}
-      </div>
-      ${paginationControls}
-    </div>
-  `;
+      console.log(`🔍 Kategori filtresi: ${category}`);
 
-  // Animasyon
-  setTimeout(() => {
-    const cards = grid.querySelectorAll(".achievement-card");
-    cards.forEach((card, index) => {
-      setTimeout(() => {
-        card.style.opacity = "1";
-        card.style.transform = "translateY(0)";
-      }, index * 50);
+      showNotification(
+        "Filtre Uygulandı",
+        `${getCategoryName(category)} kategorisi seçildi`,
+        "info"
+      );
     });
-  }, 100);
-
-  // Event listener'ları tekrar kur
-  setupModernPaginationEvents(allAchievements, itemsPerPage);
-
-  // Sayfanın başına kaydır
-  document.querySelector(".achievements-section").scrollIntoView({
-    behavior: "smooth",
-    block: "start",
   });
 }
 
-// Tüm achievement'ları göster
-function showAllAchievements(allAchievements) {
-  const grid = document.getElementById("achievementsGrid");
-
-  // Loading göster
-  grid.innerHTML = `
-    <div class="loading-message">
-      <div class="loading-spinner"></div>
-      <p>Tüm başarılar yükleniyor...</p>
-    </div>
-  `;
-
-  // Biraz bekle, sonra tümünü göster
-  setTimeout(() => {
-    const achievementCards = allAchievements
-      .map((achievement) => createAchievementCard(achievement))
-      .join("");
-
-    grid.innerHTML = `
-      <div class="achievements-container">
-        <div class="achievements-all-header">
-          <h3>📋 Tüm Başarılar (${allAchievements.length})</h3>
-          <button class="back-to-pages-btn" id="backToPagesBtn">
-            ← Sayfalara Dön
-          </button>
-        </div>
-        <div class="achievements-list all-achievements">
-          ${achievementCards}
-        </div>
-      </div>
-    `;
-
-    // Sayfalara dön butonu
-    document.getElementById("backToPagesBtn").addEventListener("click", () => {
-      const database = window.achievementAPI?.getAchievementDatabase();
-      if (database) {
-        displayAchievements(database);
-      }
-    });
-
-    // Animasyon (daha hızlı)
-    setTimeout(() => {
-      const cards = grid.querySelectorAll(".achievement-card");
-      cards.forEach((card, index) => {
-        setTimeout(() => {
-          card.style.opacity = "1";
-          card.style.transform = "translateY(0)";
-        }, Math.min(index * 10, 500));
-      });
-    }, 100);
-  }, 500);
+// Get category display name
+function getCategoryName(category) {
+  const categoryNames = {
+    all: "Tüm Başarılar",
+    pomodoro: "Pomodoro",
+    habits: "Alışkanlıklar",
+    addiction: "Temizlik",
+    tasks: "Görevler",
+    general: "Genel",
+  };
+  return categoryNames[category] || category;
 }
 
-// Achievement kartı oluştur
-function createAchievementCard(achievement) {
-  const statusClass = achievement.isUnlocked ? "unlocked" : "locked";
-  const statusIcon = achievement.isUnlocked ? "✅" : "🔒";
+// Update achievement statistics
+function updateAchievementStats() {
+  if (!achievementDatabase) return;
 
-  return `
-    <div class="achievement-card ${statusClass}" data-category="${achievement.category}" style="opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
-      <div class="achievement-header">
-        <div class="achievement-icon">${achievement.icon}</div>
-        <div class="achievement-info">
-          <h3>${achievement.title} ${statusIcon}</h3>
-          <p>${achievement.description}</p>
-        </div>
-      </div>
-      <div class="achievement-footer">
-        <div class="achievement-points">+${achievement.points} XP</div>
-        <div class="achievement-rarity ${achievement.rarity}">${achievement.rarity}</div>
-      </div>
-    </div>
-  `;
-}
-
-// Achievement istatistiklerini güncelle
-function updateAchievementStats(database) {
   const achievementData = getAchievementData();
   const unlockedCount = achievementData.unlocked
     ? achievementData.unlocked.length
     : 0;
 
   let totalCount = 0;
-  Object.keys(database).forEach((category) => {
-    totalCount += database[category].length;
+  Object.keys(achievementDatabase).forEach((category) => {
+    totalCount += achievementDatabase[category].length;
   });
 
   const completionRate =
@@ -635,271 +523,310 @@ function updateAchievementStats(database) {
   const totalElement = document.getElementById("totalCount");
   const completionElement = document.getElementById("completionRate");
 
-  if (unlockedElement) unlockedElement.textContent = unlockedCount;
-  if (totalElement) totalElement.textContent = totalCount;
-  if (completionElement) completionElement.textContent = `${completionRate}%`;
+  if (unlockedElement) {
+    animateNumber(unlockedElement, 0, unlockedCount, 1000);
+  }
+  if (totalElement) {
+    animateNumber(totalElement, 0, totalCount, 1200);
+  }
+  if (completionElement) {
+    setTimeout(() => {
+      if (completionElement)
+        completionElement.textContent = `${completionRate}%`;
+    }, 800);
+  }
+
+  console.log(
+    `📈 İstatistikler: ${unlockedCount}/${totalCount} (${completionRate}%)`
+  );
 }
 
-// Achievement display'i güncelle
-function updateAchievementDisplay() {
-  if (window.achievementAPI) {
-    const database = window.achievementAPI.getAchievementDatabase();
-    if (database) {
-      displayAchievements(database);
-      updateAchievementStats(database);
+// Animate number counting
+function animateNumber(element, start, end, duration) {
+  const startTime = performance.now();
+
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+
+    const current = Math.floor(start + (end - start) * progress);
+    element.textContent = current;
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
     }
+  }
+
+  requestAnimationFrame(update);
+}
+
+// Update character display
+function updateCharacterDisplay() {
+  const achievementData = getAchievementData();
+  const currentLevel = achievementData.level || 1;
+  const currentXP = achievementData.points || 0;
+
+  updateCharacterInfo(currentLevel, currentXP);
+  updateCharacterVisual(currentLevel);
+  updateEvolutionPath(currentLevel);
+  updateLevelProgress(currentLevel, currentXP);
+  updateEvolutionCards(currentLevel);
+}
+
+// Update character info
+function updateCharacterInfo(level, xp) {
+  const character = CHARACTER_EVOLUTION[level] || CHARACTER_EVOLUTION[1];
+  const levelElement = document.getElementById("characterLevel");
+  const titleElement = document.getElementById("characterTitle");
+
+  if (levelElement) levelElement.textContent = `Level ${level}`;
+  if (titleElement) titleElement.textContent = character.title;
+}
+
+// Update character visual
+function updateCharacterVisual(level) {
+  const character = CHARACTER_EVOLUTION[level] || CHARACTER_EVOLUTION[1];
+  const characterAvatar = document.getElementById("characterAvatar");
+  const characterFace = characterAvatar?.querySelector(".character-face");
+  const characterEquipment = document.getElementById("characterEquipment");
+
+  if (characterFace) characterFace.textContent = character.emoji;
+  if (characterEquipment) characterEquipment.textContent = character.equipment;
+  if (characterAvatar) characterAvatar.style.background = character.background;
+}
+
+// Update evolution path
+function updateEvolutionPath(currentLevel) {
+  const evolutionSteps = document.querySelectorAll(".evolution-step");
+
+  evolutionSteps.forEach((step) => {
+    const stepLevel = parseInt(step.dataset.level);
+    step.classList.remove("active", "completed");
+
+    if (stepLevel === currentLevel) {
+      step.classList.add("active");
+    } else if (stepLevel < currentLevel) {
+      step.classList.add("completed");
+    }
+  });
+}
+
+// Update evolution cards
+function updateEvolutionCards(currentLevel) {
+  const evolutionCards = document.querySelectorAll(".evolution-card");
+
+  evolutionCards.forEach((card, index) => {
+    const cardLevel = index + 1;
+
+    // Clear all classes
+    card.classList.remove("current-level", "completed-level");
+
+    if (cardLevel === currentLevel) {
+      card.classList.add("current-level");
+    } else if (cardLevel < currentLevel) {
+      card.classList.add("completed-level");
+    }
+  });
+}
+
+// Update level progress
+function updateLevelProgress(level, currentXP) {
+  const levelThresholds = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200];
+
+  let progress = 0;
+  let nextLevelXP = 100;
+
+  if (level >= 8) {
+    progress = 100;
+    nextLevelXP = "MAX";
   } else {
-    loadAchievements();
+    nextLevelXP = levelThresholds[level];
+    progress = Math.min((currentXP / nextLevelXP) * 100, 100);
+  }
+
+  const currentXPElement = document.getElementById("currentXP");
+  const nextLevelXPElement = document.getElementById("nextLevelXP");
+  const progressFill = document.getElementById("levelProgressFill");
+  const progressText = document.getElementById("progressText");
+  const nextRewardElement = document.getElementById("nextReward");
+
+  if (currentXPElement) currentXPElement.textContent = currentXP;
+  if (nextLevelXPElement) nextLevelXPElement.textContent = nextLevelXP;
+
+  if (progressFill) {
+    progressFill.style.transition = "none";
+    progressFill.style.width = `${progress}%`;
+    setTimeout(() => {
+      progressFill.style.transition = "width 0.3s ease";
+    }, 50);
+  }
+
+  if (progressText) {
+    progressText.textContent = `${Math.round(progress)}%`;
+  }
+
+  if (nextRewardElement) {
+    const nextReward = getNextReward(level);
+    nextRewardElement.textContent = nextReward;
   }
 }
 
-// Event listener'ları kur
-function setupEventListeners() {
-  const filterButtons = document.querySelectorAll(".filter-btn");
-  filterButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      filterButtons.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      const category = btn.dataset.category;
-      filterAchievements(category);
-    });
-  });
-}
-
-// Achievement'ları filtrele
-function filterAchievements(category) {
-  const cards = document.querySelectorAll(".achievement-card");
-
-  cards.forEach((card) => {
-    const cardCategory = card.dataset.category;
-
-    if (category === "all" || cardCategory === category) {
-      card.style.display = "block";
-      setTimeout(() => {
-        card.style.opacity = "1";
-        card.style.transform = "translateY(0)";
-      }, 50);
-    } else {
-      card.style.opacity = "0";
-      card.style.transform = "translateY(20px)";
-      setTimeout(() => {
-        card.style.display = "none";
-      }, 300);
-    }
-  });
-}
-
-// Modern pagination CSS'lerini ekle - YENİ MİNİMAL TASARIM
-function addModernPaginationStyles() {
-  if (document.getElementById("modern-pagination-styles")) return;
-
-  const style = document.createElement("style");
-  style.id = "modern-pagination-styles";
-  style.textContent = `
-    .achievements-container {
-      width: 100%;
-    }
-
-    .achievements-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.2rem;
-      margin-bottom: 2rem;
-    }
-
-    .achievements-list.all-achievements {
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.2rem;
-    }
-
-    /* CLEAN MINIMAL PAGINATION */
-    .clean-pagination {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-
-    .pagination-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .pagination-btn {
-      padding: 0.5rem 1rem;
-      background: white;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      color: #374151;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .pagination-btn:hover:not(:disabled) {
-      background: #f9fafb;
-      border-color: #9ca3af;
-    }
-
-    .pagination-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .page-numbers {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .page-num {
-      width: 32px;
-      height: 32px;
-      background: white;
-      border: 1px solid #d1d5db;
-      border-radius: 4px;
-      color: #374151;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .page-num:hover {
-      background: #f3f4f6;
-      border-color: #9ca3af;
-    }
-
-    .page-num.active {
-      background: #6366f1;
-      border-color: #6366f1;
-      color: white;
-    }
-
-    .dots {
-      padding: 0 0.5rem;
-      color: #9ca3af;
-      font-size: 0.9rem;
-    }
-
-    .show-all-simple {
-      padding: 0.75rem 1.5rem;
-      background: #f3f4f6;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      color: #374151;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .show-all-simple:hover {
-      background: #e5e7eb;
-      border-color: #9ca3af;
-    }
-
-    .achievements-all-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .achievements-all-header h3 {
-      margin: 0;
-      color: #1f2937;
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
-
-    .back-to-pages-btn {
-      padding: 0.5rem 1rem;
-      background: #f3f4f6;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      color: #374151;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .back-to-pages-btn:hover {
-      background: #e5e7eb;
-      border-color: #9ca3af;
-    }
-
-    @media (max-width: 768px) {
-      .achievements-list {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      .pagination-wrapper {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.5rem;
-      }
-
-      .page-numbers {
-        order: -1;
-        margin-bottom: 0.5rem;
-      }
-
-      .pagination-btn {
-        flex: 1;
-        min-width: 100px;
-        justify-content: center;
-      }
-
-      .achievements-all-header {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
-
-      .show-all-simple {
-        width: 100%;
-        text-align: center;
-      }
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-// Geri dönüş fonksiyonu
-function goBack() {
-  window.location.href = "dashboard.html";
-}
-
-// Dashboard butonunu güncelle
-function updateDashboardButton() {
-  window.showAchievementsModal = function () {
-    window.location.href = "achievements.html";
+// Get next reward text
+function getNextReward(level) {
+  const rewards = {
+    1: "Güneş gözlüğü (Level 2)",
+    2: "Akıllı gözlük (Level 3)",
+    3: "Beyin gücü (Level 4)",
+    4: "Roket gücü (Level 5)",
+    5: "Elektrik gücü (Level 6)",
+    6: "Ateş gücü (Level 7)",
+    7: "Altın taç (Level 8)",
+    8: "Maksimum seviye!",
   };
+  return rewards[level] || "Yeni karakter görünümü";
 }
 
-// Sayfa odaklandığında güncelle
-document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) {
-    updateCharacterDisplay();
-    updateAchievementDisplay();
+// Initialize page
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("🏆 GRINDMIND Başarılar sayfası yüklendi");
 
-    if (window.achievementAPI && window.achievementAPI.refreshData) {
-      window.achievementAPI.refreshData();
-    }
+  // Mobile Navigation
+  const hamburger = document.getElementById("hamburger");
+  const mobileClose = document.getElementById("navMobileClose");
+  const mobileOverlay = document.getElementById("navMobileOverlay");
+  const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+
+  if (hamburger) {
+    hamburger.addEventListener("click", toggleMobileNav);
   }
+
+  if (mobileClose) {
+    mobileClose.addEventListener("click", closeMobileNav);
+  }
+
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener("click", closeMobileNav);
+  }
+
+  if (mobileLogoutBtn) {
+    mobileLogoutBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      logout();
+      closeMobileNav();
+    });
+  }
+
+  // Profile dropdown
+  const userAvatar = document.getElementById("userAvatar");
+  if (userAvatar) {
+    userAvatar.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleProfileDropdown();
+    });
+  }
+
+  // Settings ve logout butonları
+  const settingsBtn = document.getElementById("settingsBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (settingsBtn) {
+    settingsBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.location.href = "settings.html";
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      logout();
+      toggleProfileDropdown();
+    });
+  }
+
+  // Dropdown dışına tıklama
+  document.addEventListener("click", function (e) {
+    const dropdown = document.getElementById("profileDropdown");
+    const userAvatar = document.getElementById("userAvatar");
+
+    if (dropdown && !dropdown.contains(e.target) && e.target !== userAvatar) {
+      dropdown.classList.remove("show");
+    }
+  });
+
+  // Bildirim butonu
+  const notificationBtn = document.getElementById("notificationBtn");
+  if (notificationBtn) {
+    notificationBtn.addEventListener("click", function () {
+      showNotification(
+        "Bildirimler",
+        "Bildirim sistemi aktif! Yeni özellikler yakında gelecek.",
+        "info"
+      );
+    });
+  }
+
+  // Keyboard shortcuts
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      hideNotification();
+      closeMobileNav();
+    }
+
+    if (e.ctrlKey || e.metaKey) {
+      switch (e.key) {
+        case "h":
+          e.preventDefault();
+          window.location.href = "dashboard.html";
+          break;
+        case "r":
+          e.preventDefault();
+          window.location.reload();
+          break;
+        case "1":
+          e.preventDefault();
+          document.querySelector('[data-category="all"]')?.click();
+          break;
+        case "2":
+          e.preventDefault();
+          document.querySelector('[data-category="pomodoro"]')?.click();
+          break;
+        case "3":
+          e.preventDefault();
+          document.querySelector('[data-category="habits"]')?.click();
+          break;
+      }
+    }
+  });
+
+  // Window resize handler
+  window.addEventListener("resize", () => {
+    // Re-render pagination if needed
+    if (achievementDatabase) {
+      const activeFilter =
+        document.querySelector(".filter-btn.active")?.dataset.category || "all";
+      displayAchievements(activeFilter);
+    }
+  });
+
+  // Initialize achievements
+  setTimeout(() => {
+    updateCharacterDisplay();
+    loadAchievements();
+
+    showNotification(
+      "Sayfa Yüklendi",
+      "Başarılar sayfası hazır! Karakterin ve başarıların yükleniyor... 🚀",
+      "success"
+    );
+  }, 500);
 });
 
-// Global fonksiyonlar
-window.goBack = goBack;
-window.updateDashboardButton = updateDashboardButton;
+// Global functions for external access
+window.toggleMobileNav = toggleMobileNav;
+window.closeMobileNav = closeMobileNav;
+window.showNotification = showNotification;
+window.hideNotification = hideNotification;
+window.logout = logout;
+window.loadAchievements = loadAchievements;
 window.updateCharacterDisplay = updateCharacterDisplay;
-window.updateAchievementDisplay = updateAchievementDisplay;
-window.forceFixProgressBar = forceFixProgressBar;

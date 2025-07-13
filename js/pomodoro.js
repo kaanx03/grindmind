@@ -1,7 +1,372 @@
-// GRINDMIND Pomodoro-Dashboard Entegrasyon Kodu
-// ================================================
+// ============================================================================
+// GRINDMIND Pomodoro Timer - Düzeltilmiş Navbar & Dashboard Entegre Sistem
+// ============================================================================
 
-// Dashboard API'sini Pomodoro timer'a entegre et
+// ============================================================================
+// NAVBAR FUNCTIONS
+// ============================================================================
+
+// Mobile Navigation Functions
+function toggleMobileNav() {
+  console.log("🍔 toggleMobileNav çağrıldı");
+
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
+
+  // Debug: Elementlerin varlığını kontrol et
+  console.log("Elements:", {
+    hamburger: !!hamburger,
+    mobileNav: !!mobileNav,
+    overlay: !!overlay,
+  });
+
+  if (hamburger) {
+    hamburger.classList.toggle("active");
+    console.log("Hamburger active:", hamburger.classList.contains("active"));
+  }
+
+  // navMobile toggle
+  if (mobileNav) {
+    const wasShown = mobileNav.classList.contains("show");
+    mobileNav.classList.toggle("show");
+    mobileNav.classList.toggle("active");
+    console.log("Menu", wasShown ? "kapatıldı" : "açıldı");
+  }
+
+  if (overlay) {
+    overlay.classList.toggle("show");
+    overlay.classList.toggle("active");
+  }
+
+  // Body scroll control
+  const isMenuOpen =
+    mobileNav &&
+    (mobileNav.classList.contains("show") ||
+      mobileNav.classList.contains("active"));
+
+  document.body.style.overflow = isMenuOpen ? "hidden" : "";
+}
+
+function closeMobileNav() {
+  console.log("❌ closeMobileNav çağrıldı");
+
+  const hamburger = document.getElementById("hamburger");
+  const mobileNav = document.getElementById("navMobile");
+  const overlay = document.getElementById("navMobileOverlay");
+
+  if (hamburger) hamburger.classList.remove("active");
+  if (mobileNav) {
+    mobileNav.classList.remove("show");
+    mobileNav.classList.remove("active");
+  }
+  if (overlay) {
+    overlay.classList.remove("show");
+    overlay.classList.remove("active");
+  }
+
+  document.body.style.overflow = "";
+}
+
+// Profile Dropdown Functions
+function toggleProfileDropdown() {
+  const dropdown = document.getElementById("profileDropdown");
+  if (dropdown) {
+    dropdown.classList.toggle("show");
+  }
+}
+
+// Notification Functions
+function showNotification(title, message, type = "info") {
+  const toast = document.getElementById("notificationToast");
+  if (!toast) return;
+
+  const titleEl = toast.querySelector(".notification-title");
+  const messageEl = toast.querySelector(".notification-message");
+  const iconEl = toast.querySelector(".notification-icon");
+
+  const icons = {
+    success: "🎉",
+    error: "❌",
+    warning: "⚠️",
+    info: "ℹ️",
+  };
+
+  if (titleEl) titleEl.textContent = title;
+  if (messageEl) messageEl.textContent = message;
+  if (iconEl) iconEl.textContent = icons[type] || icons.info;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    hideNotification();
+  }, 4000);
+}
+
+function hideNotification() {
+  const toast = document.getElementById("notificationToast");
+  if (toast) {
+    toast.classList.remove("show");
+  }
+}
+
+// Logout Function
+function logout() {
+  if (confirm("Çıkış yapmak istediğinizden emin misiniz?")) {
+    showNotification(
+      "Çıkış Yapılıyor",
+      "Güvenli çıkış yapılıyor... Güle güle! 👋",
+      "success"
+    );
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2000);
+  }
+}
+
+// Settings Modal Functions
+function openPomodoroSettings() {
+  if (window.timer && typeof window.timer.openSettings === "function") {
+    window.timer.openSettings();
+  } else {
+    const settingsModal = document.getElementById("settingsModal");
+    if (settingsModal) {
+      settingsModal.classList.add("active");
+    }
+  }
+}
+
+function closePomodoroSettings() {
+  if (window.timer && typeof window.timer.closeSettingsModal === "function") {
+    window.timer.closeSettingsModal();
+  } else {
+    const settingsModal = document.getElementById("settingsModal");
+    if (settingsModal) {
+      settingsModal.classList.remove("active");
+    }
+  }
+}
+
+function loadPomodoroSettingsToForm() {
+  if (window.timer && typeof window.timer.loadSettingsToForm === "function") {
+    window.timer.loadSettingsToForm();
+  } else {
+    console.log("🔄 Pomodoro ayarları form'a yükleniyor...");
+  }
+}
+
+function savePomodoroSettings() {
+  if (window.timer && typeof window.timer.saveSettingsData === "function") {
+    window.timer.saveSettingsData();
+  } else {
+    showNotification(
+      "Ayarlar Kaydedildi",
+      "Pomodoro ayarlarınız başarıyla güncellendi! ✅",
+      "success"
+    );
+    closePomodoroSettings();
+  }
+}
+
+// Update navbar colors based on current timer mode
+function updateNavbarColors(mode = "pomodoro") {
+  const colorMapping = {
+    pomodoro: {
+      gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      shadow: "rgba(102, 126, 234, 0.3)",
+      primary: "#667eea",
+      secondary: "#764ba2",
+      hoverBg: "rgba(102, 126, 234, 0.1)",
+      hoverColor: "#667eea",
+    },
+    short: {
+      gradient: "linear-gradient(135deg, #38858a 0%, #2d6a6f 100%)",
+      shadow: "rgba(56, 133, 138, 0.3)",
+      primary: "#38858a",
+      secondary: "#2d6a6f",
+      hoverBg: "rgba(56, 133, 138, 0.1)",
+      hoverColor: "#38858a",
+    },
+    long: {
+      gradient: "linear-gradient(135deg, #397097 0%, #2e5a7a 100%)",
+      shadow: "rgba(57, 112, 151, 0.3)",
+      primary: "#397097",
+      secondary: "#2e5a7a",
+      hoverBg: "rgba(57, 112, 151, 0.1)",
+      hoverColor: "#397097",
+    },
+  };
+
+  const currentColors = colorMapping[mode];
+  const logo = document.querySelector(".logo");
+  const settingsBtn = document.getElementById("settingsBtn");
+  const mobileSettingsBtn = document.getElementById("mobileSettingsBtn");
+  const hamburger = document.getElementById("hamburger");
+  const userAvatar = document.getElementById("userAvatar");
+  const navItems = document.querySelectorAll(".nav-item");
+  const mobileNavItems = document.querySelectorAll(".nav-mobile-item");
+
+  // Update logo gradient
+  if (logo) {
+    logo.style.background = currentColors.gradient;
+    logo.style.webkitBackgroundClip = "text";
+    logo.style.webkitTextFillColor = "transparent";
+    logo.style.backgroundClip = "text";
+  }
+
+  // Update user avatar (T logosu)
+  if (userAvatar) {
+    userAvatar.style.background = currentColors.gradient;
+    userAvatar.style.boxShadow = `0 4px 12px ${currentColors.shadow}`;
+  }
+
+  // Update settings buttons
+  if (settingsBtn) {
+    settingsBtn.style.background = currentColors.gradient;
+    settingsBtn.style.boxShadow = `0 4px 12px ${currentColors.shadow}`;
+  }
+
+  if (mobileSettingsBtn) {
+    mobileSettingsBtn.style.background = currentColors.gradient;
+    mobileSettingsBtn.style.boxShadow = `0 4px 12px ${currentColors.shadow}`;
+  }
+
+  // Update hamburger menu lines
+  if (hamburger) {
+    const spans = hamburger.querySelectorAll("span");
+    spans.forEach((span) => {
+      span.style.background = currentColors.gradient;
+    });
+  }
+
+  // Update navigation items hover colors - CSS Custom Properties kullanarak
+  document.documentElement.style.setProperty(
+    "--accent-color",
+    currentColors.primary
+  );
+  document.documentElement.style.setProperty(
+    "--accent-light",
+    currentColors.hoverBg
+  );
+  document.documentElement.style.setProperty(
+    "--accent-hover",
+    currentColors.secondary
+  );
+
+  // Manuel hover effect update for navigation items
+  navItems.forEach((item) => {
+    // Remove existing event listeners
+    item.onmouseenter = null;
+    item.onmouseleave = null;
+
+    item.addEventListener("mouseenter", function () {
+      this.style.color = currentColors.hoverColor;
+      this.style.background = currentColors.hoverBg;
+    });
+
+    item.addEventListener("mouseleave", function () {
+      if (!this.classList.contains("active")) {
+        this.style.color = "";
+        this.style.background = "";
+      }
+    });
+  });
+
+  // Mobile navigation items hover colors
+  mobileNavItems.forEach((item) => {
+    item.onmouseenter = null;
+    item.onmouseleave = null;
+
+    item.addEventListener("mouseenter", function () {
+      this.style.color = currentColors.hoverColor;
+    });
+
+    item.addEventListener("mouseleave", function () {
+      if (!this.classList.contains("active")) {
+        this.style.color = "";
+      }
+    });
+  });
+
+  console.log(
+    `🎨 Navbar renkleri ve hover efektleri ${mode} moduna güncellendi`
+  );
+}
+
+// ============================================================================
+// DASHBOARD INTEGRATION FUNCTIONS
+// ============================================================================
+
+function getDashboardPomodoroData() {
+  const today = new Date().toDateString();
+  const lastDate = localStorage.getItem("grindmind_pomodoro_last_date");
+
+  // Günlük veri sıfırlama kontrolü
+  if (lastDate !== today) {
+    localStorage.setItem("grindmind_pomodoro_today", "0");
+    localStorage.setItem("grindmind_pomodoro_last_date", today);
+  }
+
+  const todayCount = parseInt(
+    localStorage.getItem("grindmind_pomodoro_today") || "0"
+  );
+  const sessions = JSON.parse(
+    localStorage.getItem("grindmind_pomodoro_sessions") || "[]"
+  );
+
+  // Haftalık sayım (son 7 gün)
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+  const weeklyCount = sessions.filter((session) => {
+    if (!session.date || session.type !== "pomodoro" || !session.completed) {
+      return false;
+    }
+    const sessionDate = new Date(session.date);
+    return sessionDate >= oneWeekAgo;
+  }).length;
+
+  // Ortalama süre hesaplama
+  const completedSessions = sessions.filter(
+    (s) => s.type === "pomodoro" && s.completed
+  );
+  let averageTime = 0;
+
+  if (completedSessions.length > 0) {
+    const totalTime = completedSessions.reduce((sum, session) => {
+      return sum + (session.duration || session.sessionLength || 25);
+    }, 0);
+    averageTime = Math.round(totalTime / completedSessions.length);
+  }
+
+  return {
+    today: todayCount,
+    week: weeklyCount,
+    sessions: sessions.length,
+    averageTime: averageTime,
+  };
+}
+
+function notifyDashboardUpdate() {
+  // Dashboard sayfası açık mı kontrol et
+  if (window.opener && typeof window.opener.dashboardAPI !== "undefined") {
+    window.opener.dashboardAPI.refreshData();
+  }
+
+  // LocalStorage event'i tetikle
+  window.dispatchEvent(
+    new StorageEvent("storage", {
+      key: "grindmind_pomodoro_sessions",
+      newValue: localStorage.getItem("grindmind_pomodoro_sessions"),
+    })
+  );
+}
+
+// ============================================================================
+// POMODORO TIMER CLASS
+// ============================================================================
+
 class PomodoroTimer {
   constructor() {
     // Timer state
@@ -45,13 +410,12 @@ class PomodoroTimer {
     this.updateHeaderColors();
     this.updateHamburgerColors();
     this.requestNotificationPermission();
-
-    console.log(
-      "🍅 GRINDMIND Pomodoro Timer initialized with dashboard integration"
-    );
   }
 
-  // Tarih yardımcı fonksiyonları
+  // ============================================================================
+  // HELPER METHODS
+  // ============================================================================
+
   getTodayString() {
     return new Date().toDateString();
   }
@@ -70,7 +434,6 @@ class PomodoroTimer {
     }
   }
 
-  // Dashboard'a Pomodoro session kaydetme
   recordPomodoroSession(duration = 25, isCompleted = true) {
     const today = this.getDateString();
     const sessions = JSON.parse(
@@ -110,15 +473,8 @@ class PomodoroTimer {
       );
     }
 
-    console.log("✅ Pomodoro session kaydedildi:", newSession);
-
-    // Dashboard'ı güncelle (eğer dashboard API'si varsa)
-    if (
-      window.dashboardAPI &&
-      typeof window.dashboardAPI.refreshData === "function"
-    ) {
-      window.dashboardAPI.refreshData();
-    }
+    // Dashboard'ı güncelle
+    notifyDashboardUpdate();
 
     // Achievement sistemini bilgilendir
     if (window.achievementAPI && isCompleted) {
@@ -127,6 +483,10 @@ class PomodoroTimer {
 
     return newSession;
   }
+
+  // ============================================================================
+  // INITIALIZATION METHODS
+  // ============================================================================
 
   initElements() {
     // Timer elements
@@ -143,11 +503,11 @@ class PomodoroTimer {
     // Header elements
     this.logo = document.querySelector(".logo");
     this.settingsBtn = document.getElementById("settingsBtn");
-    this.hamburgerBtn = document.getElementById("hamburgerBtn");
-    this.mobileMenu = document.getElementById("mobileMenu");
-    this.mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
+    this.hamburgerBtn = document.getElementById("hamburger");
+    this.mobileMenu = document.getElementById("navMobile");
+    this.mobileMenuOverlay = document.getElementById("navMobileOverlay");
     this.mobileSettingsBtn = document.getElementById("mobileSettingsBtn");
-    this.mobileCloseBtn = document.getElementById("mobileCloseBtn");
+    this.mobileCloseBtn = document.getElementById("navMobileClose");
 
     // Settings elements
     this.settingsModal = document.getElementById("settingsModal");
@@ -197,32 +557,9 @@ class PomodoroTimer {
       });
     });
 
-    // Mobile menu
-    if (this.hamburgerBtn) {
-      this.hamburgerBtn.addEventListener("click", () =>
-        this.toggleMobileMenu()
-      );
-    }
-    if (this.mobileMenuOverlay) {
-      this.mobileMenuOverlay.addEventListener("click", () =>
-        this.closeMobileMenu()
-      );
-    }
-    if (this.mobileCloseBtn) {
-      this.mobileCloseBtn.addEventListener("click", () =>
-        this.closeMobileMenu()
-      );
-    }
-
     // Settings
     if (this.settingsBtn) {
       this.settingsBtn.addEventListener("click", () => this.openSettings());
-    }
-    if (this.mobileSettingsBtn) {
-      this.mobileSettingsBtn.addEventListener("click", () => {
-        this.closeMobileMenu();
-        this.openSettings();
-      });
     }
     if (this.closeSettings) {
       this.closeSettings.addEventListener("click", () =>
@@ -270,37 +607,11 @@ class PomodoroTimer {
         }
       });
     }
-
-    // Close mobile menu on window resize
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 768) {
-        this.closeMobileMenu();
-      }
-    });
   }
 
-  toggleMobileMenu() {
-    const isActive = this.mobileMenu.classList.contains("active");
-    if (isActive) {
-      this.closeMobileMenu();
-    } else {
-      this.openMobileMenu();
-    }
-  }
-
-  openMobileMenu() {
-    this.hamburgerBtn.classList.add("active");
-    this.mobileMenu.classList.add("active");
-    this.mobileMenuOverlay.classList.add("active");
-    document.body.style.overflow = "hidden";
-  }
-
-  closeMobileMenu() {
-    this.hamburgerBtn.classList.remove("active");
-    this.mobileMenu.classList.remove("active");
-    this.mobileMenuOverlay.classList.remove("active");
-    document.body.style.overflow = "";
-  }
+  // ============================================================================
+  // TIMER CONTROL METHODS
+  // ============================================================================
 
   toggleTimer() {
     if (this.isRunning) {
@@ -375,7 +686,6 @@ class PomodoroTimer {
     document.title = "Pomodoro Timer - GRINDMIND";
   }
 
-  // GÜNCELLENMIŞ completeSession - Dashboard entegrasyonu eklendi
   completeSession() {
     clearInterval(this.timerInterval);
     this.isRunning = false;
@@ -392,7 +702,7 @@ class PomodoroTimer {
       this.skipBtn.classList.remove("visible");
     }
 
-    // ✅ Dashboard entegrasyonu - Sadece pomodoro session'ları kaydedilir
+    // Dashboard entegrasyonu - Sadece pomodoro session'ları kaydedilir
     if (this.currentMode === "pomodoro") {
       const sessionDuration = this.settings.pomodoroTime;
       this.recordPomodoroSession(sessionDuration, true);
@@ -426,19 +736,17 @@ class PomodoroTimer {
     if (this.isRunning) {
       // Skip edildiğinde ayarlanan tam süreyi kaydet
       if (this.currentMode === "pomodoro") {
-        const fullSessionDuration = this.settings.pomodoroTime; // Tam ayarlanan süre
+        const fullSessionDuration = this.settings.pomodoroTime;
         this.recordPomodoroSession(fullSessionDuration, true);
         console.log(
           `⏭️ Pomodoro skip edildi: ${fullSessionDuration} dakika kaydedildi (tam süre)`
         );
       }
 
-      // Normal complete session işlemini çalıştır (ancak tekrar kaydetme)
       this.completeSessionSkipped();
     }
   }
 
-  // Skip için özel complete fonksiyonu (tekrar veri kaydetmesin)
   completeSessionSkipped() {
     clearInterval(this.timerInterval);
     this.isRunning = false;
@@ -505,6 +813,10 @@ class PomodoroTimer {
     this.updateHeaderColors();
     this.updateHamburgerColors();
     this.updateButtonColors();
+    this.updateSaveButtonColor(); // Kaydet butonunu da güncelle
+
+    // Update navbar colors globally
+    updateNavbarColors(mode);
 
     // Update labels
     const labels = {
@@ -533,6 +845,10 @@ class PomodoroTimer {
       setTimeout(() => this.startTimer(), 500);
     }
   }
+
+  // ============================================================================
+  // UI UPDATE METHODS
+  // ============================================================================
 
   updateDisplay() {
     const minutes = Math.floor(this.timeLeft / 60);
@@ -571,14 +887,26 @@ class PomodoroTimer {
       pomodoro: {
         gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
         shadow: "rgba(102, 126, 234, 0.3)",
+        primary: "#667eea",
+        secondary: "#764ba2",
+        hoverBg: "rgba(102, 126, 234, 0.1)",
+        hoverColor: "#667eea",
       },
       short: {
         gradient: "linear-gradient(135deg, #38858a 0%, #2d6a6f 100%)",
         shadow: "rgba(56, 133, 138, 0.3)",
+        primary: "#38858a",
+        secondary: "#2d6a6f",
+        hoverBg: "rgba(56, 133, 138, 0.1)",
+        hoverColor: "#38858a",
       },
       long: {
         gradient: "linear-gradient(135deg, #397097 0%, #2e5a7a 100%)",
         shadow: "rgba(57, 112, 151, 0.3)",
+        primary: "#397097",
+        secondary: "#2e5a7a",
+        hoverBg: "rgba(57, 112, 151, 0.1)",
+        hoverColor: "#397097",
       },
     };
 
@@ -592,6 +920,13 @@ class PomodoroTimer {
       this.logo.style.backgroundClip = "text";
     }
 
+    // Update user avatar (T logosu)
+    const userAvatar = document.getElementById("userAvatar");
+    if (userAvatar) {
+      userAvatar.style.background = currentColors.gradient;
+      userAvatar.style.boxShadow = `0 4px 12px ${currentColors.shadow}`;
+    }
+
     // Update settings button
     if (this.settingsBtn) {
       this.settingsBtn.style.background = currentColors.gradient;
@@ -603,6 +938,63 @@ class PomodoroTimer {
       this.mobileSettingsBtn.style.background = currentColors.gradient;
       this.mobileSettingsBtn.style.boxShadow = `0 4px 12px ${currentColors.shadow}`;
     }
+
+    // Update CSS Custom Properties for global hover effects
+    document.documentElement.style.setProperty(
+      "--accent-color",
+      currentColors.primary
+    );
+    document.documentElement.style.setProperty(
+      "--accent-light",
+      currentColors.hoverBg
+    );
+    document.documentElement.style.setProperty(
+      "--accent-hover",
+      currentColors.secondary
+    );
+
+    // Update navigation items hover colors
+    const navItems = document.querySelectorAll(".nav-item");
+    const mobileNavItems = document.querySelectorAll(".nav-mobile-item");
+
+    // Desktop navigation hover
+    navItems.forEach((item) => {
+      // Clear existing listeners
+      const newItem = item.cloneNode(true);
+      item.parentNode.replaceChild(newItem, item);
+
+      newItem.addEventListener("mouseenter", function () {
+        this.style.color = currentColors.hoverColor;
+        this.style.background = currentColors.hoverBg;
+      });
+
+      newItem.addEventListener("mouseleave", function () {
+        if (!this.classList.contains("active")) {
+          this.style.color = "";
+          this.style.background = "";
+        }
+      });
+    });
+
+    // Mobile navigation hover
+    mobileNavItems.forEach((item) => {
+      const newItem = item.cloneNode(true);
+      item.parentNode.replaceChild(newItem, item);
+
+      newItem.addEventListener("mouseenter", function () {
+        this.style.color = currentColors.hoverColor;
+      });
+
+      newItem.addEventListener("mouseleave", function () {
+        if (!this.classList.contains("active")) {
+          this.style.color = "";
+        }
+      });
+    });
+
+    console.log(
+      `🎨 Header renkleri ve hover efektleri ${this.currentMode} moduna güncellendi`
+    );
   }
 
   updateHamburgerColors() {
@@ -636,6 +1028,10 @@ class PomodoroTimer {
     this.startBtn.style.color = currentColor;
   }
 
+  // ============================================================================
+  // NOTIFICATION METHODS
+  // ============================================================================
+
   playNotificationSound() {
     if (!this.settings.soundNotifications) return;
 
@@ -661,7 +1057,7 @@ class PomodoroTimer {
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.8);
     } catch (e) {
-      console.log("Audio not supported");
+      // Audio not supported
     }
   }
 
@@ -689,10 +1085,15 @@ class PomodoroTimer {
     }
   }
 
+  // ============================================================================
+  // SETTINGS METHODS
+  // ============================================================================
+
   openSettings() {
     if (this.settingsModal) {
       this.settingsModal.classList.add("active");
       this.loadSettingsToForm();
+      this.updateSaveButtonColor(); // Modal açıldığında kaydet butonunu güncelle
     }
   }
 
@@ -755,6 +1156,7 @@ class PomodoroTimer {
     this.updateBackground();
     this.updateHeaderColors();
     this.updateHamburgerColors();
+    this.updateSaveButtonColor(); // Kaydet butonunu güncelle
     this.closeSettingsModal();
 
     // Reset current timer if not running
@@ -762,12 +1164,37 @@ class PomodoroTimer {
       this.resetTimer();
     }
 
-    this.showSuccessMessage("Ayarlar kaydedildi! ✅");
+    // Use global notification system
+    showNotification(
+      "Ayarlar Kaydedildi",
+      "Pomodoro ayarlarınız başarıyla güncellendi! ✅",
+      "success"
+    );
+  }
+
+  // Kaydet butonu renk güncelleme fonksiyonu
+  updateSaveButtonColor() {
+    const colorMapping = {
+      pomodoro: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      short: "linear-gradient(135deg, #38858a 0%, #2d6a6f 100%)",
+      long: "linear-gradient(135deg, #397097 0%, #2e5a7a 100%)",
+    };
+
+    const saveBtn = document.getElementById("saveSettings");
+    if (saveBtn) {
+      saveBtn.style.background = colorMapping[this.currentMode];
+      console.log(`💾 Kaydet butonu ${this.currentMode} moduna güncellendi`);
+    }
   }
 
   loadSettings() {
     // Settings are stored in memory for this demo
+    // Could be extended to use localStorage
   }
+
+  // ============================================================================
+  // TASK MANAGEMENT METHODS
+  // ============================================================================
 
   addTask() {
     const taskText = this.taskInput?.value?.trim();
@@ -846,10 +1273,12 @@ class PomodoroTimer {
 
   saveTasks() {
     // Tasks are stored in memory for this demo
+    // Could be extended to use localStorage
   }
 
   loadTasks() {
     // Tasks are loaded from memory for this demo
+    // Could be extended to use localStorage
   }
 
   escapeHtml(text) {
@@ -857,6 +1286,10 @@ class PomodoroTimer {
     div.textContent = text;
     return div.innerHTML;
   }
+
+  // ============================================================================
+  // UTILITY METHODS
+  // ============================================================================
 
   showSuccessMessage(message) {
     const notification = document.createElement("div");
@@ -945,7 +1378,7 @@ class PomodoroTimer {
         if (this.settingsModal?.classList.contains("active")) {
           this.closeSettingsModal();
         } else if (this.mobileMenu?.classList.contains("active")) {
-          this.closeMobileMenu();
+          closeMobileNav();
         }
         break;
       case "Digit1":
@@ -962,82 +1395,171 @@ class PomodoroTimer {
 }
 
 // ============================================================================
-// Dashboard API Entegrasyon Fonksiyonları
+// MAIN INITIALIZATION
 // ============================================================================
 
-// Dashboard'dan çağrılabilecek fonksiyonlar
-function getDashboardPomodoroData() {
-  const today = new Date().toDateString();
-  const lastDate = localStorage.getItem("grindmind_pomodoro_last_date");
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("🚀 DOM yüklendi, sistem başlatılıyor...");
 
-  // Günlük veri sıfırlama kontrolü
-  if (lastDate !== today) {
-    localStorage.setItem("grindmind_pomodoro_today", "0");
-    localStorage.setItem("grindmind_pomodoro_last_date", today);
-  }
-
-  const todayCount = parseInt(
-    localStorage.getItem("grindmind_pomodoro_today") || "0"
-  );
-  const sessions = JSON.parse(
-    localStorage.getItem("grindmind_pomodoro_sessions") || "[]"
-  );
-
-  // Haftalık sayım (son 7 gün)
-  const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
-  const weeklyCount = sessions.filter((session) => {
-    if (!session.date || session.type !== "pomodoro" || !session.completed) {
-      return false;
-    }
-    const sessionDate = new Date(session.date);
-    return sessionDate >= oneWeekAgo;
-  }).length;
-
-  // Ortalama süre hesaplama
-  const completedSessions = sessions.filter(
-    (s) => s.type === "pomodoro" && s.completed
-  );
-  let averageTime = 0;
-
-  if (completedSessions.length > 0) {
-    const totalTime = completedSessions.reduce((sum, session) => {
-      return sum + (session.duration || session.sessionLength || 25);
-    }, 0);
-    averageTime = Math.round(totalTime / completedSessions.length);
-  }
-
-  return {
-    today: todayCount,
-    week: weeklyCount,
-    averageTime: averageTime,
-  };
-}
-
-// Dashboard'a bildirim gönderme fonksiyonu
-function notifyDashboardUpdate() {
-  // Dashboard sayfası açık mı kontrol et
-  if (window.opener && typeof window.opener.dashboardAPI !== "undefined") {
-    window.opener.dashboardAPI.refreshData();
-  }
-
-  // LocalStorage event'i tetikle (aynı origin'deki diğer sekmeler için)
-  window.dispatchEvent(
-    new StorageEvent("storage", {
-      key: "grindmind_pomodoro_sessions",
-      newValue: localStorage.getItem("grindmind_pomodoro_sessions"),
-    })
-  );
-}
-
-// ============================================================================
-// Event Listeners ve Global API
-// ============================================================================
-
-// Initialize the timer when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
+  // Initialize the timer first
   window.timer = new PomodoroTimer();
+  console.log("✅ Timer class başlatıldı");
+
+  // Hamburger Menu Event Listeners - DÜZELTME
+  const hamburger = document.getElementById("hamburger");
+  const mobileClose = document.getElementById("navMobileClose");
+  const mobileOverlay = document.getElementById("navMobileOverlay");
+  const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+  const mobileSettingsBtn = document.getElementById("mobileSettingsBtn");
+
+  console.log("🔍 Element kontrolü:");
+  console.log("  hamburger:", !!hamburger);
+  console.log("  mobileClose:", !!mobileClose);
+  console.log("  mobileOverlay:", !!mobileOverlay);
+
+  // Hamburger menu - TEMIZ EVENT LISTENER
+  if (hamburger) {
+    // Önceki event listener'ları temizle
+    hamburger.onclick = null;
+    hamburger.replaceWith(hamburger.cloneNode(true));
+
+    // Yeni element referansı al
+    const newHamburger = document.getElementById("hamburger");
+
+    newHamburger.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log("🍔 Hamburger'a tıklandı!");
+      toggleMobileNav();
+    });
+
+    console.log("✅ Hamburger event listener eklendi");
+  } else {
+    console.error("❌ Hamburger elementi bulunamadı!");
+  }
+
+  // Mobile Close Button
+  if (mobileClose) {
+    mobileClose.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log("❌ Close button'a tıklandı!");
+      closeMobileNav();
+    });
+    console.log("✅ Close button event listener eklendi");
+  }
+
+  // Mobile Overlay
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log("🔳 Overlay'e tıklandı!");
+      closeMobileNav();
+    });
+    console.log("✅ Overlay event listener eklendi");
+  }
+
+  // Mobile Logout Button
+  if (mobileLogoutBtn) {
+    mobileLogoutBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      logout();
+      closeMobileNav();
+    });
+    console.log("✅ Mobile logout event listener eklendi");
+  }
+
+  // Mobile Settings Button - Timer class ile entegre
+  if (mobileSettingsBtn) {
+    mobileSettingsBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      closeMobileNav();
+      setTimeout(() => {
+        if (window.timer && window.timer.openSettings) {
+          window.timer.openSettings();
+        } else {
+          openPomodoroSettings();
+        }
+      }, 300);
+    });
+    console.log("✅ Mobile settings event listener eklendi");
+  }
+
+  // Profile dropdown
+  const userAvatar = document.getElementById("userAvatar");
+  if (userAvatar) {
+    userAvatar.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleProfileDropdown();
+    });
+  }
+
+  // Desktop Settings ve logout butonları
+  const settingsBtn = document.getElementById("settingsBtn");
+  const userSettingsBtn = document.getElementById("userSettingsBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (userSettingsBtn) {
+    userSettingsBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.location.href = "settings.html";
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      logout();
+      toggleProfileDropdown();
+    });
+  }
+
+  // Dropdown dışına tıklama
+  document.addEventListener("click", function (e) {
+    const dropdown = document.getElementById("profileDropdown");
+    const userAvatar = document.getElementById("userAvatar");
+
+    if (dropdown && !dropdown.contains(e.target) && e.target !== userAvatar) {
+      dropdown.classList.remove("show");
+    }
+  });
+
+  // Global keyboard shortcuts
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      hideNotification();
+      closeMobileNav();
+      const settingsModal = document.getElementById("settingsModal");
+      if (settingsModal && settingsModal.classList.contains("active")) {
+        closePomodoroSettings();
+      }
+    }
+
+    if (e.ctrlKey || e.metaKey) {
+      switch (e.key) {
+        case "h":
+          e.preventDefault();
+          window.location.href = "dashboard.html";
+          break;
+        case "r":
+          e.preventDefault();
+          window.location.reload();
+          break;
+        case ",":
+          e.preventDefault();
+          window.location.href = "settings.html";
+          break;
+      }
+    }
+  });
+
+  // Window resize handler
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 1024) {
+      closeMobileNav();
+    }
+  });
 
   // Dashboard ile senkronizasyon için storage listener
   window.addEventListener("storage", (e) => {
@@ -1045,7 +1567,13 @@ document.addEventListener("DOMContentLoaded", () => {
       window.dashboardAPI.refreshData();
     }
   });
+
+  console.log("🎉 Tüm event listener'lar başarıyla eklendi!");
 });
+
+// ============================================================================
+// GLOBAL FUNCTIONS FOR HTML ONCLICK EVENTS
+// ============================================================================
 
 // Global functions for HTML onclick events
 function toggleTask(id) {
@@ -1061,54 +1589,100 @@ function deleteTask(id) {
 }
 
 // ============================================================================
-// Dashboard Test ve Debug Fonksiyonları
+// GLOBAL API OBJECTS
 // ============================================================================
 
-// Test için dashboard entegrasyonunu simüle et
-function simulateDashboardIntegration() {
-  console.log("🧪 Dashboard entegrasyonu test ediliyor...");
+// Global functions for external access
+window.toggleMobileNav = toggleMobileNav;
+window.closeMobileNav = closeMobileNav;
+window.showNotification = showNotification;
+window.hideNotification = hideNotification;
+window.logout = logout;
+window.openPomodoroSettings = openPomodoroSettings;
+window.closePomodoroSettings = closePomodoroSettings;
+window.updateNavbarColors = updateNavbarColors;
+window.getDashboardPomodoroData = getDashboardPomodoroData;
+window.notifyDashboardUpdate = notifyDashboardUpdate;
 
-  // Test data ekle
-  if (window.timer) {
-    window.timer.recordPomodoroSession(25, true);
-    window.timer.recordPomodoroSession(30, true);
-    console.log("✅ Test pomodoro sessions eklendi");
-  }
+// Global API objesi - Navbar
+window.pomodoroNavbarAPI = {
+  toggleMobileNav,
+  closeMobileNav,
+  showNotification,
+  hideNotification,
+  logout,
+  openSettings: openPomodoroSettings,
+  closeSettings: closePomodoroSettings,
+  updateColors: updateNavbarColors,
+  getDashboardData: getDashboardPomodoroData,
+  notifyDashboard: notifyDashboardUpdate,
+};
 
-  // Dashboard data'yı kontrol et
-  const data = getDashboardPomodoroData();
-  console.log("📊 Dashboard verisi:", data);
-
-  return data;
-}
-
-// Global API objesi
+// Global API objesi - Dashboard
 window.pomodoroAPI = {
   getDashboardData: getDashboardPomodoroData,
   notifyDashboard: notifyDashboardUpdate,
-  simulateTest: simulateDashboardIntegration,
 };
 
+// ============================================================================
+// DEBUG FUNCTIONS
+// ============================================================================
+
 // Debug fonksiyonları
-window.debugPomodoro = {
-  addSession: (duration = 25) => {
-    if (window.timer) {
-      return window.timer.recordPomodoroSession(duration, true);
-    }
+window.debugHamburger = {
+  test: function () {
+    console.log("🧪 Hamburger menu test başlatılıyor...");
+    toggleMobileNav();
   },
-  addMultipleSessions: (count = 3, duration = 25) => {
-    if (window.timer) {
-      for (let i = 0; i < count; i++) {
-        window.timer.recordPomodoroSession(duration, true);
+
+  checkElements: function () {
+    const elements = {
+      hamburger: document.getElementById("hamburger"),
+      mobileNav: document.getElementById("navMobile"),
+      overlay: document.getElementById("navMobileOverlay"),
+      closeBtn: document.getElementById("navMobileClose"),
+    };
+
+    console.log("🔍 Element durumları:");
+    Object.entries(elements).forEach(([name, element]) => {
+      console.log(`  ${name}:`, element ? "✅ Mevcut" : "❌ Bulunamadı");
+      if (element) {
+        console.log(`    Classes:`, element.className);
       }
+    });
+
+    return elements;
+  },
+
+  forceOpen: function () {
+    console.log("🔓 Menüyü zorla açma...");
+    const mobileNav = document.getElementById("navMobile");
+    const overlay = document.getElementById("navMobileOverlay");
+    const hamburger = document.getElementById("hamburger");
+
+    if (mobileNav) {
+      mobileNav.classList.add("show", "active");
+      mobileNav.style.right = "0";
     }
+    if (overlay) {
+      overlay.classList.add("show", "active");
+      overlay.style.display = "block";
+      overlay.style.opacity = "1";
+    }
+    if (hamburger) {
+      hamburger.classList.add("active");
+    }
+
+    document.body.style.overflow = "hidden";
+    console.log("✅ Menu zorla açıldı");
   },
-  showData: () => console.log(getDashboardPomodoroData()),
-  clearData: () => {
-    localStorage.removeItem("grindmind_pomodoro_today");
-    localStorage.removeItem("grindmind_pomodoro_sessions");
-    localStorage.removeItem("grindmind_pomodoro_last_date");
-    console.log("🗑️ Pomodoro verileri temizlendi");
+
+  forceClose: function () {
+    console.log("🔒 Menüyü zorla kapatma...");
+    closeMobileNav();
   },
-  testIntegration: simulateDashboardIntegration,
 };
+
+console.log(
+  "🚀 Hamburger menu script yüklendi! Test için: window.debugHamburger.test()"
+);

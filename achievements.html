@@ -21,12 +21,22 @@
         <div class="logo" onclick="window.location.href='dashboard.html'">
           GRINDMIND
         </div>
+
+        <!-- Desktop Navigation Menu -->
         <div class="nav-menu">
           <a href="dashboard.html" class="nav-item">Ana Sayfa</a>
           <a href="activities.html" class="nav-item">Aktiviteler</a>
           <a href="statistics.html" class="nav-item">İstatistikler</a>
           <a href="achievements.html" class="nav-item active">Başarılar</a>
         </div>
+
+        <!-- Hamburger Menu Button (Mobil) -->
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
         <div class="user-section">
           <button class="notification-btn" id="notificationBtn">
             🔔
@@ -35,18 +45,57 @@
           <div class="user-avatar" id="userAvatar">T</div>
           <!-- Profile Dropdown -->
           <div class="profile-dropdown" id="profileDropdown">
-            <a href="#" class="dropdown-item" id="settingsBtn">
+            <button class="dropdown-item" id="settingsBtn">
               <span class="dropdown-icon">⚙️</span>
               <span>Ayarlar</span>
-            </a>
-            <a href="#" class="dropdown-item" id="logoutBtn">
+            </button>
+            <button class="dropdown-item" id="logoutBtn">
               <span class="dropdown-icon">🚪</span>
               <span>Çıkış Yap</span>
-            </a>
+            </button>
           </div>
         </div>
       </nav>
     </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="nav-mobile-overlay" id="navMobileOverlay"></div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="nav-mobile" id="navMobile">
+      <div class="nav-mobile-header">
+        <div class="logo">GRINDMIND</div>
+        <button class="nav-mobile-close" id="navMobileClose">×</button>
+      </div>
+      <div class="nav-mobile-menu">
+        <a href="dashboard.html" class="nav-mobile-item">Ana Sayfa</a>
+        <a href="activities.html" class="nav-mobile-item">Aktiviteler</a>
+        <a href="statistics.html" class="nav-mobile-item">İstatistikler</a>
+        <a href="achievements.html" class="nav-mobile-item active"
+          >🏆 Başarılar</a
+        >
+        <a href="settings.html" class="nav-mobile-item">⚙️ Ayarlar</a>
+        <a href="#" class="nav-mobile-item" id="mobileLogoutBtn"
+          >🚪 Çıkış Yap</a
+        >
+      </div>
+    </nav>
+
+    <!-- Notification Toast -->
+    <div id="notificationToast" class="notification-toast">
+      <div class="notification-content">
+        <span class="notification-icon">🎉</span>
+        <div class="notification-text">
+          <div class="notification-title">Bildirim Başlığı</div>
+          <div class="notification-message">
+            Bildirim mesajı burada görünecek
+          </div>
+        </div>
+        <button class="notification-close" onclick="hideNotification()">
+          ×
+        </button>
+      </div>
+    </div>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -312,23 +361,5 @@
     <!-- JavaScript -->
     <script src="js/achievements.js"></script>
     <script src="js/achievements-page.js"></script>
-    <script>
-      // Profile dropdown functionality
-      const userAvatar = document.getElementById("userAvatar");
-      const profileDropdown = document.getElementById("profileDropdown");
-
-      userAvatar.addEventListener("click", (e) => {
-        e.stopPropagation();
-        profileDropdown.classList.toggle("show");
-      });
-
-      document.addEventListener("click", () => {
-        profileDropdown.classList.remove("show");
-      });
-
-      profileDropdown.addEventListener("click", (e) => {
-        e.stopPropagation();
-      });
-    </script>
   </body>
 </html>
